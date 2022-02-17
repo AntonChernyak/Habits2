@@ -10,6 +10,7 @@ import com.example.habits.databinding.ActivityFirstBinding
 class FirstActivity : AppCompatActivity() {
 
     private val viewBinding: ActivityFirstBinding by viewBinding()
+    private var isIntent = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,12 +48,17 @@ class FirstActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(COUNTER_KEY, viewBinding.counterTextView.text.toString().toInt())
+        Log.d(FIRST_ACTIVITY_TAG, "onSaveInstanceState()")
+
+        val currentNumber = viewBinding.counterTextView.text.toString().toInt()
+        if (isIntent) outState.putInt(COUNTER_KEY, currentNumber) else outState.putInt(COUNTER_KEY, currentNumber + 1)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        val restoreNumber = savedInstanceState.getInt(COUNTER_KEY, 0) + 1
+        Log.d(FIRST_ACTIVITY_TAG, "onRestoreInstanceState()")
+
+        val restoreNumber = savedInstanceState.getInt(COUNTER_KEY, 0)
         viewBinding.counterTextView.text = restoreNumber.toString()
     }
 
@@ -65,6 +71,7 @@ class FirstActivity : AppCompatActivity() {
         val intent = Intent(this@FirstActivity, SecondActivity::class.java).apply {
             putExtra(COUNTER_KEY, viewBinding.counterTextView.text.toString())
         }
+        isIntent = true
         startActivity(intent)
     }
 

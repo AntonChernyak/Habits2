@@ -52,11 +52,15 @@ class SecondActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        Log.d(SECOND_ACTIVITY_TAG, "onSaveInstanceState()")
+
         outState.putString(SQUARE_KEY, viewBinding.squareTextView.text.toString())
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
+        Log.d(SECOND_ACTIVITY_TAG, "onRestoreInstanceState()")
+
         val squareNumber = savedInstanceState.getString(SQUARE_KEY, "0")
         viewBinding.squareTextView.text = squareNumber
     }
