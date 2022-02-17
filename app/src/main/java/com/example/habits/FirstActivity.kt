@@ -4,15 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.habits.databinding.ActivityMainBinding
+import com.example.habits.databinding.ActivityFirstBinding
 
 class FirstActivity : AppCompatActivity() {
 
-    private val viewBinding: ActivityMainBinding by viewBinding()
+    private val viewBinding: ActivityFirstBinding by viewBinding()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_first)
         Log.d(FIRST_ACTIVITY_TAG, "onCreate()")
 
         viewBinding.counterTextView.text = "0"
@@ -61,6 +61,6 @@ class FirstActivity : AppCompatActivity() {
 
     companion object {
         private const val COUNTER_KEY = "counter key"
-        private const val FIRST_ACTIVITY_TAG = "first activity tag"
+        private const val FIRST_ACTIVITY_TAG = "tag_first_activity"
     }
 }
