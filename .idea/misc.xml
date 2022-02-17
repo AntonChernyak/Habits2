@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android/Doubletapp/Habits/app/src/main/res/layout/activity_first.xml" value="0.36666666666666664" />
         <entry key="..\:/Android/Doubletapp/Habits/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Android/Doubletapp/Habits/app/src/main/res/layout/activity_second.xml" value="0.18802083333333333" />
+        <entry key="..\:/Android/Doubletapp/Habits/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2985" />
       </map>
     </option>
   </component>
