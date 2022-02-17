@@ -69,7 +69,7 @@ class FirstActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val COUNTER_KEY = "counter key"
+        const val COUNTER_KEY = "counter key"
         private const val FIRST_ACTIVITY_TAG = "tag_first_activity"
     }
 }
