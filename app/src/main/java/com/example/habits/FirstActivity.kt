@@ -1,5 +1,6 @@
 package com.example.habits
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -16,6 +17,7 @@ class FirstActivity : AppCompatActivity() {
         Log.d(FIRST_ACTIVITY_TAG, "onCreate()")
 
         viewBinding.counterTextView.text = "0"
+        viewBinding.goToSecondActivityButton.setOnClickListener { secondActivityButtonOnClick() }
     }
 
     override fun onStart() {
@@ -57,6 +59,13 @@ class FirstActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         Log.d(FIRST_ACTIVITY_TAG, "onRestart()")
+    }
+
+    private fun secondActivityButtonOnClick() {
+        val intent = Intent(this@FirstActivity, SecondActivity::class.java).apply {
+            putExtra(COUNTER_KEY, viewBinding.counterTextView.text.toString())
+        }
+        startActivity(intent)
     }
 
     companion object {

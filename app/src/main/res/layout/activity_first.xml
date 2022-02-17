@@ -18,6 +18,7 @@
         tools:text="0" />
 
     <Button
+        android:id="@+id/goToSecondActivityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/push_the_button_max"
