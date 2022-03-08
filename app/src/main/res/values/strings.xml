@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Habits</string>
+    <string name="push_the_button_max">Не дави на меня</string>
 </resources>
