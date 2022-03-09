@@ -12,4 +12,5 @@
     <dimen name="habit_card_elevation">8dp</dimen>
     <dimen name="habit_card_corner_radius">10dp</dimen>
     <dimen name="card_color_label_width">10dp</dimen>
+    <dimen name="divider_height">1.5dp</dimen>
 </resources>

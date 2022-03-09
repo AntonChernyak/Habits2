@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Habits">
         <activity
-            android:name=".SecondActivity"
+            android:name=".activity.HabitCreatorActivity"
             android:exported="false" />
         <activity
-            android:name=".FirstActivity"
+            android:name=".activity.HabitsListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

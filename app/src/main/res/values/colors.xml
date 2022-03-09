@@ -9,5 +9,6 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="primary_color_green">#09C15E</color>
+    <color name="habit_creator_divider_color">#E0E0E0</color>
 
 </resources>

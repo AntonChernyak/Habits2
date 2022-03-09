@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="activity.HabitsListActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/habitsListToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/my_habits" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/habit_creator_divider_color"
+        android:elevation="1dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/habitsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"
+            tools:itemCount="5"
+            tools:listitem="@layout/item_habit" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addFabButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="@dimen/spacing_medium_16"
+            android:layout_marginBottom="@dimen/spacing_medium_16"
+            android:clickable="true"
+            android:contentDescription="@string/add_habit"
+            android:focusable="true"
+            app:backgroundTint="@color/primary_color_green"
+            app:srcCompat="@drawable/ic_add_24_white"
+            app:tint="@color/white" />
+    </FrameLayout>
+
+</LinearLayout>

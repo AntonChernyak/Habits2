@@ -2,4 +2,6 @@
     <string name="app_name">Habits</string>
     <string name="push_the_button_max">Не дави на меня</string>
     <string name="check_habit">Выбрать привычку</string>
+    <string name="my_habits">Мои привычки</string>
+    <string name="add_habit">Добавить привычку</string>
 </resources>
