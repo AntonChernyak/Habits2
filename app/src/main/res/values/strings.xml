@@ -7,4 +7,24 @@
     <string name="period_string">%1$s раз в %2$s дней</string>
     <string name="good_habit">Хорошая привычка</string>
     <string name="bad_habit">Плохая привычка</string>
+    <string name="create_habit">Создать привычку</string>
+    <string name="habit_name">Название</string>
+    <string name="habit_description">Описание</string>
+    <string name="habit_type">Тип привычки</string>
+    <string name="habit_priority">Приоритет</string>
+    <string name="habit_period">Периодичность</string>
+    <string name="repeat">Повторять</string>
+    <string name="times">раз</string>
+    <string name="days">дней</string>
+    <string name="choose_color">Выбрать цвет</string>
+    <string name="create">Создать</string>
+
+    <!-- priority spinner data -->
+    <string-array name="prioritySpinnerDataArray">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
 </resources>
