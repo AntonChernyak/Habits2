@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/habit_card_corner_radius"
+    app:cardElevation="@dimen/habit_card_elevation"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <View
+            android:id="@+id/habitColorLabel"
+            android:layout_width="@dimen/card_color_label_width"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@color/purple_200" />
+
+        <TextView
+            android:id="@+id/habitTitleTextView"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_medium_16"
+            android:layout_marginTop="@dimen/spacing_medium_16"
+            android:layout_marginEnd="@dimen/spacing_medium_16"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/checkImageView"
+            app:layout_constraintStart_toEndOf="@id/habitColorLabel"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Название привычки" />
+
+        <TextView
+            android:id="@+id/habitDescriptionTextView"
+            style="@style/TextAppearance.MaterialComponents.Body2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="5"
+            app:layout_constraintEnd_toEndOf="@id/habitTitleTextView"
+            app:layout_constraintStart_toStartOf="@id/habitTitleTextView"
+            app:layout_constraintTop_toBottomOf="@id/habitTitleTextView"
+            tools:text="Описание привычки" />
+
+        <TextView
+            android:id="@+id/periodTextView"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_tiny_4"
+            app:layout_constraintEnd_toEndOf="@id/habitTitleTextView"
+            app:layout_constraintStart_toEndOf="@id/habitColorLabel"
+            app:layout_constraintStart_toStartOf="@id/habitTitleTextView"
+            app:layout_constraintTop_toBottomOf="@id/habitDescriptionTextView"
+            tools:text="Периодичность" />
+
+        <TextView
+            android:id="@+id/typeTextView"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_medium_16"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/habitTitleTextView"
+            app:layout_constraintStart_toStartOf="@+id/habitTitleTextView"
+            app:layout_constraintTop_toBottomOf="@+id/periodTextView"
+            tools:text="Тип" />
+
+        <ImageView
+            android:id="@+id/checkImageView"
+            android:layout_width="@dimen/checkImageViewSize"
+            android:layout_height="@dimen/checkImageViewSize"
+            android:layout_marginEnd="@dimen/spacing_medium_16"
+            android:background="@drawable/check_image_view_background_selector"
+            android:contentDescription="@string/check_habit"
+            android:padding="@dimen/spacing_very_tiny_2"
+            app:layout_constraintBottom_toBottomOf="@+id/priorityTextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/habitTitleTextView"
+            app:srcCompat="@drawable/ic_check_24" />
+
+        <TextView
+            android:id="@+id/priorityTextView"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/typeTextView"
+            app:layout_constraintEnd_toEndOf="@+id/checkImageView"
+            app:layout_constraintStart_toStartOf="@+id/checkImageView"
+            app:layout_constraintTop_toBottomOf="@+id/checkImageView"
+            tools:text="5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
