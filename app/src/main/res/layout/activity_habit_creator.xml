@@ -273,6 +273,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/rgbTextView"
                 tools:text="H:24 | S:58 | V:84" />
 
+            <include
+                android:id="@+id/colorScrollView"
+                layout="@layout/color_picker_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_tiny_4"
+                android:layout_marginTop="@dimen/spacing_large_32"
+                android:layout_marginEnd="@dimen/spacing_tiny_4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/selectedColorView" />
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/createHabitButton"
                 style="@style/TextAppearance.MaterialComponents.Button"
@@ -286,7 +298,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/selectedColorView" />
+                app:layout_constraintTop_toBottomOf="@id/colorScrollView" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
