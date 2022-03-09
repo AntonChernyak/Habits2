@@ -1,5 +1,6 @@
 package com.example.habits.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,8 +10,9 @@ import com.example.habits.model.HabitItem
 class HabitAdapter(): RecyclerView.Adapter<HabitViewHolder>() {
 
     var data: List<HabitItem> = emptyList()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
-            field = value
+            field = value.sortedBy { it.priority}.reversed()
             this.notifyDataSetChanged()
         }
 

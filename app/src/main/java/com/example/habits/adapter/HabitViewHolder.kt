@@ -12,7 +12,7 @@ class HabitViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     private val title = itemView.findViewById<TextView>(R.id.habitTitleTextView)
     private val description = itemView.findViewById<TextView>(R.id.habitDescriptionTextView)
-    private val habitColorLabel = itemView.findViewById<ImageView>(R.id.habitColorLabel)
+    private val habitColorLabel = itemView.findViewById<View>(R.id.habitColorLabel)
     private val period = itemView.findViewById<TextView>(R.id.periodTextView)
     private val priority = itemView.findViewById<TextView>(R.id.priorityTextView)
     private val type = itemView.findViewById<TextView>(R.id.typeTextView)
