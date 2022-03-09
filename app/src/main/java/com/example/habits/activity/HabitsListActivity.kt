@@ -1,5 +1,6 @@
 package com.example.habits.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,14 @@ class HabitsListActivity : AppCompatActivity() {
             habitsAdapter.data = MockRepository.list
             adapter = habitsAdapter
         }
-        viewBinding.habitsRecyclerView.adapter
+
+        addHabitButtonOnClick()
+    }
+
+    private fun addHabitButtonOnClick(){
+        viewBinding.addFabButton.setOnClickListener {
+            val intent = Intent(this@HabitsListActivity, HabitCreatorActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
