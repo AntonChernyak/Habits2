@@ -17,15 +17,21 @@ class HabitsListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_habits_list)
+        addHabitButtonOnClick()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        showData()
+    }
+
+    private fun showData(){
         viewBinding.habitsRecyclerView.apply {
             layoutManager = LinearLayoutManager(this@HabitsListActivity, LinearLayoutManager.VERTICAL, false)
             val habitsAdapter = HabitAdapter()
             habitsAdapter.data = MockRepository.list
             adapter = habitsAdapter
         }
-
-        addHabitButtonOnClick()
     }
 
     private fun addHabitButtonOnClick(){
