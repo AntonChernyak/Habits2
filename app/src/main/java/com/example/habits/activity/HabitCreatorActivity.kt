@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.R
+import com.example.habits.activity.HabitsListActivity.Companion.HABIT_EXTRA_KEY
+import com.example.habits.activity.HabitsListActivity.Companion.POSITION_KEY
 import com.example.habits.databinding.ActivityHabitCreatorBinding
 import com.example.habits.enum.HabitType
 import com.example.habits.extension.getBackgroundColor
@@ -27,6 +29,7 @@ class HabitCreatorActivity : AppCompatActivity() {
 
         createHabitPrioritySpinner()
         binding.createHabitButton.setOnClickListener { createHabitButtonClick(it) }
+        setDataFromIntent()
     }
 
     private fun createHabitPrioritySpinner() {
@@ -59,10 +62,16 @@ class HabitCreatorActivity : AppCompatActivity() {
             fillInRequiredFields(view)
         } else {
             allRequiredDataEntered()
-
+            val position = intent.getIntExtra(POSITION_KEY, DEFAULT_POSITION)
             val habit = createHabit()
-            MockRepository.addHabit(habit = habit)
-            showCreateSnackbar(view)
+
+            if (position == DEFAULT_POSITION) {
+                MockRepository.addHabit(habit = habit)
+                showCreateSnackbar(view)
+            } else {
+                replaceHabit(habit, position)
+                showEditSnackBar(view, position)
+            }
         }
 
         this.hideKeyboard()
@@ -111,10 +120,48 @@ class HabitCreatorActivity : AppCompatActivity() {
     private fun showCreateSnackbar(view: View) {
         Snackbar.make(view, getString(R.string.habit_added), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.cancel)) {
-                MockRepository.list.removeLast()
+                MockRepository.removeLastHabit()
             }
             .setActionTextColor(ContextCompat.getColor(this, R.color.primary_color_green))
             .show()
     }
 
+    private fun showEditSnackBar(view: View, position: Int) {
+        Snackbar.make(view, getString(R.string.habit_edited), Snackbar.LENGTH_LONG)
+            .setAction(getString(R.string.cancel)) {
+                setDataFromIntent()
+                val editingHabit = intent.getParcelableExtra<HabitItem>(HABIT_EXTRA_KEY)
+                editingHabit?.let { habit -> replaceHabit(habit, position) }
+            }
+            .setActionTextColor(ContextCompat.getColor(this, R.color.primary_color_green))
+            .show()
+    }
+
+    private fun setDataFromIntent() {
+        val editingHabit = intent.getParcelableExtra<HabitItem>(HABIT_EXTRA_KEY)
+        if (editingHabit != null) {
+            binding.habitTitleEditText.setText(editingHabit.title)
+            binding.habitDescriptionEditText.setText(editingHabit.description)
+            binding.periodDaysEditText.setText(editingHabit.periodDays)
+            binding.periodTimesEditText.setText(editingHabit.periodCount)
+            binding.prioritySpinner.setSelection(editingHabit.priority.toInt() - 1)
+            setHabitType(editingHabit.type)
+            binding.selectedColorView.backgroundTintList =
+                ColorStateList.valueOf(editingHabit.color)
+        }
+    }
+
+    private fun setHabitType(type: HabitType) {
+        if (type == HabitType.GOOD_HABIT) binding.goodHabitRadioButton.isChecked = true
+        else binding.badHabitRadioButton.isChecked = true
+    }
+
+    private fun replaceHabit(habit: HabitItem, position: Int) {
+        MockRepository.removeHabit(MockRepository.getHabits()[position])
+        MockRepository.addHabit(position, habit)
+    }
+
+    companion object {
+        const val DEFAULT_POSITION = -1
+    }
 }

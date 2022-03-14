@@ -17,7 +17,7 @@
     <string name="times">раз</string>
     <string name="days">дней</string>
     <string name="choose_color">Выбрать цвет</string>
-    <string name="create">Создать</string>
+    <string name="save">Сохранить</string>
     <string name="fill_in_required_fields">Заполните недостающие поля</string>
     <string name="habit_added">Привычка добавлена</string>
     <string name="cancel">Отменить</string>

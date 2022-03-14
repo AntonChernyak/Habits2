@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.habits.R
 import com.example.habits.model.HabitItem
 
-class HabitAdapter(): RecyclerView.Adapter<HabitViewHolder>() {
+class HabitAdapter(
+    private val itemClick: (position: Int) -> Unit
+): RecyclerView.Adapter<HabitViewHolder>() {
 
     var data: List<HabitItem> = emptyList()
         @SuppressLint("NotifyDataSetChanged")
         set(value) {
-            field = value.sortedBy { it.priority}.reversed()
+            field = value
             this.notifyDataSetChanged()
         }
 
@@ -25,6 +27,9 @@ class HabitAdapter(): RecyclerView.Adapter<HabitViewHolder>() {
 
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
         val habit = data[position]
+        holder.itemView.setOnClickListener {
+            itemClick(position)
+        }
         holder.bind(habit)
     }
 

@@ -8,7 +8,9 @@ import com.example.habits.R
 import com.example.habits.enum.HabitType
 import com.example.habits.model.HabitItem
 
-class HabitViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+class HabitViewHolder(
+    itemView: View
+) : RecyclerView.ViewHolder(itemView) {
 
     private val title = itemView.findViewById<TextView>(R.id.habitTitleTextView)
     private val description = itemView.findViewById<TextView>(R.id.habitDescriptionTextView)
@@ -29,11 +31,15 @@ class HabitViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         } else description.visibility = View.GONE
     }
 
-    private fun createPeriodString(habit: HabitItem): String{
-        return itemView.resources.getString(R.string.period_string, habit.periodCount, habit.periodDays)
+    private fun createPeriodString(habit: HabitItem): String {
+        return itemView.resources.getString(
+            R.string.period_string,
+            habit.periodCount,
+            habit.periodDays
+        )
     }
 
-    private fun convertTypeToString(type: HabitType): String{
+    private fun convertTypeToString(type: HabitType): String {
         return if (type == HabitType.GOOD_HABIT) {
             itemView.resources.getString(R.string.good_habit)
         } else {
