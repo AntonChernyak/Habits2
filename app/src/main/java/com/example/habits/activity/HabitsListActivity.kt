@@ -15,8 +15,12 @@ import com.example.habits.repository.MockRepository
 class HabitsListActivity : AppCompatActivity() {
 
     private val viewBinding: ActivityHabitsListBinding by viewBinding()
-    private val habitsAdapter = HabitAdapter { position ->
-        openHabitForEditing(position)
+    private val habitsAdapter: HabitAdapter by lazy {
+        HabitAdapter({ position ->
+            openHabitForEditing(position)
+        }, { checkImageButton, position ->
+            checkButtonClickListener(checkImageButton, position)
+        })
     }
     private val linearLayoutManager: LinearLayoutManager by lazy {
         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
@@ -69,6 +73,12 @@ class HabitsListActivity : AppCompatActivity() {
             putExtra(POSITION_KEY, position)
         }
         startActivity(intent)
+    }
+
+    private fun checkButtonClickListener(checkView: View, position: Int) {
+        checkView.isSelected = !checkView.isSelected
+        val isChecked = MockRepository.getHabits()[position].isChecked
+        MockRepository.getHabits()[position].isChecked = !isChecked
     }
 
     companion object {

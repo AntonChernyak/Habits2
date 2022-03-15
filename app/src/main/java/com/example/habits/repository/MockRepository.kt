@@ -54,6 +54,7 @@ object MockRepository {
             priority = "5",
             periodCount = "4",
             periodDays = "1",
+            isChecked = true,
             color = Color.parseColor("#283593")
         ).apply { initialList.add(this) }
 

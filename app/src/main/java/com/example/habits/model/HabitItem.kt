@@ -13,5 +13,6 @@ data class HabitItem(
     val type: HabitType = HabitType.GOOD_HABIT,
     val periodCount: String,
     val periodDays: String,
-    val color: Int = Color.WHITE
+    val color: Int = Color.WHITE,
+    var isChecked: Boolean = false
 ): Parcelable

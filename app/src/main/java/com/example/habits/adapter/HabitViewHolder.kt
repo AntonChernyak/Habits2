@@ -9,7 +9,9 @@ import com.example.habits.enum.HabitType
 import com.example.habits.model.HabitItem
 
 class HabitViewHolder(
-    itemView: View
+    itemView: View,
+    val itemListener: (position: Int) -> Unit,
+    val checkListener: (v: View, pos: Int) -> Unit
 ) : RecyclerView.ViewHolder(itemView) {
 
     private val title = itemView.findViewById<TextView>(R.id.habitTitleTextView)
@@ -18,6 +20,12 @@ class HabitViewHolder(
     private val period = itemView.findViewById<TextView>(R.id.periodTextView)
     private val priority = itemView.findViewById<TextView>(R.id.priorityTextView)
     private val type = itemView.findViewById<TextView>(R.id.typeTextView)
+    private val checkImageView = itemView.findViewById<ImageView>(R.id.checkImageView)
+
+    init {
+        itemView.setOnClickListener { itemListener(bindingAdapterPosition) }
+        checkImageView.setOnClickListener { checkListener(checkImageView, bindingAdapterPosition) }
+    }
 
     fun bind(habit: HabitItem) {
         title.text = habit.title
@@ -28,7 +36,10 @@ class HabitViewHolder(
 
         if (habit.description.isNotEmpty()) {
             description.text = habit.description
+            description.visibility = View.VISIBLE
         } else description.visibility = View.GONE
+
+        checkImageView.isSelected = habit.isChecked
     }
 
     private fun createPeriodString(habit: HabitItem): String {
