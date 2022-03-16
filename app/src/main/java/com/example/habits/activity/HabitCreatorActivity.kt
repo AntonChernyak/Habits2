@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.R
 import com.example.habits.activity.HabitsListActivity.Companion.HABIT_EXTRA_KEY
-import com.example.habits.activity.HabitsListActivity.Companion.POSITION_KEY
 import com.example.habits.databinding.ActivityHabitCreatorBinding
 import com.example.habits.enum.HabitType
 import com.example.habits.extension.getBackgroundColor
@@ -30,6 +29,34 @@ class HabitCreatorActivity : AppCompatActivity() {
         createHabitPrioritySpinner()
         binding.createHabitButton.setOnClickListener { createHabitButtonClick(it) }
         setDataFromIntent()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.apply {
+            putString(TITLE_KEY, binding.habitTitleEditText.text.toString())
+            putString(DESCRIPTION_KEY, binding.habitDescriptionEditText.text.toString())
+            putString(PRIORITY_KEY, binding.prioritySpinner.selectedItem.toString())
+            putString(PERIOD_COUNT_KEY, binding.periodTimesEditText.text.toString())
+            putString(PERIOD_DAYS_KEY, binding.periodDaysEditText.text.toString())
+            putString(TYPE_KEY, getHabitType().name)
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        savedInstanceState.apply {
+            binding.habitTitleEditText.setText(this.getString(TITLE_KEY))
+            binding.habitDescriptionEditText.setText(this.getString(DESCRIPTION_KEY))
+            binding.periodDaysEditText.setText(this.getString(PERIOD_DAYS_KEY))
+            binding.periodTimesEditText.setText(this.getString(PERIOD_COUNT_KEY))
+            this.getString(PRIORITY_KEY)?.toInt()
+                ?.minus(1)?.let { binding.prioritySpinner.setSelection(it) }
+            when (this.getString(TYPE_KEY)) {
+                HabitType.GOOD_HABIT.name -> setHabitType(HabitType.GOOD_HABIT)
+                HabitType.BAD_HABIT.name -> setHabitType(HabitType.BAD_HABIT)
+            }
+        }
     }
 
     private fun createHabitPrioritySpinner() {
@@ -111,12 +138,6 @@ class HabitCreatorActivity : AppCompatActivity() {
             ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_color_green))
     }
 
-    private fun getHabitType(): HabitType {
-        val checkId = binding.habitTypesRadioGroup.checkedRadioButtonId
-        return if (checkId == binding.goodHabitRadioButton.id) HabitType.GOOD_HABIT
-        else HabitType.BAD_HABIT
-    }
-
     private fun showCreateSnackbar(view: View) {
         Snackbar.make(view, getString(R.string.habit_added), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.cancel)) {
@@ -161,7 +182,20 @@ class HabitCreatorActivity : AppCompatActivity() {
         MockRepository.addHabit(position, habit)
     }
 
+    private fun getHabitType(): HabitType {
+        val checkId = binding.habitTypesRadioGroup.checkedRadioButtonId
+        return if (checkId == binding.goodHabitRadioButton.id) HabitType.GOOD_HABIT
+        else HabitType.BAD_HABIT
+    }
+
     companion object {
         const val DEFAULT_POSITION = -1
+        const val TITLE_KEY = "title_key"
+        const val DESCRIPTION_KEY = "description_key"
+        const val PERIOD_COUNT_KEY = "period_count_key"
+        const val PERIOD_DAYS_KEY = "period_days_key"
+        const val TYPE_KEY = "type_key"
+        const val PRIORITY_KEY = "priority_key"
+        const val POSITION_KEY = "position_key"
     }
 }
