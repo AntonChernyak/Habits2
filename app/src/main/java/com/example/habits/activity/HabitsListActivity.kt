@@ -57,11 +57,10 @@ class HabitsListActivity : AppCompatActivity() {
         viewBinding.habitsRecyclerView.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val lastPosition = linearLayoutManager.findLastCompletelyVisibleItemPosition()
-                val habitsCount = MockRepository.getHabits().size
-                if (habitsCount > ADD_BUTTON_VISIBILITY_MARK && lastPosition == habitsCount - 1) {
-                    viewBinding.addFabButton.visibility = View.GONE
-                } else viewBinding.addFabButton.visibility = View.VISIBLE
+                when {
+                    dy >= 0 -> viewBinding.addFabButton.visibility = View.VISIBLE
+                    dy < 0 -> viewBinding.addFabButton.visibility = View.GONE
+                }
             }
         }
         )
@@ -82,7 +81,6 @@ class HabitsListActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val ADD_BUTTON_VISIBILITY_MARK = 4
         const val HABIT_EXTRA_KEY = "habit_extra_key"
         const val POSITION_KEY = "position_key"
     }
