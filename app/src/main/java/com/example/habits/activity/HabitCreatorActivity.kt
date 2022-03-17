@@ -19,6 +19,7 @@ import com.example.habits.extension.hideKeyboard
 import com.example.habits.model.HabitItem
 import com.example.habits.repository.MockRepository
 import com.google.android.material.snackbar.Snackbar
+import kotlin.math.roundToInt
 
 class HabitCreatorActivity : AppCompatActivity() {
 
@@ -32,6 +33,8 @@ class HabitCreatorActivity : AppCompatActivity() {
         binding.createHabitButton.setOnClickListener { createHabitButtonClick(it) }
         setDataFromIntent()
         setColorPicker()
+        setRgbString()
+        setHsvString()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -61,7 +64,7 @@ class HabitCreatorActivity : AppCompatActivity() {
                 HabitType.BAD_HABIT.name -> setHabitType(HabitType.BAD_HABIT)
             }
             binding.selectedColorView.backgroundTintList =
-                ColorStateList.valueOf(savedInstanceState.getInt(COLOR_KEY, Color.GRAY))
+                ColorStateList.valueOf(savedInstanceState.getInt(COLOR_KEY, Color.MAGENTA))
         }
     }
 
@@ -211,7 +214,31 @@ class HabitCreatorActivity : AppCompatActivity() {
             val color = it.backgroundTintList
             binding.selectedColorView.backgroundTintList = color
             binding.colorScrollView.scrollView.visibility = View.GONE
+            setRgbString()
+            setHsvString()
         }
+    }
+
+    private fun setRgbString() {
+        val colorCode = binding.selectedColorView.getBackgroundColor()
+        binding.rgbTextView.text = resources.getString(
+            R.string.rgb_string,
+            Color.red(colorCode).toString(),
+            Color.green(colorCode).toString(),
+            Color.blue(colorCode).toString()
+        )
+    }
+
+    private fun setHsvString() {
+        val colorCode = binding.selectedColorView.getBackgroundColor()
+        val hsvArray = FloatArray(3)
+        Color.colorToHSV(colorCode, hsvArray)
+        binding.hsvTextView.text = resources.getString(
+            R.string.hsv_string,
+            hsvArray[0].roundToInt().toString(),
+            (hsvArray[1] * 100).toInt().toString(),
+            (hsvArray[2] * 100).toInt().toString()
+        )
     }
 
     companion object {

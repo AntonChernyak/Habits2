@@ -22,6 +22,8 @@
     <string name="habit_added">Привычка добавлена</string>
     <string name="cancel">Отменить</string>
     <string name="habit_edited">Привычка изменена</string>
+    <string name="rgb_string">R:%1$s | G:%2$s | B:%3$s</string>
+    <string name="hsv_string">H:%1$s | S:%2$s%% | V:%3$s%%</string>
 
     <!-- priority spinner data -->
     <string-array name="prioritySpinnerDataArray">
