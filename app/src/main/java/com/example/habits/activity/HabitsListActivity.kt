@@ -92,7 +92,7 @@ class HabitsListActivity : AppCompatActivity() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 MockRepository.removeHabitAtPosition(viewHolder.bindingAdapterPosition)
-                habitsAdapter.notifyItemRemoved(viewHolder.bindingAdapterPosition)
+                habitsAdapter.removeAt(viewHolder.bindingAdapterPosition)
             }
 
         }).attachToRecyclerView(viewBinding.habitsRecyclerView)

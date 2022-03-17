@@ -13,12 +13,12 @@ class HabitAdapter(
     private val checkClick: (view: View, position: Int) -> Unit
 ): RecyclerView.Adapter<HabitViewHolder>() {
 
-    var data: List<HabitItem> = emptyList()
-        @SuppressLint("NotifyDataSetChanged")
-        set(value) {
-            field = value
-            this.notifyDataSetChanged()
-        }
+    var data: MutableList<HabitItem> = mutableListOf()
+    @SuppressLint("NotifyDataSetChanged")
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_habit, parent, false)
@@ -30,6 +30,11 @@ class HabitAdapter(
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
         val habit = data[position]
         holder.bind(habit)
+    }
+
+    fun removeAt(position: Int){
+        data.removeAt(position)
+        notifyItemRemoved(position)
     }
 
 }

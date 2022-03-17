@@ -1,7 +1,6 @@
 package com.example.habits.repository
 
 import android.graphics.Color
-import android.util.Log
 import com.example.habits.enum.HabitType
 import com.example.habits.model.HabitItem
 
@@ -9,7 +8,7 @@ object MockRepository {
     private val list: MutableList<HabitItem> =
         createHabitsRepository().sortedBy { it.priority }.reversed().toMutableList()
 
-    fun getHabits(): List<HabitItem> = list.sortedBy { it.priority }.reversed().toMutableList()
+    fun getHabits(): MutableList<HabitItem> = list.sortedBy { it.priority }.reversed().toMutableList()
 
     fun addHabit(position: Int = list.size, habit: HabitItem) {
         list.add(position, habit)
