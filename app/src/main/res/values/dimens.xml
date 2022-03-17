@@ -20,5 +20,6 @@
     <dimen name="create_habit_button_height">52dp</dimen>
     <dimen name="item_color_picker_size">40dp</dimen>
     <dimen name="item_color_corner_radius">10dp</dimen>
+    <dimen name="color_picker_item_space_size">32dp</dimen>
 
 </resources>

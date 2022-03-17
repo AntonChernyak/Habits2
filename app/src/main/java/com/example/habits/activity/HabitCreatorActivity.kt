@@ -2,6 +2,7 @@ package com.example.habits.activity
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.R
 import com.example.habits.activity.HabitsListActivity.Companion.HABIT_EXTRA_KEY
+import com.example.habits.colorpicker.ColorPicker
 import com.example.habits.databinding.ActivityHabitCreatorBinding
 import com.example.habits.enum.HabitType
 import com.example.habits.extension.getBackgroundColor
@@ -29,6 +31,7 @@ class HabitCreatorActivity : AppCompatActivity() {
         createHabitPrioritySpinner()
         binding.createHabitButton.setOnClickListener { createHabitButtonClick(it) }
         setDataFromIntent()
+        setColorPicker()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -40,6 +43,7 @@ class HabitCreatorActivity : AppCompatActivity() {
             putString(PERIOD_COUNT_KEY, binding.periodTimesEditText.text.toString())
             putString(PERIOD_DAYS_KEY, binding.periodDaysEditText.text.toString())
             putString(TYPE_KEY, getHabitType().name)
+            putInt(COLOR_KEY, binding.selectedColorView.getBackgroundColor())
         }
     }
 
@@ -56,6 +60,8 @@ class HabitCreatorActivity : AppCompatActivity() {
                 HabitType.GOOD_HABIT.name -> setHabitType(HabitType.GOOD_HABIT)
                 HabitType.BAD_HABIT.name -> setHabitType(HabitType.BAD_HABIT)
             }
+            binding.selectedColorView.backgroundTintList =
+                ColorStateList.valueOf(savedInstanceState.getInt(COLOR_KEY, Color.GRAY))
         }
     }
 
@@ -188,6 +194,26 @@ class HabitCreatorActivity : AppCompatActivity() {
         else HabitType.BAD_HABIT
     }
 
+    private fun setColorPicker() {
+        binding.selectedColorView.setOnClickListener {
+            val scrollViewVisibility = binding.colorScrollView.scrollView.visibility
+            binding.colorScrollView.scrollView.visibility =
+                if (scrollViewVisibility == View.GONE) View.VISIBLE
+                else View.GONE
+        }
+
+        binding.colorScrollView.colorPickerContainer.background = BitmapDrawable(
+            resources,
+            ColorPicker.createBackgroundBitmap(this)
+        )
+
+        ColorPicker.createColorPickerItems(this) {
+            val color = it.backgroundTintList
+            binding.selectedColorView.backgroundTintList = color
+            binding.colorScrollView.scrollView.visibility = View.GONE
+        }
+    }
+
     companion object {
         const val DEFAULT_POSITION = -1
         const val TITLE_KEY = "title_key"
@@ -197,5 +223,6 @@ class HabitCreatorActivity : AppCompatActivity() {
         const val TYPE_KEY = "type_key"
         const val PRIORITY_KEY = "priority_key"
         const val POSITION_KEY = "position_key"
+        const val COLOR_KEY = "color_key"
     }
 }
