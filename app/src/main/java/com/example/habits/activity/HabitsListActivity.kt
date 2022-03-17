@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -32,6 +33,7 @@ class HabitsListActivity : AppCompatActivity() {
         addHabitButtonOnClick()
         setRecyclerViewSettings()
         createAddButtonVisibilityBehavior()
+        swipeToDelete()
     }
 
     override fun onResume() {
@@ -78,6 +80,22 @@ class HabitsListActivity : AppCompatActivity() {
         checkView.isSelected = !checkView.isSelected
         val isChecked = MockRepository.getHabits()[position].isChecked
         MockRepository.getHabits()[position].isChecked = !isChecked
+    }
+
+    private fun swipeToDelete(){
+        ItemTouchHelper (object :ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                MockRepository.removeHabitAtPosition(viewHolder.bindingAdapterPosition)
+                habitsAdapter.notifyItemRemoved(viewHolder.bindingAdapterPosition)
+            }
+
+        }).attachToRecyclerView(viewBinding.habitsRecyclerView)
     }
 
     companion object {

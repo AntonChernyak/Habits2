@@ -1,6 +1,7 @@
 package com.example.habits.repository
 
 import android.graphics.Color
+import android.util.Log
 import com.example.habits.enum.HabitType
 import com.example.habits.model.HabitItem
 
@@ -20,6 +21,10 @@ object MockRepository {
 
     fun removeLastHabit() {
         list.removeLast()
+    }
+
+    fun removeHabitAtPosition(position: Int){
+        removeHabit(getHabits()[position])
     }
 
     private fun createHabitsRepository(): MutableList<HabitItem> {
