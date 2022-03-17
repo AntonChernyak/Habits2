@@ -25,7 +25,7 @@ object ColorPicker {
     }
 
     private fun buildHueColorArray(): IntArray {
-        val hue = IntArray(361)
+        val hue = IntArray(360)
         var i = 0
         while (i < hue.size) {
             hue[i] = Color.HSVToColor(floatArrayOf(i.toFloat(), 1f, 1f))
