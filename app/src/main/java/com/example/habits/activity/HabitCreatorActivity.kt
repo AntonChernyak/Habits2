@@ -1,16 +1,18 @@
 package com.example.habits.activity
 
+import android.content.Context
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.R
-import com.example.habits.activity.HabitsListActivity.Companion.HABIT_EXTRA_KEY
 import com.example.habits.colorpicker.ColorPicker
 import com.example.habits.databinding.ActivityHabitCreatorBinding
 import com.example.habits.enum.HabitType
@@ -187,6 +189,7 @@ class HabitCreatorActivity : AppCompatActivity() {
     }
 
     private fun replaceHabit(habit: HabitItem, position: Int) {
+        Log.d("TAGGGG", "pos = ${position}")
         MockRepository.removeHabit(MockRepository.getHabits()[position])
         MockRepository.addHabit(position, habit)
     }
@@ -251,5 +254,14 @@ class HabitCreatorActivity : AppCompatActivity() {
         const val PRIORITY_KEY = "priority_key"
         const val POSITION_KEY = "position_key"
         const val COLOR_KEY = "color_key"
+
+        const val HABIT_EXTRA_KEY = "habit_extra_key"
+
+        fun newIntent(context: Context, habit: HabitItem? = null, position: Int = DEFAULT_POSITION): Intent {
+            val intent = Intent(context, HabitCreatorActivity::class.java)
+            intent.putExtra(HABIT_EXTRA_KEY, habit)
+            intent.putExtra(POSITION_KEY, position)
+            return intent
+        }
     }
 }

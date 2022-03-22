@@ -1,6 +1,5 @@
 package com.example.habits.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -50,7 +49,7 @@ class HabitsListActivity : AppCompatActivity() {
 
     private fun addHabitButtonOnClick() {
         viewBinding.addFabButton.setOnClickListener {
-            val intent = Intent(this@HabitsListActivity, HabitCreatorActivity::class.java)
+            val intent = HabitCreatorActivity.newIntent(this)
             startActivity(intent)
         }
     }
@@ -69,10 +68,11 @@ class HabitsListActivity : AppCompatActivity() {
     }
 
     private fun openHabitForEditing(position: Int) {
-        val intent = Intent(this, HabitCreatorActivity::class.java).apply {
-            putExtra(HABIT_EXTRA_KEY, MockRepository.getHabits()[position])
-            putExtra(POSITION_KEY, position)
-        }
+        val intent = HabitCreatorActivity.newIntent(
+            this,
+            habit = MockRepository.getHabits()[position],
+            position= position
+        )
         startActivity(intent)
     }
 
@@ -82,8 +82,9 @@ class HabitsListActivity : AppCompatActivity() {
         MockRepository.getHabits()[position].isChecked = !isChecked
     }
 
-    private fun swipeToDelete(){
-        ItemTouchHelper (object :ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+    private fun swipeToDelete() {
+        ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -97,10 +98,4 @@ class HabitsListActivity : AppCompatActivity() {
 
         }).attachToRecyclerView(viewBinding.habitsRecyclerView)
     }
-
-    companion object {
-        const val HABIT_EXTRA_KEY = "habit_extra_key"
-        const val POSITION_KEY = "position_key"
-    }
-
 }
