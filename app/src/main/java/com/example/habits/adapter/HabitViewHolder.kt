@@ -32,7 +32,7 @@ class HabitViewHolder(
         habitColorLabel.setBackgroundColor(habit.color)
         period.text = createPeriodString(habit)
         priority.text = habit.priority
-        type.text = convertTypeToString(habit.type)
+        type.text = itemView.resources.getString(habit.type.typeName)
 
         if (habit.description.isNotEmpty()) {
             description.text = habit.description
@@ -48,13 +48,5 @@ class HabitViewHolder(
             habit.periodCount,
             habit.periodDays
         )
-    }
-
-    private fun convertTypeToString(type: HabitType): String {
-        return if (type == HabitType.GOOD_HABIT) {
-            itemView.resources.getString(R.string.good_habit)
-        } else {
-            itemView.resources.getString(R.string.bad_habit)
-        }
     }
 }

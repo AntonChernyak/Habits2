@@ -1,6 +1,9 @@
 package com.example.habits.enum
 
-enum class HabitType {
-    GOOD_HABIT,
-    BAD_HABIT
+import androidx.annotation.StringRes
+import com.example.habits.R
+
+enum class HabitType(@StringRes val typeName: Int) {
+    GOOD_HABIT(R.string.good_habit),
+    BAD_HABIT(R.string.bad_habit);
 }
