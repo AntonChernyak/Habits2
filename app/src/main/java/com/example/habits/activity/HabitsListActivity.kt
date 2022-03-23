@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.adapter.HabitAdapter
 import com.example.habits.databinding.ActivityHabitsListBinding
@@ -15,6 +16,8 @@ import com.example.habits.repository.MockRepository
 class HabitsListActivity : AppCompatActivity() {
 
     private val viewBinding: ActivityHabitsListBinding by viewBinding()
+    private val habitsRepository: MockRepository
+        get() = (applicationContext as App).habitRepository
     private val habitsAdapter: HabitAdapter by lazy {
         HabitAdapter({ position ->
             openHabitForEditing(position)
@@ -37,7 +40,7 @@ class HabitsListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        habitsAdapter.data = MockRepository.getHabits()
+        habitsAdapter.data = habitsRepository.getHabits()
     }
 
     private fun setRecyclerViewSettings() {
@@ -70,16 +73,15 @@ class HabitsListActivity : AppCompatActivity() {
     private fun openHabitForEditing(position: Int) {
         val intent = HabitCreatorActivity.newIntent(
             this,
-            habit = MockRepository.getHabits()[position],
-            position= position
+            habit = habitsRepository.getHabits()[position],
+            position = position
         )
         startActivity(intent)
     }
 
     private fun checkButtonClickListener(checkView: View, position: Int) {
         checkView.isSelected = !checkView.isSelected
-        val isChecked = MockRepository.getHabits()[position].isChecked
-        MockRepository.getHabits()[position].isChecked = !isChecked
+        habitsRepository.setCheckForHabit(position)
     }
 
     private fun swipeToDelete() {
@@ -92,8 +94,8 @@ class HabitsListActivity : AppCompatActivity() {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                MockRepository.removeHabitAtPosition(viewHolder.bindingAdapterPosition)
-                habitsAdapter.removeAt(viewHolder.bindingAdapterPosition)
+                habitsRepository.removeHabitAtPosition(viewHolder.bindingAdapterPosition)
+                habitsAdapter.data = habitsRepository.getHabits()
             }
 
         }).attachToRecyclerView(viewBinding.habitsRecyclerView)

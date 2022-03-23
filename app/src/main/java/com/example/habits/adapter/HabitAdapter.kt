@@ -1,9 +1,9 @@
 package com.example.habits.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habits.R
 import com.example.habits.model.HabitItem
@@ -11,14 +11,15 @@ import com.example.habits.model.HabitItem
 class HabitAdapter(
     private val itemClick: (position: Int) -> Unit,
     private val checkClick: (view: View, position: Int) -> Unit
-): RecyclerView.Adapter<HabitViewHolder>() {
+) : RecyclerView.Adapter<HabitViewHolder>() {
 
-    var data: MutableList<HabitItem> = mutableListOf()
-    @SuppressLint("NotifyDataSetChanged")
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
+    var data: List<HabitItem> = emptyList()
+        set(newValue) {
+            val diffCallback = HabitDiffCallback(field, newValue)
+            val diffResult = DiffUtil.calculateDiff(diffCallback)
+            field = newValue
+            diffResult.dispatchUpdatesTo(this)
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_habit, parent, false)
@@ -31,10 +32,4 @@ class HabitAdapter(
         val habit = data[position]
         holder.bind(habit)
     }
-
-    fun removeAt(position: Int){
-        data.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
 }

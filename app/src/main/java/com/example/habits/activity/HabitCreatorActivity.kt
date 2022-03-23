@@ -7,11 +7,11 @@ import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.colorpicker.ColorPicker
 import com.example.habits.databinding.ActivityHabitCreatorBinding
@@ -26,6 +26,8 @@ import kotlin.math.roundToInt
 class HabitCreatorActivity : AppCompatActivity() {
 
     private val binding: ActivityHabitCreatorBinding by viewBinding()
+    private val habitsRepository: MockRepository
+        get() = (applicationContext as App).habitRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +84,7 @@ class HabitCreatorActivity : AppCompatActivity() {
 
     private fun createHabit(): HabitItem {
         return HabitItem(
+            id = (13..10000).random(),
             title = binding.habitTitleEditText.text.toString(),
             description = binding.habitDescriptionEditText.text.toString(),
             priority = binding.prioritySpinner.selectedItem.toString(),
@@ -104,11 +107,12 @@ class HabitCreatorActivity : AppCompatActivity() {
             val habit = createHabit()
 
             if (position == DEFAULT_POSITION) {
-                MockRepository.addHabit(habit = habit)
+                habitsRepository.addHabit(habit = habit)
                 showCreateSnackbar(view)
             } else {
-                replaceHabit(habit, position)
-                showEditSnackBar(view, position)
+                val oldId = intent.getParcelableExtra<HabitItem>(HABIT_EXTRA_KEY)?.id ?: -1
+                replaceHabit(habit.copy(id = oldId))
+                showEditSnackBar(view)
             }
         }
 
@@ -152,18 +156,18 @@ class HabitCreatorActivity : AppCompatActivity() {
     private fun showCreateSnackbar(view: View) {
         Snackbar.make(view, getString(R.string.habit_added), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.cancel)) {
-                MockRepository.removeLastHabit()
+                habitsRepository.removeLastHabit()
             }
             .setActionTextColor(ContextCompat.getColor(this, R.color.primary_color_green))
             .show()
     }
 
-    private fun showEditSnackBar(view: View, position: Int) {
+    private fun showEditSnackBar(view: View) {
         Snackbar.make(view, getString(R.string.habit_edited), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.cancel)) {
                 setDataFromIntent()
                 val editingHabit = intent.getParcelableExtra<HabitItem>(HABIT_EXTRA_KEY)
-                editingHabit?.let { habit -> replaceHabit(habit, position) }
+                editingHabit?.let { habit -> replaceHabit(habit) }
             }
             .setActionTextColor(ContextCompat.getColor(this, R.color.primary_color_green))
             .show()
@@ -188,10 +192,8 @@ class HabitCreatorActivity : AppCompatActivity() {
         else binding.badHabitRadioButton.isChecked = true
     }
 
-    private fun replaceHabit(habit: HabitItem, position: Int) {
-        Log.d("TAGGGG", "pos = ${position}")
-        MockRepository.removeHabit(MockRepository.getHabits()[position])
-        MockRepository.addHabit(position, habit)
+    private fun replaceHabit(habit: HabitItem) {
+        habitsRepository.replaceHabit(habit)
     }
 
     private fun getHabitType(): HabitType {

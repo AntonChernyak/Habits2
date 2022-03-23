@@ -3,10 +3,11 @@ package com.example.habits.model
 import android.graphics.Color
 import android.os.Parcelable
 import com.example.habits.enum.HabitType
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class HabitItem(
+    val id: Int = -1,
     val title: String,
     val description: String = "",
     val priority: String,
