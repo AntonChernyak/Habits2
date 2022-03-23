@@ -40,7 +40,7 @@ class HabitsListActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        habitsAdapter.data = habitsRepository.getHabits()
+        updateHabitsData()
     }
 
     private fun setRecyclerViewSettings() {
@@ -95,9 +95,13 @@ class HabitsListActivity : AppCompatActivity() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 habitsRepository.removeHabitAtPosition(viewHolder.bindingAdapterPosition)
-                habitsAdapter.data = habitsRepository.getHabits()
+                updateHabitsData()
             }
 
         }).attachToRecyclerView(viewBinding.habitsRecyclerView)
+    }
+
+    private fun updateHabitsData(){
+        habitsAdapter.data = habitsRepository.getHabits()
     }
 }
