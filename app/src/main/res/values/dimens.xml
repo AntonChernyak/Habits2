@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="spacing_large_32">32dp</dimen>
+    <dimen name="spacing_compact_24">24dp</dimen>
+    <dimen name="spacing_medium_16">16dp</dimen>
+    <dimen name="spacing_small_8">8dp</dimen>
+    <dimen name="spacing_tiny_4">4dp</dimen>
+    <dimen name="spacing_very_tiny_2">2dp</dimen>
+
+    <!-- item habit card view -->
+    <dimen name="checkImageViewSize">25dp</dimen>
+    <dimen name="habit_card_elevation">8dp</dimen>
+    <dimen name="habit_card_corner_radius">10dp</dimen>
+    <dimen name="card_color_label_width">10dp</dimen>
+    <dimen name="divider_height">1.5dp</dimen>
+
+    <!-- habit creator activity -->
+    <dimen name="period_edit_text_width">50dp</dimen>
+    <dimen name="create_habit_button_width">220dp</dimen>
+    <dimen name="create_habit_button_height">52dp</dimen>
+    <dimen name="item_color_picker_size">40dp</dimen>
+    <dimen name="item_color_corner_radius">10dp</dimen>
+    <dimen name="color_picker_item_space_size">32dp</dimen>
+
+</resources>
