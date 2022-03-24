@@ -27,5 +27,4 @@ class ApplicationInfoFragment : Fragment() {
         )
     }
 
-
 }

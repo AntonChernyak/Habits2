@@ -99,7 +99,8 @@ class HabitsListFragment : Fragment() {
 
     private fun checkButtonClickListener(checkView: View, position: Int) {
         checkView.isSelected = !checkView.isSelected
-        habitsRepository.setCheckForHabit(position)
+
+        habitsRepository.setCheckForHabit(items[position])
     }
 
     private fun swipeToDelete() {
@@ -121,7 +122,7 @@ class HabitsListFragment : Fragment() {
     }
 
     private fun updateHabitsData() {
-        val type = requireArguments().getParcelable<HabitType>(ITEMS_TYPE_EXTRA)
+        val type = arguments?.getParcelable<HabitType>(ITEMS_TYPE_EXTRA)
         if (type != null) {
             habitsAdapter.data = if (type == HabitType.BAD_HABIT)  {
                 items = habitsRepository.getHabits().filter { it.type == HabitType.BAD_HABIT }

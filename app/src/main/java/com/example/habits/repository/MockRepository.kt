@@ -17,11 +17,11 @@ class MockRepository {
         habits.add(position, habit)
     }
 
-    fun setCheckForHabit(position: Int) {
-        val habit = getHabits()[position]
+    fun setCheckForHabit(habit: HabitItem) {
         val index = habits.indexOfFirst { it.id == habit.id }
         if (index != -1) {
             habits[index].isChecked = !habits[index].isChecked
+
         }
     }
 
