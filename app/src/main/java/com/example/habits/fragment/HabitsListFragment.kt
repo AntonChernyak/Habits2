@@ -1,6 +1,7 @@
 package com.example.habits.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -90,7 +91,7 @@ class HabitsListFragment : Fragment() {
 
     private fun openHabitForEditing(position: Int) {
         val bundle = Bundle().apply {
-            putParcelable(HABIT_EXTRA_KEY, habitsRepository.getHabits()[position])
+            putParcelable(HABIT_EXTRA_KEY, items[position])
             putInt(POSITION_KEY, position)
         }
         findNavController().navigate(R.id.action_viewPagerContainerFragment_to_habitCreatorFragment, bundle)

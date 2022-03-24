@@ -41,7 +41,7 @@ class HabitCreatorFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         createHabitPrioritySpinner()
         binding.createHabitButton.setOnClickListener { createHabitButtonClick(it) }
-        setDataFromIntent()
+        setDataFromArguments()
         setColorPicker()
         setRgbString()
         setHsvString()
@@ -115,14 +115,14 @@ class HabitCreatorFragment : Fragment() {
             fillInRequiredFields(view)
         } else {
             allRequiredDataEntered()
-            val position = arguments?.getInt(POSITION_KEY, DEFAULT_POSITION)
+            val position = arguments?.getInt(POSITION_KEY) ?: DEFAULT_POSITION
             val habit = createHabit()
 
             if (position == DEFAULT_POSITION) {
                 habitsRepository.addHabit(habit = habit)
                 showCreateSnackbar(view)
             } else {
-                val oldId = requireActivity().intent.getParcelableExtra<HabitItem>(HABIT_EXTRA_KEY)?.id ?: -1
+                val oldId = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)?.id ?: -1
                 replaceHabit(habit.copy(id = oldId))
                 showEditSnackBar(view)
             }
@@ -177,7 +177,7 @@ class HabitCreatorFragment : Fragment() {
     private fun showEditSnackBar(view: View) {
         Snackbar.make(view, getString(R.string.habit_edited), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.cancel)) {
-                setDataFromIntent()
+                setDataFromArguments()
                 val editingHabit = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)
                 editingHabit?.let { habit -> replaceHabit(habit) }
             }
@@ -185,7 +185,7 @@ class HabitCreatorFragment : Fragment() {
             .show()
     }
 
-    private fun setDataFromIntent() {
+    private fun setDataFromArguments() {
         val editingHabit = arguments?.getParcelable<HabitItem>(HABIT_EXTRA_KEY)
         if (editingHabit != null) {
             binding.habitTitleEditText.setText(editingHabit.title)
