@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.App
@@ -45,6 +46,16 @@ class HabitCreatorFragment : Fragment() {
         setRgbString()
         setHsvString()
         savedInstanceState?.let { onRestoreInstanceState(it) }
+
+        binding.habitsCreatorToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+        binding.habitsCreatorToolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
