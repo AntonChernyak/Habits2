@@ -18,6 +18,7 @@ import com.example.habits.R
 import com.example.habits.colorpicker.ColorPicker
 import com.example.habits.databinding.FragmentHabitCreatorBinding
 import com.example.habits.enum.HabitType
+import com.example.habits.extension.addToggleToNavigationDrawer
 import com.example.habits.extension.getBackgroundColor
 import com.example.habits.extension.hideKeyboard
 import com.example.habits.model.HabitItem
@@ -47,6 +48,12 @@ class HabitCreatorFragment : Fragment() {
         setRgbString()
         setHsvString()
         savedInstanceState?.let { onRestoreInstanceState(it) }
+        requireActivity().addToggleToNavigationDrawer(
+            R.id.drawer_layout,
+            R.id.habitsCreatorToolbar,
+            R.string.navigation_open,
+            R.string.navigation_close
+        )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

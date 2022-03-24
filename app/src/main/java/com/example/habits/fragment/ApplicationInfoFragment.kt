@@ -5,14 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.R
-import com.example.habits.databinding.FragmentApplicationInfoBinding
+import com.example.habits.extension.addToggleToNavigationDrawer
 
 class ApplicationInfoFragment : Fragment() {
-
-
-    private val binding: FragmentApplicationInfoBinding by viewBinding()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,7 +19,12 @@ class ApplicationInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        requireActivity().addToggleToNavigationDrawer(
+            R.id.drawer_layout,
+            R.id.info_toolbar,
+            R.string.navigation_open,
+            R.string.navigation_close
+        )
     }
 
 

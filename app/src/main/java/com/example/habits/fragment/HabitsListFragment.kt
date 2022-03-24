@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +16,7 @@ import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
+import com.example.habits.extension.addToggleToNavigationDrawer
 import com.example.habits.repository.MockRepository
 
 class HabitsListFragment : Fragment() {
@@ -44,6 +48,12 @@ class HabitsListFragment : Fragment() {
         setRecyclerViewSettings()
         createAddButtonVisibilityBehavior()
         swipeToDelete()
+        requireActivity().addToggleToNavigationDrawer(
+            R.id.drawer_layout,
+            R.id.habitsListToolbar,
+            R.string.navigation_open,
+            R.string.navigation_close
+        )
     }
 
     override fun onResume() {
@@ -85,6 +95,12 @@ class HabitsListFragment : Fragment() {
             position = position
         )
         startActivity(intent)
+
+        val bundle = Bundle().apply {
+            putParcelable(HABIT_EXTRA_KEY, habitsRepository.getHabits()[position])
+            putInt(POSITION_KEY, position)
+        }
+        findNavController().navigate(R.id.action_habitsListFragment_to_habitCreatorFragment, bundle)
     }
 
     private fun checkButtonClickListener(checkView: View, position: Int) {
@@ -109,7 +125,12 @@ class HabitsListFragment : Fragment() {
         }).attachToRecyclerView(viewBinding.habitsRecyclerView)
     }
 
-    private fun updateHabitsData(){
+    private fun updateHabitsData() {
         habitsAdapter.data = habitsRepository.getHabits()
+    }
+
+    companion object {
+        const val HABIT_EXTRA_KEY = "habit_extra_key"
+        const val POSITION_KEY = "position_key"
     }
 }
