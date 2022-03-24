@@ -5,21 +5,31 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.habits.App
 import com.example.habits.R
-
-/*private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"*/
+import com.example.habits.activity.HabitCreatorActivity
+import com.example.habits.adapter.HabitAdapter
+import com.example.habits.databinding.ActivityHabitsListBinding
+import com.example.habits.repository.MockRepository
 
 class HabitsListFragment : Fragment() {
-/*    private var param1: String? = null
-    private var param2: String? = null*/
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-/*        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }*/
+    private val viewBinding: ActivityHabitsListBinding by viewBinding()
+    private val habitsRepository: MockRepository
+        get() = (requireActivity().applicationContext as App).habitRepository
+    private val habitsAdapter: HabitAdapter by lazy {
+        HabitAdapter({ position ->
+            openHabitForEditing(position)
+        }, { checkImageButton, position ->
+            checkButtonClickListener(checkImageButton, position)
+        })
+    }
+    private val linearLayoutManager: LinearLayoutManager by lazy {
+        LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
     }
 
     override fun onCreateView(
@@ -29,23 +39,73 @@ class HabitsListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_habits_list, container, false)
     }
 
-/*    companion object {
-        *//**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HabitsListFragment.
-         *//*
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HabitsListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+    private fun setRecyclerViewSettings() {
+        viewBinding.habitsRecyclerView.apply {
+            adapter = habitsAdapter
+            layoutManager = linearLayoutManager
+        }
+    }
+
+    private fun addHabitButtonOnClick() {
+        viewBinding.addFabButton.setOnClickListener {
+            val intent = HabitCreatorActivity.newIntent(requireActivity())
+            startActivity(intent)
+        }
+    }
+
+    private fun createAddButtonVisibilityBehavior() {
+        viewBinding.habitsRecyclerView.addOnScrollListener(object :
+            RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                when {
+                    dy >= 0 -> viewBinding.addFabButton.visibility = View.VISIBLE
+                    dy < 0 -> viewBinding.addFabButton.visibility = View.GONE
                 }
             }
-    }*/
+        }
+        )
+    }
+
+    private fun openHabitForEditing(position: Int) {
+        val intent = HabitCreatorActivity.newIntent(
+            requireActivity(),
+            habit = habitsRepository.getHabits()[position],
+            position = position
+        )
+        startActivity(intent)
+    }
+
+    private fun checkButtonClickListener(checkView: View, position: Int) {
+        checkView.isSelected = !checkView.isSelected
+        habitsRepository.setCheckForHabit(position)
+    }
+
+    private fun swipeToDelete() {
+        ItemTouchHelper(object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean = false
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                habitsRepository.removeHabitAtPosition(viewHolder.bindingAdapterPosition)
+                updateHabitsData()
+            }
+
+        }).attachToRecyclerView(viewBinding.habitsRecyclerView)
+    }
+
+    private fun updateHabitsData(){
+        habitsAdapter.data = habitsRepository.getHabits()
+    }
 }
