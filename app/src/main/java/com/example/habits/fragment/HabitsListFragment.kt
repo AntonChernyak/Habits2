@@ -18,6 +18,7 @@ import com.example.habits.R
 import com.example.habits.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
 import com.example.habits.extension.addToggleToNavigationDrawer
+import com.example.habits.model.HabitItem
 import com.example.habits.repository.MockRepository
 
 class HabitsListFragment : Fragment() {
@@ -124,5 +125,13 @@ class HabitsListFragment : Fragment() {
     companion object {
         const val HABIT_EXTRA_KEY = "habit_extra_key"
         const val POSITION_KEY = "position_key"
+        const val ITEMS_LIST_EXTRA = "items_list_extra"
+
+        fun newInstance(items: ArrayList<HabitItem>): HabitsListFragment =
+            HabitsListFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelableArrayList(ITEMS_LIST_EXTRA, items)
+                }
+            }
     }
 }
