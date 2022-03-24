@@ -15,9 +15,8 @@ import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.App
 import com.example.habits.R
-import com.example.habits.activity.HabitCreatorActivity
 import com.example.habits.colorpicker.ColorPicker
-import com.example.habits.databinding.ActivityHabitCreatorBinding
+import com.example.habits.databinding.FragmentHabitCreatorBinding
 import com.example.habits.enum.HabitType
 import com.example.habits.extension.getBackgroundColor
 import com.example.habits.extension.hideKeyboard
@@ -28,7 +27,7 @@ import kotlin.math.roundToInt
 
 class HabitCreatorFragment : Fragment() {
 
-    private val binding: ActivityHabitCreatorBinding by viewBinding()
+    private val binding: FragmentHabitCreatorBinding by viewBinding()
     private val habitsRepository: MockRepository
         get() = (requireActivity().applicationContext as App).habitRepository
 
@@ -268,7 +267,7 @@ class HabitCreatorFragment : Fragment() {
         const val HABIT_EXTRA_KEY = "habit_extra_key"
 
         fun newIntent(context: Context, habit: HabitItem? = null, position: Int = DEFAULT_POSITION): Intent {
-            val intent = Intent(context, HabitCreatorActivity::class.java)
+            val intent = Intent(context, HabitCreatorFragment::class.java)
             intent.putExtra(HABIT_EXTRA_KEY, habit)
             intent.putExtra(POSITION_KEY, position)
             return intent

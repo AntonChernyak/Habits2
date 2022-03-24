@@ -11,14 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.App
 import com.example.habits.R
-import com.example.habits.activity.HabitCreatorActivity
 import com.example.habits.adapter.HabitAdapter
-import com.example.habits.databinding.ActivityHabitsListBinding
+import com.example.habits.databinding.FragmentHabitsListBinding
 import com.example.habits.repository.MockRepository
 
 class HabitsListFragment : Fragment() {
 
-    private val viewBinding: ActivityHabitsListBinding by viewBinding()
+    private val viewBinding: FragmentHabitsListBinding by viewBinding()
     private val habitsRepository: MockRepository
         get() = (requireActivity().applicationContext as App).habitRepository
     private val habitsAdapter: HabitAdapter by lazy {
@@ -61,7 +60,7 @@ class HabitsListFragment : Fragment() {
 
     private fun addHabitButtonOnClick() {
         viewBinding.addFabButton.setOnClickListener {
-            val intent = HabitCreatorActivity.newIntent(requireActivity())
+            val intent = HabitCreatorFragment.newIntent(requireActivity())
             startActivity(intent)
         }
     }
@@ -80,7 +79,7 @@ class HabitsListFragment : Fragment() {
     }
 
     private fun openHabitForEditing(position: Int) {
-        val intent = HabitCreatorActivity.newIntent(
+        val intent = HabitCreatorFragment.newIntent(
             requireActivity(),
             habit = habitsRepository.getHabits()[position],
             position = position
