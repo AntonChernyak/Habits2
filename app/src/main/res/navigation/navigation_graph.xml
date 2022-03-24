@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/habitsListFragment">
+
+    <fragment
+        android:id="@+id/habitsListFragment"
+        android:name="com.example.habits.fragment.HabitsListFragment"
+        android:label="HabitsListFragment" >
+        <action
+            android:id="@+id/action_habitsListFragment_to_habitCreatorFragment"
+            app:destination="@id/habitCreatorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/habitCreatorFragment"
+        android:name="com.example.habits.fragment.HabitCreatorFragment"
+        android:label="HabitCreatorFragment" />
+    <fragment
+        android:id="@+id/applicationInfoFragment"
+        android:name="com.example.habits.fragment.ApplicationInfoFragment"
+        android:label="fragment_application_info"
+        tools:layout="@layout/fragment_application_info" />
+</navigation>
