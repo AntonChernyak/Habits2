@@ -78,7 +78,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/spacing_small_8"
-
         android:text="@string/app_title_value"
         app:layout_constraintBaseline_toBaselineOf="@id/title_label_text_view"
         app:layout_constraintStart_toEndOf="@id/info_barrier"
