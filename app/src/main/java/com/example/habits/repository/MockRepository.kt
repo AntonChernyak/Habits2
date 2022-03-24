@@ -25,10 +25,6 @@ class MockRepository {
         }
     }
 
-    fun removeHabitAtPosition(position: Int) {
-        removeHabit(getHabits()[position])
-    }
-
     fun replaceHabit(newHabit: HabitItem) {
         val index = habits.indexOfFirst { it.id == newHabit.id }
         if (index != -1) {
@@ -40,7 +36,7 @@ class MockRepository {
         habits.removeLast()
     }
 
-    private fun removeHabit(habit: HabitItem) {
+    fun removeHabit(habit: HabitItem) {
         val indexToDelete = habits.indexOfFirst { it.id == habit.id }
         if (indexToDelete != -1) {
             habits.removeAt(indexToDelete)

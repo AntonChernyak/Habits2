@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -17,6 +15,7 @@ import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
+import com.example.habits.enum.HabitType
 import com.example.habits.extension.addToggleToNavigationDrawer
 import com.example.habits.model.HabitItem
 import com.example.habits.repository.MockRepository
@@ -33,6 +32,7 @@ class HabitsListFragment : Fragment() {
             checkButtonClickListener(checkImageButton, position)
         })
     }
+    private var items = listOf<HabitItem>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +71,7 @@ class HabitsListFragment : Fragment() {
     private fun addHabitButtonOnClick() {
         viewBinding.addFabButton.setOnClickListener {view: View ->
             view.findNavController()
-                .navigate(R.id.action_habitsListFragment_to_habitCreatorFragment, null)
+                .navigate(R.id.action_viewPagerContainerFragment_to_habitCreatorFragment, null)
         }
     }
 
@@ -93,7 +93,7 @@ class HabitsListFragment : Fragment() {
             putParcelable(HABIT_EXTRA_KEY, habitsRepository.getHabits()[position])
             putInt(POSITION_KEY, position)
         }
-        findNavController().navigate(R.id.action_habitsListFragment_to_habitCreatorFragment, bundle)
+        findNavController().navigate(R.id.action_viewPagerContainerFragment_to_habitCreatorFragment, bundle)
     }
 
     private fun checkButtonClickListener(checkView: View, position: Int) {
@@ -111,7 +111,8 @@ class HabitsListFragment : Fragment() {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                habitsRepository.removeHabitAtPosition(viewHolder.bindingAdapterPosition)
+                val removedHabit = items[viewHolder.bindingAdapterPosition]
+                habitsRepository.removeHabit(removedHabit)
                 updateHabitsData()
             }
 
@@ -119,18 +120,27 @@ class HabitsListFragment : Fragment() {
     }
 
     private fun updateHabitsData() {
-        habitsAdapter.data = habitsRepository.getHabits()
+        val type = requireArguments().getParcelable<HabitType>(ITEMS_TYPE_EXTRA)
+        if (type != null) {
+            habitsAdapter.data = if (type == HabitType.BAD_HABIT)  {
+                items = habitsRepository.getHabits().filter { it.type == HabitType.BAD_HABIT }
+                items
+            } else {
+                items = habitsRepository.getHabits().filter { it.type == HabitType.GOOD_HABIT }
+                items
+            }
+        }
     }
 
     companion object {
         const val HABIT_EXTRA_KEY = "habit_extra_key"
         const val POSITION_KEY = "position_key"
-        const val ITEMS_LIST_EXTRA = "items_list_extra"
+        const val ITEMS_TYPE_EXTRA = "items_list_extra"
 
-        fun newInstance(items: ArrayList<HabitItem>): HabitsListFragment =
+        fun newInstance(type: HabitType): HabitsListFragment =
             HabitsListFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelableArrayList(ITEMS_LIST_EXTRA, items)
+                    putParcelable(ITEMS_TYPE_EXTRA, type)
                 }
             }
     }

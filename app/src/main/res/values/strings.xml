@@ -26,8 +26,8 @@
     <string name="hsv_string">H:%1$s | S:%2$s%% | V:%3$s%%</string>
     <string name="navigation_open">open</string>
     <string name="navigation_close">close</string>
-    <string name="goods">Хорошие</string>
-    <string name="bads">Плохие</string>
+    <string name="good">Хорошие</string>
+    <string name="bad">Плохие</string>
 
     <!-- priority spinner data -->
     <string-array name="prioritySpinnerDataArray">

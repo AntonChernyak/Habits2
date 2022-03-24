@@ -34,9 +34,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.applicationInfoFragment -> {
                 navController.navigate(R.id.applicationInfoFragment)
             }
-            R.id.habitsListFragment -> {
+            R.id.viewPagerContainerFragment -> {
                 navController.navigate(
-                    R.id.applicationInfoFragment,
+                    R.id.viewPagerContainerFragment,
                     null
                 )
             }

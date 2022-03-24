@@ -5,7 +5,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/habitsListFragment"
+            android:id="@+id/viewPagerContainerFragment"
             android:icon="@drawable/ic_home_24"
             android:title="@string/habits_list" />
         <item

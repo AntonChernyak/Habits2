@@ -115,7 +115,7 @@ class HabitCreatorFragment : Fragment() {
             fillInRequiredFields(view)
         } else {
             allRequiredDataEntered()
-            val position = requireArguments().getInt(POSITION_KEY, DEFAULT_POSITION)
+            val position = arguments?.getInt(POSITION_KEY, DEFAULT_POSITION)
             val habit = createHabit()
 
             if (position == DEFAULT_POSITION) {
@@ -186,7 +186,7 @@ class HabitCreatorFragment : Fragment() {
     }
 
     private fun setDataFromIntent() {
-        val editingHabit = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)
+        val editingHabit = arguments?.getParcelable<HabitItem>(HABIT_EXTRA_KEY)
         if (editingHabit != null) {
             binding.habitTitleEditText.setText(editingHabit.title)
             binding.habitDescriptionEditText.setText(editingHabit.description)
