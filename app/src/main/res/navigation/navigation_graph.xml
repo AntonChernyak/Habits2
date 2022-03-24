@@ -7,8 +7,8 @@
 
     <fragment
         android:id="@+id/habitsListFragment"
-        android:name="com.example.habits.fragment.HabitsListFragment"
-        android:label="HabitsListFragment" >
+        android:name="com.example.habits.fragment.ViewPagerContainerFragment"
+        android:label="fragment_view_pager_container">
         <action
             android:id="@+id/action_habitsListFragment_to_habitCreatorFragment"
             app:destination="@id/habitCreatorFragment" />
