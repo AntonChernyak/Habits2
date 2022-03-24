@@ -17,7 +17,7 @@ class MockRepository {
         habits.add(position, habit)
     }
 
-    fun setCheckForHabit(position: Int){
+    fun setCheckForHabit(position: Int) {
         val habit = getHabits()[position]
         val index = habits.indexOfFirst { it.id == habit.id }
         if (index != -1) {
@@ -29,12 +29,14 @@ class MockRepository {
         removeHabit(getHabits()[position])
     }
 
-    fun replaceHabit(newHabit: HabitItem){
+    fun replaceHabit(newHabit: HabitItem) {
         val index = habits.indexOfFirst { it.id == newHabit.id }
-        habits[index] = newHabit
+        if (index != -1) {
+            habits[index] = newHabit
+        }
     }
 
-    fun removeLastHabit(){
+    fun removeLastHabit() {
         habits.removeLast()
     }
 

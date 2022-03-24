@@ -12,12 +12,6 @@
         android:theme="@style/Theme.Habits">
         <activity
             android:name=".activity.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.HabitCreatorActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activity.HabitsListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

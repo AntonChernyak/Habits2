@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,9 +31,6 @@ class HabitsListFragment : Fragment() {
         }, { checkImageButton, position ->
             checkButtonClickListener(checkImageButton, position)
         })
-    }
-    private val linearLayoutManager: LinearLayoutManager by lazy {
-        LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
     }
 
     override fun onCreateView(
@@ -64,14 +62,15 @@ class HabitsListFragment : Fragment() {
     private fun setRecyclerViewSettings() {
         viewBinding.habitsRecyclerView.apply {
             adapter = habitsAdapter
-            layoutManager = linearLayoutManager
+            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+
         }
     }
 
     private fun addHabitButtonOnClick() {
-        viewBinding.addFabButton.setOnClickListener {
-            val intent = HabitCreatorFragment.newIntent(requireActivity())
-            startActivity(intent)
+        viewBinding.addFabButton.setOnClickListener {view: View ->
+            view.findNavController()
+                .navigate(R.id.action_habitsListFragment_to_habitCreatorFragment, null)
         }
     }
 
@@ -89,13 +88,6 @@ class HabitsListFragment : Fragment() {
     }
 
     private fun openHabitForEditing(position: Int) {
-        val intent = HabitCreatorFragment.newIntent(
-            requireActivity(),
-            habit = habitsRepository.getHabits()[position],
-            position = position
-        )
-        startActivity(intent)
-
         val bundle = Bundle().apply {
             putParcelable(HABIT_EXTRA_KEY, habitsRepository.getHabits()[position])
             putInt(POSITION_KEY, position)

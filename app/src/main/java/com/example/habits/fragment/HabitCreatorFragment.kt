@@ -1,7 +1,5 @@
 package com.example.habits.fragment
 
-import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
@@ -117,7 +115,7 @@ class HabitCreatorFragment : Fragment() {
             fillInRequiredFields(view)
         } else {
             allRequiredDataEntered()
-            val position = requireActivity().intent.getIntExtra(POSITION_KEY, DEFAULT_POSITION)
+            val position = requireArguments().getInt(POSITION_KEY, DEFAULT_POSITION)
             val habit = createHabit()
 
             if (position == DEFAULT_POSITION) {
@@ -180,7 +178,7 @@ class HabitCreatorFragment : Fragment() {
         Snackbar.make(view, getString(R.string.habit_edited), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.cancel)) {
                 setDataFromIntent()
-                val editingHabit = requireActivity().intent.getParcelableExtra<HabitItem>(HABIT_EXTRA_KEY)
+                val editingHabit = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)
                 editingHabit?.let { habit -> replaceHabit(habit) }
             }
             .setActionTextColor(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
@@ -188,7 +186,7 @@ class HabitCreatorFragment : Fragment() {
     }
 
     private fun setDataFromIntent() {
-        val editingHabit = requireActivity().intent.getParcelableExtra<HabitItem>(HABIT_EXTRA_KEY)
+        val editingHabit = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)
         if (editingHabit != null) {
             binding.habitTitleEditText.setText(editingHabit.title)
             binding.habitDescriptionEditText.setText(editingHabit.description)
@@ -273,11 +271,5 @@ class HabitCreatorFragment : Fragment() {
 
         const val HABIT_EXTRA_KEY = "habit_extra_key"
 
-        fun newIntent(context: Context, habit: HabitItem? = null, position: Int = DEFAULT_POSITION): Intent {
-            val intent = Intent(context, HabitCreatorFragment::class.java)
-            intent.putExtra(HABIT_EXTRA_KEY, habit)
-            intent.putExtra(POSITION_KEY, position)
-            return intent
-        }
     }
 }
