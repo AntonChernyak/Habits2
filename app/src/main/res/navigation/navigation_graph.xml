@@ -5,14 +5,6 @@
     android:id="@+id/navigation_graph"
     app:startDestination="@id/viewPagerContainerFragment">
 
-<!--    <fragment
-        android:id="@+id/habitsListFragment"
-        android:name="com.example.habits.fragment.ViewPagerContainerFragment"
-        android:label="fragment_view_pager_container">
-        <action
-            android:id="@+id/action_habitsListFragment_to_habitCreatorFragment"
-            app:destination="@id/habitCreatorFragment" />
-    </fragment>-->
     <fragment
         android:id="@+id/habitCreatorFragment"
         android:name="com.example.habits.fragment.HabitCreatorFragment"
@@ -31,4 +23,5 @@
             android:id="@+id/action_viewPagerContainerFragment_to_habitCreatorFragment"
             app:destination="@id/habitCreatorFragment" />
     </fragment>
+
 </navigation>

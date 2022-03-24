@@ -2,22 +2,10 @@ package com.example.habits.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.habits.App
 import com.example.habits.enum.HabitType
 import com.example.habits.fragment.HabitsListFragment
-import com.example.habits.model.HabitItem
 
 class HabitViewPagerAdapter(fragment: Fragment): FragmentStateAdapter(fragment) {
-
-/*    private val habitRepository = (activity.application as App).habitRepository
-
-    private val positiveHabits: List<HabitItem> by lazy {
-        habitRepository.getHabits().filter { it.type == HabitType.GOOD_HABIT }
-    }
-
-    private val negativeHabits: List<HabitItem> by lazy {
-        habitRepository.getHabits().filter { it.type == HabitType.BAD_HABIT }
-    }*/
 
     override fun getItemCount(): Int = TAB_COUNT
 
