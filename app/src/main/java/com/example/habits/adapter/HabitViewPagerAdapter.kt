@@ -7,19 +7,10 @@ import com.example.habits.fragment.HabitsListFragment
 
 class HabitViewPagerAdapter(fragment: Fragment): FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = TAB_COUNT
+    override fun getItemCount(): Int = HabitType.values().size
 
     override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            POSITIVE_FRAGMENT_POSITION -> HabitsListFragment.newInstance(HabitType.GOOD_HABIT)
-            NEGATIVE_FRAGMENT_POSITION -> HabitsListFragment.newInstance(HabitType.BAD_HABIT)
-            else -> HabitsListFragment.newInstance(HabitType.GOOD_HABIT)
-        }
+        return HabitsListFragment.newInstance(HabitType.values()[position])
     }
 
-    companion object {
-        private const val TAB_COUNT = 2
-        private const val POSITIVE_FRAGMENT_POSITION = 0
-        private const val NEGATIVE_FRAGMENT_POSITION = 1
-    }
 }
