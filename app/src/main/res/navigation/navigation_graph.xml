@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/viewPagerContainerFragment">
+
+    <fragment
+        android:id="@+id/habitCreatorFragment"
+        android:name="com.example.habits.fragment.HabitCreatorFragment"
+        android:label="HabitCreatorFragment" />
+    <fragment
+        android:id="@+id/applicationInfoFragment"
+        android:name="com.example.habits.fragment.ApplicationInfoFragment"
+        android:label="fragment_application_info"
+        tools:layout="@layout/fragment_application_info" />
+    <fragment
+        android:id="@+id/viewPagerContainerFragment"
+        android:name="com.example.habits.fragment.ViewPagerContainerFragment"
+        android:label="fragment_view_pager_container"
+        tools:layout="@layout/fragment_view_pager_container" >
+        <action
+            android:id="@+id/action_viewPagerContainerFragment_to_habitCreatorFragment"
+            app:destination="@id/habitCreatorFragment" />
+    </fragment>
+
+</navigation>

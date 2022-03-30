@@ -1,20 +1,21 @@
-package com.example.habits.activity
+package com.example.habits.fragment
 
-import android.content.Context
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.colorpicker.ColorPicker
-import com.example.habits.databinding.ActivityHabitCreatorBinding
+import com.example.habits.databinding.FragmentHabitCreatorBinding
 import com.example.habits.enum.HabitType
 import com.example.habits.extension.getBackgroundColor
 import com.example.habits.extension.hideKeyboard
@@ -23,22 +24,38 @@ import com.example.habits.repository.MockRepository
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
 
-class HabitCreatorActivity : AppCompatActivity() {
+class HabitCreatorFragment : Fragment() {
 
-    private val binding: ActivityHabitCreatorBinding by viewBinding()
+    private val binding: FragmentHabitCreatorBinding by viewBinding()
     private val habitsRepository: MockRepository
-        get() = (applicationContext as App).habitRepository
+        get() = (requireActivity().applicationContext as App).habitRepository
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_habit_creator)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_habit_creator, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         createHabitPrioritySpinner()
         binding.createHabitButton.setOnClickListener { createHabitButtonClick(it) }
-        setDataFromIntent()
+        setDataFromArguments()
         setColorPicker()
         setRgbString()
         setHsvString()
+        savedInstanceState?.let { onRestoreInstanceState(it) }
+
+        binding.habitsCreatorToolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
+        binding.habitsCreatorToolbar.setNavigationOnClickListener {
+            activity?.onBackPressed()
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -54,8 +71,7 @@ class HabitCreatorActivity : AppCompatActivity() {
         }
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
+    private fun onRestoreInstanceState(savedInstanceState: Bundle) {
         savedInstanceState.apply {
             binding.habitTitleEditText.setText(this.getString(TITLE_KEY))
             binding.habitDescriptionEditText.setText(this.getString(DESCRIPTION_KEY))
@@ -74,7 +90,7 @@ class HabitCreatorActivity : AppCompatActivity() {
 
     private fun createHabitPrioritySpinner() {
         val spinnerAdapter = ArrayAdapter.createFromResource(
-            this,
+            requireActivity(),
             R.array.prioritySpinnerDataArray,
             android.R.layout.simple_spinner_item
         )
@@ -103,20 +119,20 @@ class HabitCreatorActivity : AppCompatActivity() {
             fillInRequiredFields(view)
         } else {
             allRequiredDataEntered()
-            val position = intent.getIntExtra(POSITION_KEY, DEFAULT_POSITION)
+            val position = arguments?.getInt(POSITION_KEY) ?: DEFAULT_POSITION
             val habit = createHabit()
 
             if (position == DEFAULT_POSITION) {
                 habitsRepository.addHabit(habit = habit)
                 showCreateSnackbar(view)
             } else {
-                val oldId = intent.getParcelableExtra<HabitItem>(HABIT_EXTRA_KEY)?.id ?: -1
+                val oldId = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)?.id ?: -1
                 replaceHabit(habit.copy(id = oldId))
                 showEditSnackBar(view)
             }
         }
 
-        this.hideKeyboard()
+        requireActivity().hideKeyboard()
     }
 
     private fun fillInRequiredFields(view: View) {
@@ -126,31 +142,31 @@ class HabitCreatorActivity : AppCompatActivity() {
             binding.periodTimesEditText.backgroundTintList = ColorStateList.valueOf(Color.RED)
         } else {
             binding.periodTimesEditText.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_color_green))
+                ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
         }
 
         if (binding.periodDaysEditText.text.isNullOrEmpty()) {
             binding.periodDaysEditText.backgroundTintList = ColorStateList.valueOf(Color.RED)
         } else {
             binding.periodDaysEditText.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_color_green))
+                ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
         }
 
         if (binding.habitTitleEditText.text.isNullOrEmpty()) {
             binding.habitTitleEditText.backgroundTintList = ColorStateList.valueOf(Color.RED)
         } else {
             binding.habitTitleEditText.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_color_green))
+                ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
         }
     }
 
     private fun allRequiredDataEntered() {
         binding.habitTitleEditText.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_color_green))
+            ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
         binding.periodDaysEditText.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_color_green))
+            ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
         binding.periodTimesEditText.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_color_green))
+            ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
     }
 
     private fun showCreateSnackbar(view: View) {
@@ -158,23 +174,23 @@ class HabitCreatorActivity : AppCompatActivity() {
             .setAction(getString(R.string.cancel)) {
                 habitsRepository.removeLastHabit()
             }
-            .setActionTextColor(ContextCompat.getColor(this, R.color.primary_color_green))
+            .setActionTextColor(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
             .show()
     }
 
     private fun showEditSnackBar(view: View) {
         Snackbar.make(view, getString(R.string.habit_edited), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.cancel)) {
-                setDataFromIntent()
-                val editingHabit = intent.getParcelableExtra<HabitItem>(HABIT_EXTRA_KEY)
+                setDataFromArguments()
+                val editingHabit = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)
                 editingHabit?.let { habit -> replaceHabit(habit) }
             }
-            .setActionTextColor(ContextCompat.getColor(this, R.color.primary_color_green))
+            .setActionTextColor(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
             .show()
     }
 
-    private fun setDataFromIntent() {
-        val editingHabit = intent.getParcelableExtra<HabitItem>(HABIT_EXTRA_KEY)
+    private fun setDataFromArguments() {
+        val editingHabit = arguments?.getParcelable<HabitItem>(HABIT_EXTRA_KEY)
         if (editingHabit != null) {
             binding.habitTitleEditText.setText(editingHabit.title)
             binding.habitDescriptionEditText.setText(editingHabit.description)
@@ -212,10 +228,10 @@ class HabitCreatorActivity : AppCompatActivity() {
 
         binding.colorScrollView.colorPickerContainer.background = BitmapDrawable(
             resources,
-            ColorPicker.createBackgroundBitmap(this)
+            ColorPicker.createBackgroundBitmap(requireActivity())
         )
 
-        ColorPicker.createColorPickerItems(this) {
+        ColorPicker.createColorPickerItems(requireActivity()) {
             val color = it.backgroundTintList
             binding.selectedColorView.backgroundTintList = color
             binding.colorScrollView.scrollView.visibility = View.GONE
@@ -259,11 +275,5 @@ class HabitCreatorActivity : AppCompatActivity() {
 
         const val HABIT_EXTRA_KEY = "habit_extra_key"
 
-        fun newIntent(context: Context, habit: HabitItem? = null, position: Int = DEFAULT_POSITION): Intent {
-            val intent = Intent(context, HabitCreatorActivity::class.java)
-            intent.putExtra(HABIT_EXTRA_KEY, habit)
-            intent.putExtra(POSITION_KEY, position)
-            return intent
-        }
     }
 }

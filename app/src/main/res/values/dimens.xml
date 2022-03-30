@@ -22,4 +22,11 @@
     <dimen name="item_color_corner_radius">10dp</dimen>
     <dimen name="color_picker_item_space_size">32dp</dimen>
 
+    <!-- application info fragment -->
+    <dimen name="logo_size">200dp</dimen>
+
+    <!-- navigation drawer -->
+    <dimen name="navigation_drawer_header_height">180dp</dimen>
+    <dimen name="navigation_logo_size">100dp</dimen>
+
 </resources>

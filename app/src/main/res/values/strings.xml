@@ -24,6 +24,10 @@
     <string name="habit_edited">Привычка изменена</string>
     <string name="rgb_string">R:%1$s | G:%2$s | B:%3$s</string>
     <string name="hsv_string">H:%1$s | S:%2$s%% | V:%3$s%%</string>
+    <string name="navigation_open">open</string>
+    <string name="navigation_close">close</string>
+    <string name="good">Хорошие</string>
+    <string name="bad">Плохие</string>
 
     <!-- priority spinner data -->
     <string-array name="prioritySpinnerDataArray">
@@ -33,4 +37,16 @@
         <item>4</item>
         <item>5</item>
     </string-array>
+
+    <!-- Application Info Fragment -->
+    <string name="app_title">Название</string>
+    <string name="app_version">Версия</string>
+    <string name="app_developer">Разработчик</string>
+    <string name="developer_name_value">Черняк А.О.</string>
+    <string name="app_version_value">hw_4</string>
+    <string name="app_title_value">Мои привычки</string>
+    <string name="logo">Логотип</string>
+    <string name="habits_list">Список привычек</string>
+    <string name="application_info">Информация о приложении</string>
+
 </resources>
