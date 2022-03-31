@@ -3,15 +3,16 @@ package com.example.habits.data.repository
 import android.graphics.Color
 import com.example.habits.data.model.HabitType
 import com.example.habits.data.model.HabitItem
+import com.example.habits.domain.repository.HabitsListRepository
 
-class MockRepository {
+class MockRepository: HabitsListRepository {
     private var habits: MutableList<HabitItem> = mutableListOf()
 
     init {
         habits = createHabitsRepository()
     }
 
-    fun getHabits(): List<HabitItem> = habits.sortedBy { it.priority }.reversed().toMutableList()
+    override fun getHabits(): List<HabitItem> = habits.sortedBy { it.priority }.reversed().toMutableList()
 
     fun addHabit(position: Int = habits.size, habit: HabitItem) {
         habits.add(position, habit)
