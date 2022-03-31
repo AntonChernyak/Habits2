@@ -15,7 +15,7 @@
         android:fitsSystemWindows="true"
         app:defaultNavHost="true"
         app:navGraph="@navigation/navigation_graph"
-        tools:context=".activity.MainActivity" />
+        tools:context=".presentation.activity.MainActivity" />
     <!-- Это будет появляться, когда drawer открыт -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_drawer_view"
