@@ -3,9 +3,10 @@ package com.example.habits.data.repository
 import android.graphics.Color
 import com.example.habits.data.model.HabitType
 import com.example.habits.data.model.HabitItem
+import com.example.habits.domain.repository.HabitCreatorRepository
 import com.example.habits.domain.repository.HabitsListRepository
 
-object MockRepository : HabitsListRepository {
+object MockRepository : HabitsListRepository, HabitCreatorRepository {
     private var habits: MutableList<HabitItem> = mutableListOf()
 
     init {
@@ -31,18 +32,18 @@ object MockRepository : HabitsListRepository {
         }
     }
 
-    fun addHabit(position: Int = habits.size, habit: HabitItem) {
-        habits.add(position, habit)
+    override fun addHabit(habit: HabitItem) {
+        habits.add(habit)
     }
 
-    fun replaceHabit(newHabit: HabitItem) {
+    override fun replaceHabit(newHabit: HabitItem) {
         val index = habits.indexOfFirst { it.id == newHabit.id }
         if (index != -1) {
             habits[index] = newHabit
         }
     }
 
-    fun removeLastHabit() {
+    override fun removeLastHabit() {
         habits.removeLast()
     }
 
