@@ -11,9 +11,11 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.R
 import com.example.habits.data.colorpicker.ColorPicker
+import com.example.habits.data.extension.factory
 import com.example.habits.data.extension.getBackgroundColor
 import com.example.habits.data.model.HabitType
 import com.example.habits.data.extension.hideKeyboard
@@ -26,8 +28,8 @@ import kotlin.math.roundToInt
 class HabitCreatorFragment : Fragment() {
 
     private val binding: FragmentHabitCreatorBinding by viewBinding()
-    private val habitsRepository: MockRepository by lazy { MockRepository }
-
+//    private val habitsRepository: MockRepository by lazy { MockRepository }
+    private val habitCreatorViewModel: HabitCreatorViewModel by viewModels { factory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

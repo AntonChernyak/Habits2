@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,10 +17,8 @@ import com.example.habits.presentation.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
 import com.example.habits.data.model.HabitType
 import com.example.habits.data.extension.addToggleToNavigationDrawer
+import com.example.habits.data.extension.factory
 import com.example.habits.data.model.HabitItem
-import com.example.habits.data.repository.MockRepository
-import com.example.habits.domain.usecase.HabitsListUseCase
-import com.example.habits.presentation.factory.HabitViewModelFactory
 
 class HabitsListFragment : Fragment() {
 
@@ -33,9 +30,7 @@ class HabitsListFragment : Fragment() {
             checkButtonClickListener(checkImageButton, position)
         })
     }
-    private val habitsListViewModel: HabitsListViewModel by viewModels {
-        HabitViewModelFactory(HabitsListUseCase(MockRepository))
-    }
+    private val habitsListViewModel: HabitsListViewModel by viewModels { factory() }
     private var items = listOf<HabitItem>()
 
     override fun onCreateView(
