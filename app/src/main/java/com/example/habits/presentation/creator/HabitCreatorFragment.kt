@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.data.colorpicker.ColorPicker
 import com.example.habits.data.extension.getBackgroundColor
@@ -27,8 +26,8 @@ import kotlin.math.roundToInt
 class HabitCreatorFragment : Fragment() {
 
     private val binding: FragmentHabitCreatorBinding by viewBinding()
-    private val habitsRepository: MockRepository
-        get() = (requireActivity().applicationContext as App).habitRepository
+    private val habitsRepository: MockRepository by lazy { MockRepository }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

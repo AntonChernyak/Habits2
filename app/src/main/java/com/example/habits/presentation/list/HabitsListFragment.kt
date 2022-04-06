@@ -5,13 +5,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.presentation.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
@@ -19,18 +20,21 @@ import com.example.habits.data.model.HabitType
 import com.example.habits.data.extension.addToggleToNavigationDrawer
 import com.example.habits.data.model.HabitItem
 import com.example.habits.data.repository.MockRepository
+import com.example.habits.domain.usecase.HabitsListUseCase
+import com.example.habits.presentation.factory.HabitViewModelFactory
 
 class HabitsListFragment : Fragment() {
 
     private val viewBinding: FragmentHabitsListBinding by viewBinding()
-    private val habitsRepository: MockRepository
-        get() = (requireActivity().applicationContext as App).habitRepository
     private val habitsAdapter: HabitAdapter by lazy {
         HabitAdapter({ position ->
             openHabitForEditing(position)
         }, { checkImageButton, position ->
             checkButtonClickListener(checkImageButton, position)
         })
+    }
+    private val habitsListViewModel: HabitsListViewModel by viewModels {
+        HabitViewModelFactory(HabitsListUseCase(MockRepository))
     }
     private var items = listOf<HabitItem>()
 
@@ -53,23 +57,38 @@ class HabitsListFragment : Fragment() {
             R.string.navigation_open,
             R.string.navigation_close
         )
+
+        val type = arguments?.getParcelable<HabitType>(ITEMS_TYPE_EXTRA)
+
+        habitsListViewModel.habitsLiveData.observe(viewLifecycleOwner) { list ->
+            if (type != null) {
+                habitsAdapter.data = if (type == HabitType.BAD_HABIT) {
+                    items = list.filter { it.type == HabitType.BAD_HABIT }
+                    items
+                } else {
+                    items = list.filter { it.type == HabitType.GOOD_HABIT }
+                    items
+                }
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        updateHabitsData()
+        habitsListViewModel.getHabits()
     }
 
     private fun setRecyclerViewSettings() {
         viewBinding.habitsRecyclerView.apply {
             adapter = habitsAdapter
-            layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
 
         }
     }
 
     private fun addHabitButtonOnClick() {
-        viewBinding.addFabButton.setOnClickListener {view: View ->
+        viewBinding.addFabButton.setOnClickListener { view: View ->
             view.findNavController()
                 .navigate(R.id.action_viewPagerContainerFragment_to_habitCreatorFragment, null)
         }
@@ -93,13 +112,15 @@ class HabitsListFragment : Fragment() {
             putParcelable(HABIT_EXTRA_KEY, items[position])
             putInt(POSITION_KEY, position)
         }
-        findNavController().navigate(R.id.action_viewPagerContainerFragment_to_habitCreatorFragment, bundle)
+        findNavController().navigate(
+            R.id.action_viewPagerContainerFragment_to_habitCreatorFragment,
+            bundle
+        )
     }
 
     private fun checkButtonClickListener(checkView: View, position: Int) {
         checkView.isSelected = !checkView.isSelected
-
-        habitsRepository.setCheckForHabit(items[position])
+        habitsListViewModel.setCheckForHabit(items[position])
     }
 
     private fun swipeToDelete() {
@@ -113,24 +134,10 @@ class HabitsListFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val removedHabit = items[viewHolder.bindingAdapterPosition]
-                habitsRepository.removeHabit(removedHabit)
-                updateHabitsData()
+                habitsListViewModel.removeHabit(removedHabit)
             }
 
         }).attachToRecyclerView(viewBinding.habitsRecyclerView)
-    }
-
-    private fun updateHabitsData() {
-        val type = arguments?.getParcelable<HabitType>(ITEMS_TYPE_EXTRA)
-        if (type != null) {
-            habitsAdapter.data = if (type == HabitType.BAD_HABIT)  {
-                items = habitsRepository.getHabits().filter { it.type == HabitType.BAD_HABIT }
-                items
-            } else {
-                items = habitsRepository.getHabits().filter { it.type == HabitType.GOOD_HABIT }
-                items
-            }
-        }
     }
 
     companion object {

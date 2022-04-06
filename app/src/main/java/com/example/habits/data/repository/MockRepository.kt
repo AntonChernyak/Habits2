@@ -5,25 +5,34 @@ import com.example.habits.data.model.HabitType
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitsListRepository
 
-class MockRepository: HabitsListRepository {
+object MockRepository : HabitsListRepository {
     private var habits: MutableList<HabitItem> = mutableListOf()
 
     init {
         habits = createHabitsRepository()
     }
 
-    override fun getHabits(): List<HabitItem> = habits.sortedBy { it.priority }.reversed().toMutableList()
-
-    fun addHabit(position: Int = habits.size, habit: HabitItem) {
-        habits.add(position, habit)
+    override fun getHabits(): List<HabitItem> {
+        return habits.sortedBy { it.priority }.reversed().toMutableList()
     }
 
-    fun setCheckForHabit(habit: HabitItem) {
+    override fun removeHabit(habit: HabitItem) {
+        val indexToDelete = habits.indexOfFirst { it.id == habit.id }
+        if (indexToDelete != -1) {
+            habits.removeAt(indexToDelete)
+        }
+    }
+
+    override fun setCheckForHabit(habit: HabitItem) {
         val index = habits.indexOfFirst { it.id == habit.id }
         if (index != -1) {
             habits[index].isChecked = !habits[index].isChecked
 
         }
+    }
+
+    fun addHabit(position: Int = habits.size, habit: HabitItem) {
+        habits.add(position, habit)
     }
 
     fun replaceHabit(newHabit: HabitItem) {
@@ -35,13 +44,6 @@ class MockRepository: HabitsListRepository {
 
     fun removeLastHabit() {
         habits.removeLast()
-    }
-
-    fun removeHabit(habit: HabitItem) {
-        val indexToDelete = habits.indexOfFirst { it.id == habit.id }
-        if (indexToDelete != -1) {
-            habits.removeAt(indexToDelete)
-        }
     }
 
     private fun createHabitsRepository(): MutableList<HabitItem> {

@@ -13,7 +13,17 @@ class HabitsListViewModel(private val habitsUseCase: HabitsListUseCase): ViewMod
     val habitsLiveData: LiveData<List<HabitItem>> = habitsMutableLiveData
 
     fun getHabits(){
-        val habits = habitsUseCase.getMovies()
+        val habits = habitsUseCase.getHabits()
         habitsMutableLiveData.value = habits
     }
+
+    fun removeHabit(habitItem: HabitItem){
+        habitsUseCase.removeHabit(habitItem)
+        getHabits()
+    }
+
+    fun setCheckForHabit(habitItem: HabitItem){
+        habitsUseCase.setCheckForHabit(habitItem)
+    }
+
 }

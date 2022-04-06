@@ -5,7 +5,15 @@ import com.example.habits.domain.repository.HabitsListRepository
 
 class HabitsListUseCase(private val repository: HabitsListRepository) {
 
-    fun getMovies() : List<HabitItem>{
+    fun getHabits() : List<HabitItem>{
         return repository.getHabits()
+    }
+
+    fun removeHabit(habit: HabitItem) {
+        repository.removeHabit(habit)
+    }
+
+    fun setCheckForHabit(habit: HabitItem) {
+        repository.setCheckForHabit(habit)
     }
 }

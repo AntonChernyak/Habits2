@@ -6,4 +6,8 @@ interface HabitsListRepository {
 
     fun getHabits(): List<HabitItem>
 
+    fun removeHabit(habit: HabitItem)
+
+    fun setCheckForHabit(habit: HabitItem)
+
 }
