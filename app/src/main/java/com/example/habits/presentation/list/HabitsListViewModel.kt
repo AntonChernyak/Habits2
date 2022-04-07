@@ -33,4 +33,9 @@ class HabitsListViewModel(private val habitsUseCase: HabitsListUseCase): ViewMod
         } else if (query.isEmpty()) getHabits()
     }
 
+    fun getSortedHabits(position: Int, reversed: Boolean){
+        val sortedList = habitsUseCase.getSortedHabits(position, reversed)
+        habitsMutableLiveData.value = sortedList
+    }
+
 }

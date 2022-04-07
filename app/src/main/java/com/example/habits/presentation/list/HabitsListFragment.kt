@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -20,6 +23,7 @@ import com.example.habits.data.extension.addToggleToNavigationDrawer
 import com.example.habits.data.extension.afterTextChanged
 import com.example.habits.data.extension.factory
 import com.example.habits.data.model.HabitItem
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class HabitsListFragment : Fragment() {
 
@@ -33,6 +37,10 @@ class HabitsListFragment : Fragment() {
     }
     private val habitsListViewModel: HabitsListViewModel by viewModels { factory() }
     private var items = listOf<HabitItem>()
+    private var reversed = true
+    private val bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout> by lazy {
+        BottomSheetBehavior.from(viewBinding.searchBottomSheet)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,12 +78,23 @@ class HabitsListFragment : Fragment() {
 
         viewBinding.searchEditText.afterTextChanged {
             habitsListViewModel.getSearchList(viewBinding.searchEditText.text.toString().trim())
+            viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
         }
+
+        createHabitSortSpinner()
+        setSortItemSpinnerClickListener()
+        setSortButtonsBehaviour()
     }
 
     override fun onResume() {
         super.onResume()
-        habitsListViewModel.getHabits()
+        val sortedSpinnerPosition = viewBinding.sortSpinner.selectedItemPosition
+        habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     private fun setRecyclerViewSettings() {
@@ -140,16 +159,54 @@ class HabitsListFragment : Fragment() {
         }).attachToRecyclerView(viewBinding.habitsRecyclerView)
     }
 
+    private fun createHabitSortSpinner() {
+        val spinnerAdapter = ArrayAdapter.createFromResource(
+            requireActivity(),
+            R.array.sortingSpinnerDataArray,
+            android.R.layout.simple_spinner_item
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        viewBinding.sortSpinner.adapter = spinnerAdapter
+    }
+    
+    private fun setSortItemSpinnerClickListener(){
+        viewBinding.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                habitsListViewModel.getSortedHabits(p2, reversed)
+                viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+
+    }
+
+    private fun setSortButtonsBehaviour(){
+        val sortedSpinnerPosition = viewBinding.sortSpinner.selectedItemPosition
+        viewBinding.buttonUp.setOnClickListener {
+            reversed = false
+            habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
+            viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
+        }
+        viewBinding.buttonDown.setOnClickListener {
+            reversed = true
+            habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
+            viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
+        }
+    }
+
     companion object {
         const val HABIT_EXTRA_KEY = "habit_extra_key"
         const val POSITION_KEY = "position_key"
         const val ITEMS_TYPE_EXTRA = "items_list_extra"
 
-        fun newInstance(type: HabitType): HabitsListFragment =
-            HabitsListFragment().apply {
+        fun newInstance(type: HabitType): HabitsListFragment {
+            return HabitsListFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ITEMS_TYPE_EXTRA, type)
                 }
             }
+        }
     }
 }
