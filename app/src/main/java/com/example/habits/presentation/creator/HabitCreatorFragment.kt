@@ -28,7 +28,6 @@ import kotlin.math.roundToInt
 class HabitCreatorFragment : Fragment() {
 
     private val binding: FragmentHabitCreatorBinding by viewBinding()
-//    private val habitsRepository: MockRepository by lazy { MockRepository }
     private val habitCreatorViewModel: HabitCreatorViewModel by viewModels { factory() }
 
     override fun onCreateView(
@@ -124,7 +123,7 @@ class HabitCreatorFragment : Fragment() {
             val habit = createHabit()
 
             if (position == DEFAULT_POSITION) {
-                habitsRepository.addHabit(habit = habit)
+                habitCreatorViewModel.addHabit(habit)
                 showCreateSnackbar(view)
             } else {
                 val oldId = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)?.id ?: -1
@@ -173,7 +172,7 @@ class HabitCreatorFragment : Fragment() {
     private fun showCreateSnackbar(view: View) {
         Snackbar.make(view, getString(R.string.habit_added), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.cancel)) {
-                habitsRepository.removeLastHabit()
+                habitCreatorViewModel.removeLastHabit()
             }
             .setActionTextColor(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
             .show()
@@ -210,7 +209,7 @@ class HabitCreatorFragment : Fragment() {
     }
 
     private fun replaceHabit(habit: HabitItem) {
-        habitsRepository.replaceHabit(habit)
+        habitCreatorViewModel.replaceHabit(habit)
     }
 
     private fun getHabitType(): HabitType {
