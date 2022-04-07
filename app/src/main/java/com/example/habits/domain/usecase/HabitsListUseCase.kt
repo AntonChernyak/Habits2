@@ -34,4 +34,14 @@ class HabitsListUseCase(private val repository: HabitsListRepository) {
             else -> emptyList()
         }
     }
+
+/*    fun getHabits(position: Int, reversed: Boolean, query: String): List<HabitItem> {
+        val searchItems = if (query.isEmpty()) repository.getHabits()
+        else {
+            repository.getHabits().filter { it.title.uppercase().startsWith(query.uppercase()) }
+
+        }
+        return getSortedHabits(position, reversed, searchItems)
+
+    }*/
 }

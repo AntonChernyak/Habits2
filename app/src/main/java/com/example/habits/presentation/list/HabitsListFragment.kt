@@ -172,8 +172,7 @@ class HabitsListFragment : Fragment() {
     private fun setSortItemSpinnerClickListener(){
         viewBinding.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                habitsListViewModel.getSortedHabits(p2, reversed)
-                viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
+                getSortedHabits(p2)
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -186,14 +185,18 @@ class HabitsListFragment : Fragment() {
         val sortedSpinnerPosition = viewBinding.sortSpinner.selectedItemPosition
         viewBinding.buttonUp.setOnClickListener {
             reversed = false
-            habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
-            viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
+            getSortedHabits(sortedSpinnerPosition)
         }
         viewBinding.buttonDown.setOnClickListener {
             reversed = true
-            habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
-            viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
+            getSortedHabits(sortedSpinnerPosition)
         }
+    }
+
+    private fun getSortedHabits(position: Int){
+        habitsListViewModel.getSortedHabits(position, reversed)
+        viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
+        viewBinding.searchEditText.text.clear()
     }
 
     companion object {
