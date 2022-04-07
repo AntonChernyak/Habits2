@@ -14,7 +14,7 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
     }
 
     override fun getHabits(): List<HabitItem> {
-        return habits.sortedBy { it.priority }.reversed().toMutableList()
+        return habits
     }
 
     override fun removeHabit(habit: HabitItem) {

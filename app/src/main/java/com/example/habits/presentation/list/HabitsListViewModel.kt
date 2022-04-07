@@ -26,4 +26,11 @@ class HabitsListViewModel(private val habitsUseCase: HabitsListUseCase): ViewMod
         habitsUseCase.setCheckForHabit(habitItem)
     }
 
+    fun getSearchList(query: String){
+        if (query.length > 2) {
+            val searchList = habitsUseCase.getSearchHabits(query)
+            habitsMutableLiveData.value = searchList
+        } else if (query.isEmpty()) getHabits()
+    }
+
 }

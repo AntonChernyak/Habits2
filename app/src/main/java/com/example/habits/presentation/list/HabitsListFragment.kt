@@ -17,6 +17,7 @@ import com.example.habits.presentation.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
 import com.example.habits.data.model.HabitType
 import com.example.habits.data.extension.addToggleToNavigationDrawer
+import com.example.habits.data.extension.afterTextChanged
 import com.example.habits.data.extension.factory
 import com.example.habits.data.model.HabitItem
 
@@ -65,6 +66,10 @@ class HabitsListFragment : Fragment() {
                     items
                 }
             }
+        }
+
+        viewBinding.searchEditText.afterTextChanged {
+            habitsListViewModel.getSearchList(viewBinding.searchEditText.text.toString().trim())
         }
     }
 
