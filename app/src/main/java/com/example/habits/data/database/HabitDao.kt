@@ -2,6 +2,7 @@ package com.example.habits.data.database
 
 import androidx.room.*
 import com.example.habits.data.model.HabitItem
+import com.example.habits.data.model.HabitItem.Companion.HABITS_TABLE_NAME
 
 @Dao
 interface HabitDao {
@@ -9,24 +10,24 @@ interface HabitDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addHabit(habitItem: HabitItem)
 
-    @Query("SELECT * FROM habit_db")
+    @Query("SELECT * FROM $HABITS_TABLE_NAME")
     fun getAllHabits(): List<HabitItem>
 
     @Delete
     fun deleteHabit(habitItem: HabitItem)
 
-    @Query("DELETE FROM habit_db")
+    @Query("DELETE FROM $HABITS_TABLE_NAME")
     fun deleteAll()
 
-    @Query("SELECT * FROM habit_db WHERE id = :id")
+    @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE id = :id")
     fun getHabitById(id: Int): HabitItem
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun updateHabit(habitItem: HabitItem)
 
-    @Query("SELECT * FROM habit_db ORDER BY priority")
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY priority")
     fun getHabitsOrderByPriority(): List<HabitItem>
 
-    @Query("SELECT * FROM habit_db ORDER BY title")
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY title")
     fun getHabitsOrderByTitle(): List<HabitItem>
 }

@@ -6,10 +6,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.habits.data.model.HabitItem.Companion.HABITS_TABLE_NAME
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
-@Entity(tableName = "habit_db")
+@Entity(tableName = HABITS_TABLE_NAME)
 @Parcelize
 data class HabitItem(
     @PrimaryKey(autoGenerate = true)
@@ -28,4 +29,9 @@ data class HabitItem(
     val dateOfCreation: Long = Date().time,
     @ColumnInfo(name = "is_checked")
     var isChecked: Boolean = false
-): Parcelable
+): Parcelable {
+
+    companion object {
+        const val HABITS_TABLE_NAME = "habits"
+    }
+}
