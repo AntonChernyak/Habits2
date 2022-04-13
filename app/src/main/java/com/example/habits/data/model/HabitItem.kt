@@ -3,6 +3,7 @@ package com.example.habits.data.model
 import android.graphics.Color
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.util.*
 
 @Parcelize
 data class HabitItem(
@@ -14,5 +15,6 @@ data class HabitItem(
     val periodCount: String,
     val periodDays: String,
     val color: Int = Color.WHITE,
+    val dateOfCreation: Long = Date().time,
     var isChecked: Boolean = false
 ): Parcelable
