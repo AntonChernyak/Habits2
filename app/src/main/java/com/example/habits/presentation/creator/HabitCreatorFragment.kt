@@ -20,7 +20,6 @@ import com.example.habits.data.extension.getBackgroundColor
 import com.example.habits.data.model.HabitType
 import com.example.habits.data.extension.hideKeyboard
 import com.example.habits.data.model.HabitItem
-import com.example.habits.data.repository.MockRepository
 import com.example.habits.databinding.FragmentHabitCreatorBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt

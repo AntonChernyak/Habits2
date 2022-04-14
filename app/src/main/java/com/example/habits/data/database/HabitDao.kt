@@ -30,4 +30,7 @@ interface HabitDao {
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY title")
     fun getHabitsOrderByTitle(): List<HabitItem>
+
+    @Query("UPDATE $HABITS_TABLE_NAME SET is_checked = :isChecked WHERE id =:id")
+    fun updateCheck(isChecked: Boolean, id: Int)
 }

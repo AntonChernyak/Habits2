@@ -8,6 +8,6 @@ interface HabitsListRepository {
 
     fun removeHabit(habit: HabitItem)
 
-    fun setCheckForHabit(habit: HabitItem)
+    fun setCheckForHabit(isChecked: Boolean, id: Int)
 
 }

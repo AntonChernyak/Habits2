@@ -1,4 +1,4 @@
-package com.example.habits.data.repository
+package com.example.habits.data.repository.remote
 
 import android.graphics.Color
 import com.example.habits.data.model.HabitType
@@ -24,8 +24,8 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         }
     }
 
-    override fun setCheckForHabit(habit: HabitItem) {
-        val index = habits.indexOfFirst { it.id == habit.id }
+    override fun setCheckForHabit(isChecked: Boolean, id: Int) {
+        val index = habits.indexOfFirst { it.id == id }
         if (index != -1) {
             habits[index].isChecked = !habits[index].isChecked
 
@@ -41,10 +41,6 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         if (index != -1) {
             habits[index] = newHabit
         }
-    }
-
-    override fun removeLastHabit() {
-        habits.removeLast()
     }
 
     private fun createHabitsRepository(): MutableList<HabitItem> {
