@@ -10,4 +10,5 @@ interface HabitsListRepository {
 
     fun setCheckForHabit(isChecked: Boolean, id: Int)
 
+    fun saveAllHabits(habitsList: List<HabitItem>)
 }

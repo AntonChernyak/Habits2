@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.R
 import com.example.habits.data.colorpicker.ColorPicker
+import com.example.habits.data.database.HabitDatabase
 import com.example.habits.data.extension.factory
 import com.example.habits.data.extension.getBackgroundColor
 import com.example.habits.data.model.HabitType
@@ -27,7 +28,10 @@ import kotlin.math.roundToInt
 class HabitCreatorFragment : Fragment() {
 
     private val binding: FragmentHabitCreatorBinding by viewBinding()
-    private val habitCreatorViewModel: HabitCreatorViewModel by viewModels { factory() }
+    private val habitDao by lazy {
+        HabitDatabase.get(requireActivity()).getHabitDao()
+    }
+    private val habitCreatorViewModel: HabitCreatorViewModel by viewModels { factory(habitDao) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,7 +127,7 @@ class HabitCreatorFragment : Fragment() {
 
             if (position == DEFAULT_POSITION) {
                 habitCreatorViewModel.addHabit(habit)
-                showCreateSnackbar(view)
+                showCreateSnackbar(view, habit)
             } else {
                 val oldId = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)?.id ?: -1
                 replaceHabit(habit.copy(id = oldId))
@@ -168,10 +172,10 @@ class HabitCreatorFragment : Fragment() {
             ColorStateList.valueOf(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
     }
 
-    private fun showCreateSnackbar(view: View) {
+    private fun showCreateSnackbar(view: View, habit: HabitItem) {
         Snackbar.make(view, getString(R.string.habit_added), Snackbar.LENGTH_LONG)
             .setAction(getString(R.string.cancel)) {
-                habitCreatorViewModel.removeLastHabit()
+                habitCreatorViewModel.removeHabit(habit)
             }
             .setActionTextColor(ContextCompat.getColor(requireActivity(), R.color.primary_color_green))
             .show()

@@ -27,4 +27,8 @@ class HabitsLocalRepository(private val habitDao: HabitDao): HabitsListRepositor
         habitDao.updateCheck(isChecked, id)
     }
 
+    override fun saveAllHabits(habitsList: List<HabitItem>) {
+        habitDao.saveAllHabits(habitsList)
+    }
+
 }

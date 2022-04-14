@@ -11,5 +11,5 @@ import com.example.habits.presentation.factory.HabitViewModelFactory
 
 fun Fragment.factory(habitDao: HabitDao) = HabitViewModelFactory(
     HabitsListUseCase(HabitsLocalRepository(habitDao), MockRepository),
-    HabitCreatorUseCase(MockRepository)
+    HabitCreatorUseCase(HabitsLocalRepository(habitDao), MockRepository)
 )

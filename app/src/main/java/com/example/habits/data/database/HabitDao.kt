@@ -10,6 +10,9 @@ interface HabitDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addHabit(habitItem: HabitItem)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveAllHabits(habits: List<HabitItem>)
+
     @Query("SELECT * FROM $HABITS_TABLE_NAME")
     fun getAllHabits(): List<HabitItem>
 

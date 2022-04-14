@@ -22,8 +22,8 @@ class HabitsListViewModel(private val habitsUseCase: HabitsListUseCase): ViewMod
         getHabits()
     }
 
-    fun setCheckForHabit(habitItem: HabitItem){
-        habitsUseCase.setCheckForHabit(habitItem)
+    fun setCheckForHabit(isChecked: Boolean, id: Int){
+        habitsUseCase.setCheckForHabit(isChecked, id)
     }
 
     fun getSearchList(query: String){

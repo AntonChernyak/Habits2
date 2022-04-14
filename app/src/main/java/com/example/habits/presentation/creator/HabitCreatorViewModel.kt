@@ -14,8 +14,8 @@ class HabitCreatorViewModel(private val habitCreatorUseCase: HabitCreatorUseCase
         habitCreatorUseCase.replaceHabit(habitItem)
     }
 
-    fun removeLastHabit(){
-        habitCreatorUseCase.removeLastHabit()
+    fun removeHabit(habitItem: HabitItem){
+        habitCreatorUseCase.removeHabit(habitItem)
     }
 
 }

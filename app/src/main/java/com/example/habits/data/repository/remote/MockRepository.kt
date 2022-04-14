@@ -43,6 +43,10 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         }
     }
 
+    override fun saveAllHabits(habitsList: List<HabitItem>) {
+        habits.addAll(habitsList)
+    }
+
     private fun createHabitsRepository(): MutableList<HabitItem> {
         val initialList = mutableListOf<HabitItem>()
         HabitItem(

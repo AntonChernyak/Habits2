@@ -9,15 +9,22 @@ class HabitsListUseCase(
 ) {
 
     fun getHabits(): List<HabitItem> {
-        return repository.getHabits().sortedBy { it.priority }.reversed().toMutableList()
+        val databaseList = localRepository.getHabits()
+        val remoteList = remoteRepository.getHabits()
+        return if(databaseList.isNullOrEmpty()) {
+            localRepository.saveAllHabits(remoteList)
+            remoteList
+        } else databaseList
     }
 
     fun removeHabit(habit: HabitItem) {
-        repository.removeHabit(habit)
+        localRepository.removeHabit(habit)
+        remoteRepository.removeHabit(habit)
     }
 
-    fun setCheckForHabit(habit: HabitItem) {
-        repository.setCheckForHabit(habit)
+    fun setCheckForHabit(isChecked: Boolean, id: Int) {
+        localRepository.setCheckForHabit(isChecked, id)
+        remoteRepository.setCheckForHabit(isChecked, id)
     }
 
     fun getSearchHabits(query: String): List<HabitItem> {
@@ -28,12 +35,12 @@ class HabitsListUseCase(
         return when (position) {
             0 -> {
                 if (reversed) getHabits()
-                else repository.getHabits().sortedBy { it.priority }.toMutableList()
+                else getHabits().sortedBy { it.priority }.toMutableList()
             }
             1 -> {
-                if (reversed) repository.getHabits().sortedBy { it.title }.reversed()
+                if (reversed) getHabits().sortedBy { it.title }.reversed()
                     .toMutableList()
-                else repository.getHabits().sortedBy { it.title }.toMutableList()
+                else getHabits().sortedBy { it.title }.toMutableList()
             }
             else -> emptyList()
         }
