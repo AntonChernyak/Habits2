@@ -3,7 +3,10 @@ package com.example.habits.domain.usecase
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitsListRepository
 
-class HabitsListUseCase(private val repository: HabitsListRepository) {
+class HabitsListUseCase(
+    private val localRepository: HabitsListRepository,
+    private val remoteRepository: HabitsListRepository
+) {
 
     fun getHabits(): List<HabitItem> {
         return repository.getHabits().sortedBy { it.priority }.reversed().toMutableList()
@@ -28,7 +31,8 @@ class HabitsListUseCase(private val repository: HabitsListRepository) {
                 else repository.getHabits().sortedBy { it.priority }.toMutableList()
             }
             1 -> {
-                if (reversed) repository.getHabits().sortedBy { it.title }.reversed().toMutableList()
+                if (reversed) repository.getHabits().sortedBy { it.title }.reversed()
+                    .toMutableList()
                 else repository.getHabits().sortedBy { it.title }.toMutableList()
             }
             else -> emptyList()
