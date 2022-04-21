@@ -11,7 +11,7 @@ abstract class HabitDatabase : RoomDatabase() {
 
     abstract fun getHabitDao(): HabitDao
 
-    companion object {
+/*    companion object {
         private const val HABIT_DB_NAME = "habits_db"
         private var instance: HabitDatabase? = null
 
@@ -29,5 +29,5 @@ abstract class HabitDatabase : RoomDatabase() {
             return instance!!
         }
 
-    }
+    }*/
 }

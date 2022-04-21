@@ -1,5 +1,7 @@
 package com.example.habits.data.repository.local
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.habits.data.database.HabitDao
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitCreatorRepository
@@ -15,7 +17,8 @@ class HabitsLocalRepository(private val habitDao: HabitDao): HabitsListRepositor
         habitDao.updateHabit(newHabit)
     }
 
-    override fun getHabits(): List<HabitItem> {
+    override fun getHabits(): LiveData<List<HabitItem>> {
+        Log.d("TAGGG", "dao = ${habitDao}")
         return habitDao.getAllHabits()
     }
 

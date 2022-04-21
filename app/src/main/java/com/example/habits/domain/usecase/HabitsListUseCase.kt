@@ -1,7 +1,9 @@
 package com.example.habits.domain.usecase
 
+import android.util.Log
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitsListRepository
+import java.util.*
 
 class HabitsListUseCase(
     private val localRepository: HabitsListRepository,
@@ -11,10 +13,11 @@ class HabitsListUseCase(
     fun getHabits(): List<HabitItem> {
         val databaseList = localRepository.getHabits()
         val remoteList = remoteRepository.getHabits()
-        return if(databaseList.isNullOrEmpty()) {
-            localRepository.saveAllHabits(remoteList)
-            remoteList
-        } else databaseList
+        Log.d("TAGGGG", "databaseList.value = ${databaseList.value}")
+        return if (databaseList.value.isNullOrEmpty()) {
+            localRepository.saveAllHabits(remoteList.value ?: arrayListOf())
+            remoteList.value ?: arrayListOf()
+        } else databaseList.value ?: arrayListOf()
     }
 
     fun removeHabit(habit: HabitItem) {
@@ -28,7 +31,12 @@ class HabitsListUseCase(
     }
 
     fun getSearchHabits(query: String): List<HabitItem> {
-        return getHabits().filter { it.title.uppercase().startsWith(query.uppercase()) }
+        return getHabits().filter {
+            it.title.toUpperCase(Locale.getDefault())
+                .startsWith(
+                    query.toUpperCase(Locale.getDefault())
+                )
+        }
     }
 
     fun getSortedHabits(position: Int, reversed: Boolean): List<HabitItem> {

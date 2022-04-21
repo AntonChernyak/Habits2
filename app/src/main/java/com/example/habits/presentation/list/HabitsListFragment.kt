@@ -1,6 +1,7 @@
 package com.example.habits.presentation.list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,8 +16,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.habits.App
 import com.example.habits.R
-import com.example.habits.data.database.HabitDatabase
 import com.example.habits.presentation.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
 import com.example.habits.data.model.HabitType
@@ -36,10 +37,11 @@ class HabitsListFragment : Fragment() {
             checkButtonClickListener(checkImageButton, position)
         })
     }
-    private val habitDao by lazy {
-        HabitDatabase.get(requireActivity()).getHabitDao()
+    private val habitDao = App.dataBaseInstance!!.getHabitDao()
+
+    private val habitsListViewModel: HabitsListViewModel by viewModels {
+        factory(habitDao)
     }
-    private val habitsListViewModel: HabitsListViewModel by viewModels { factory(habitDao) }
     private var items = listOf<HabitItem>()
     private var reversed = true
     private val bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout> by lazy {

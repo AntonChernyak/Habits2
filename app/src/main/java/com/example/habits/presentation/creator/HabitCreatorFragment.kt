@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.data.colorpicker.ColorPicker
 import com.example.habits.data.database.HabitDatabase
@@ -29,7 +30,7 @@ class HabitCreatorFragment : Fragment() {
 
     private val binding: FragmentHabitCreatorBinding by viewBinding()
     private val habitDao by lazy {
-        HabitDatabase.get(requireActivity()).getHabitDao()
+        App.dataBaseInstance!!.getHabitDao()
     }
     private val habitCreatorViewModel: HabitCreatorViewModel by viewModels { factory(habitDao) }
 
