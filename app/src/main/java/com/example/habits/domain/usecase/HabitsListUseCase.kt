@@ -2,6 +2,10 @@ package com.example.habits.domain.usecase
 
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitsListRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.*
 
 class HabitsListUseCase(
@@ -9,23 +13,25 @@ class HabitsListUseCase(
     private val remoteRepository: HabitsListRepository
 ) {
 
-    fun getHabits(): List<HabitItem> {
-        val databaseList = localRepository.getHabits()
-        val remoteList = remoteRepository.getHabits()
-        return if (databaseList.value.isNullOrEmpty()) {
-            localRepository.saveAllHabits(remoteList.value ?: arrayListOf())
-            remoteList.value ?: arrayListOf()
-        } else databaseList.value ?: arrayListOf()
-    }
-
-    fun removeHabit(habit: HabitItem) {
+    suspend fun removeHabit(habit: HabitItem) {
         localRepository.removeHabit(habit)
         remoteRepository.removeHabit(habit)
     }
 
-    fun setCheckForHabit(isChecked: Boolean, id: Int) {
+    suspend fun setCheckForHabit(isChecked: Boolean, id: Int) {
         localRepository.setCheckForHabit(isChecked, id)
         remoteRepository.setCheckForHabit(isChecked, id)
+    }
+
+    fun getHabits(): List<HabitItem> {
+        val databaseList = localRepository.getHabits()
+        val remoteList = remoteRepository.getHabits()
+        return if (databaseList.value.isNullOrEmpty()) {
+            CoroutineScope(Job()).launch(Dispatchers.IO) {
+                localRepository.saveAllHabits(remoteList.value ?: arrayListOf())
+            }
+            remoteList.value ?: arrayListOf()
+        } else databaseList.value ?: arrayListOf()
     }
 
     fun getSearchHabits(query: String): List<HabitItem> {

@@ -7,9 +7,9 @@ interface HabitsListRepository {
 
     fun getHabits(): LiveData<List<HabitItem>>
 
-    fun removeHabit(habit: HabitItem)
+    suspend fun saveAllHabits(habitsList: List<HabitItem>)
 
-    fun setCheckForHabit(isChecked: Boolean, id: Int)
+    suspend fun removeHabit(habit: HabitItem)
 
-    fun saveAllHabits(habitsList: List<HabitItem>)
+    suspend fun setCheckForHabit(isChecked: Boolean, id: Int)
 }
