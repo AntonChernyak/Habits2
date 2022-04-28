@@ -12,6 +12,10 @@ class HabitsLocalRepository(private val habitDao: HabitDao): HabitsListRepositor
         return habitDao.getAllHabits()
     }
 
+    override fun getSearchHabits(query: String): LiveData<List<HabitItem>> {
+        return habitDao.getSearchHabits(query)
+    }
+
     override suspend fun addHabit(habit: HabitItem) {
         habitDao.addHabit(habit)
     }

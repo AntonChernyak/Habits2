@@ -31,4 +31,7 @@ interface HabitDao {
 
     @Query("UPDATE $HABITS_TABLE_NAME SET is_checked = :isChecked WHERE id =:id")
     fun updateCheck(isChecked: Boolean, id: Int)
+
+    @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE title LIKE '%' || :searchString || '%'")
+    fun getSearchHabits(searchString: String): LiveData<List<HabitItem>>
 }

@@ -79,7 +79,12 @@ class HabitsListFragment : Fragment() {
         }
 
         viewBinding.searchEditText.afterTextChanged {
-            habitsListViewModel.getSearchList(viewBinding.searchEditText.text.toString().trim())
+            val query = viewBinding.searchEditText.text.toString().trim()
+            habitsListViewModel.getSearchList(query).observe(viewLifecycleOwner){
+                if (query.length > 2) {
+                    setItems(it, type)
+                }
+            }
             viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
         }
 
@@ -91,7 +96,8 @@ class HabitsListFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         val sortedSpinnerPosition = viewBinding.sortSpinner.selectedItemPosition
-        habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
+       // habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
+        habitsListViewModel.getHabits()
     }
 
     override fun onPause() {

@@ -23,6 +23,10 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         return habitsLD
     }
 
+    override fun getSearchHabits(query: String): LiveData<List<HabitItem>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun removeHabit(habit: HabitItem) {
         val indexToDelete = habits.indexOfFirst { it.id == habit.id }
         if (indexToDelete != -1) {

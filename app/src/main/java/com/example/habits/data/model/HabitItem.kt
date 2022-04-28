@@ -14,7 +14,7 @@ import java.util.*
 data class HabitItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int = -1,
-    val title: String,
+    val title: String ="",
     val description: String = "",
     val priority: String,
     val type: HabitType = HabitType.GOOD_HABIT,

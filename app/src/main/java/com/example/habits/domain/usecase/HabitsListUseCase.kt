@@ -3,7 +3,6 @@ package com.example.habits.domain.usecase
 import androidx.lifecycle.LiveData
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitsListRepository
-import java.util.*
 
 class HabitsListUseCase(
     private val localRepository: HabitsListRepository,
@@ -31,16 +30,12 @@ class HabitsListUseCase(
         } else databaseList.value ?: arrayListOf()*/
     }
 
-/*    fun getSearchHabits(query: String): List<HabitItem> {
-        return getHabits().filter {
-            it.title.toUpperCase(Locale.getDefault())
-                .startsWith(
-                    query.toUpperCase(Locale.getDefault())
-                )
-        }
-    }*/
+   fun getSearchHabits(query: String): LiveData<List<HabitItem>> {
+        return localRepository.getSearchHabits(query)
+    }
 
-/*    fun getSortedHabits(position: Int, reversed: Boolean): List<HabitItem> {
+
+    fun getSortedHabits(position: Int, reversed: Boolean): LiveData<List<HabitItem>> {
         return when (position) {
             0 -> {
                 if (reversed) getHabits()
@@ -53,7 +48,7 @@ class HabitsListUseCase(
             }
             else -> emptyList()
         }
-    }*/
+    }
 
 
 

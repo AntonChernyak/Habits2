@@ -34,11 +34,8 @@ class HabitsListViewModel(
         }
     }
 
-    fun getSearchList(query: String) {
-        if (query.length > 2) {
-/*            val searchList = habitsUseCase.getSearchHabits(query)
-            habitsMutableLiveData.value = searchList*/
-        } else if (query.isEmpty()) getHabits()
+    fun getSearchList(query: String): LiveData<List<HabitItem>> {
+        return habitsUseCase.getSearchHabits(query)
     }
 
     fun getSortedHabits(position: Int, reversed: Boolean) {
