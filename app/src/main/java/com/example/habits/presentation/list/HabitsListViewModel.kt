@@ -9,15 +9,16 @@ import com.example.habits.domain.usecase.HabitsListUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HabitsListViewModel(private val habitsUseCase: HabitsListUseCase) : ViewModel() {
+class HabitsListViewModel(
+    private val habitsUseCase: HabitsListUseCase
+) : ViewModel() {
 
     private var habitsMutableLiveData = MutableLiveData<List<HabitItem>>()
 
     val habitsLiveData: LiveData<List<HabitItem>> = habitsMutableLiveData
 
-    fun getHabits() {
-        val habits = habitsUseCase.getHabits()
-        habitsMutableLiveData.value = habits
+    fun getHabits(): LiveData<List<HabitItem>> {
+        return habitsUseCase.getHabits()
     }
 
     fun removeHabit(habitItem: HabitItem) {
@@ -35,14 +36,14 @@ class HabitsListViewModel(private val habitsUseCase: HabitsListUseCase) : ViewMo
 
     fun getSearchList(query: String) {
         if (query.length > 2) {
-            val searchList = habitsUseCase.getSearchHabits(query)
-            habitsMutableLiveData.value = searchList
+/*            val searchList = habitsUseCase.getSearchHabits(query)
+            habitsMutableLiveData.value = searchList*/
         } else if (query.isEmpty()) getHabits()
     }
 
     fun getSortedHabits(position: Int, reversed: Boolean) {
-        val sortedList = habitsUseCase.getSortedHabits(position, reversed)
-        habitsMutableLiveData.value = sortedList
+        //   val sortedList = habitsUseCase.getSortedHabits(position, reversed)
+        habitsMutableLiveData.value = arrayListOf()
     }
 
 }

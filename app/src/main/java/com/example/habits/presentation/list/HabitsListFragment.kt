@@ -70,15 +70,12 @@ class HabitsListFragment : Fragment() {
         val type = arguments?.getParcelable<HabitType>(ITEMS_TYPE_EXTRA)
 
         habitsListViewModel.habitsLiveData.observe(viewLifecycleOwner) { list ->
-            if (type != null) {
-                habitsAdapter.data = if (type == HabitType.BAD_HABIT) {
-                    items = list.filter { it.type == HabitType.BAD_HABIT }
-                    items
-                } else {
-                    items = list.filter { it.type == HabitType.GOOD_HABIT }
-                    items
-                }
-            }
+            setItems(list, type)
+        }
+
+
+        habitsListViewModel.getHabits().observe(viewLifecycleOwner) { list ->
+            setItems(list, type)
         }
 
         viewBinding.searchEditText.afterTextChanged {
@@ -173,20 +170,21 @@ class HabitsListFragment : Fragment() {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         viewBinding.sortSpinner.adapter = spinnerAdapter
     }
-    
-    private fun setSortItemSpinnerClickListener(){
-        viewBinding.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                getSortedHabits(p2)
-            }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+    private fun setSortItemSpinnerClickListener() {
+        viewBinding.sortSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    getSortedHabits(p2)
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
             }
-        }
 
     }
 
-    private fun setSortButtonsBehaviour(){
+    private fun setSortButtonsBehaviour() {
         val sortedSpinnerPosition = viewBinding.sortSpinner.selectedItemPosition
         viewBinding.buttonUp.setOnClickListener {
             reversed = false
@@ -198,10 +196,22 @@ class HabitsListFragment : Fragment() {
         }
     }
 
-    private fun getSortedHabits(position: Int){
+    private fun getSortedHabits(position: Int) {
         habitsListViewModel.getSortedHabits(position, reversed)
         viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
         viewBinding.searchEditText.text.clear()
+    }
+
+    private fun setItems(list: List<HabitItem>, type: HabitType?) {
+        if (type != null) {
+            habitsAdapter.data = if (type == HabitType.BAD_HABIT) {
+                items = list.filter { it.type == HabitType.BAD_HABIT }
+                items
+            } else {
+                items = list.filter { it.type == HabitType.GOOD_HABIT }
+                items
+            }
+        }
     }
 
     companion object {
