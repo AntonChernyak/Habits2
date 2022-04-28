@@ -6,7 +6,8 @@ import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitCreatorRepository
 import com.example.habits.domain.repository.HabitsListRepository
 
-class HabitsLocalRepository(private val habitDao: HabitDao): HabitsListRepository, HabitCreatorRepository  {
+class HabitsLocalRepository(private val habitDao: HabitDao) : HabitsListRepository,
+    HabitCreatorRepository {
 
     override fun getHabits(): LiveData<List<HabitItem>> {
         return habitDao.getAllHabits()
@@ -14,6 +15,22 @@ class HabitsLocalRepository(private val habitDao: HabitDao): HabitsListRepositor
 
     override fun getSearchHabits(query: String): LiveData<List<HabitItem>> {
         return habitDao.getSearchHabits(query)
+    }
+
+    override fun getSortedHabitsByPriorityASC(): LiveData<List<HabitItem>> {
+        return habitDao.getPrioritySortASC()
+    }
+
+    override fun getSortedHabitsByPriorityDESC(): LiveData<List<HabitItem>> {
+        return habitDao.getPrioritySortDESC()
+    }
+
+    override fun getSortedHabitsByTitleASC(): LiveData<List<HabitItem>> {
+        return habitDao.getPrioritySortDESC()
+    }
+
+    override fun getSortedHabitsByTitleDESC(): LiveData<List<HabitItem>> {
+        return habitDao.getTitleSortDESC()
     }
 
     override suspend fun addHabit(habit: HabitItem) {

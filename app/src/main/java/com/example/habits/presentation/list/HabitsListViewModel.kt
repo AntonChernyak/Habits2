@@ -38,9 +38,8 @@ class HabitsListViewModel(
         return habitsUseCase.getSearchHabits(query)
     }
 
-    fun getSortedHabits(position: Int, reversed: Boolean) {
-        //   val sortedList = habitsUseCase.getSortedHabits(position, reversed)
-        habitsMutableLiveData.value = arrayListOf()
+    fun getSortedHabits(position: Int, reversed: Boolean): LiveData<List<HabitItem>> {
+         return habitsUseCase.getSortedHabits(position, reversed)
     }
 
 }

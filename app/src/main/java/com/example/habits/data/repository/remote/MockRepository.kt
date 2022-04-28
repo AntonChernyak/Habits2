@@ -27,6 +27,22 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         TODO("Not yet implemented")
     }
 
+    override fun getSortedHabitsByPriorityASC(): LiveData<List<HabitItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSortedHabitsByPriorityDESC(): LiveData<List<HabitItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSortedHabitsByTitleASC(): LiveData<List<HabitItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSortedHabitsByTitleDESC(): LiveData<List<HabitItem>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun removeHabit(habit: HabitItem) {
         val indexToDelete = habits.indexOfFirst { it.id == habit.id }
         if (indexToDelete != -1) {

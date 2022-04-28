@@ -34,4 +34,16 @@ interface HabitDao {
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE title LIKE '%' || :searchString || '%'")
     fun getSearchHabits(searchString: String): LiveData<List<HabitItem>>
+
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY priority ASC")
+    fun getPrioritySortASC(): LiveData<List<HabitItem>>
+
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY priority DESC")
+    fun getPrioritySortDESC(): LiveData<List<HabitItem>>
+
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY title ASC")
+    fun getTitleSortASC(): LiveData<List<HabitItem>>
+
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY title DESC")
+    fun getTitleSortDESC(): LiveData<List<HabitItem>>
 }

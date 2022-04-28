@@ -1,6 +1,7 @@
 package com.example.habits.domain.usecase
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitsListRepository
 
@@ -38,15 +39,13 @@ class HabitsListUseCase(
     fun getSortedHabits(position: Int, reversed: Boolean): LiveData<List<HabitItem>> {
         return when (position) {
             0 -> {
-                if (reversed) getHabits()
-                else getHabits().sortedBy { it.priority }.toMutableList()
+                if (reversed) localRepository.getSortedHabitsByPriorityASC()
+                else localRepository.getSortedHabitsByPriorityDESC()
             }
-            1 -> {
-                if (reversed) getHabits().sortedBy { it.title }.reversed()
-                    .toMutableList()
-                else getHabits().sortedBy { it.title }.toMutableList()
+            else -> {
+                if (reversed) localRepository.getSortedHabitsByTitleASC()
+                else localRepository.getSortedHabitsByTitleDESC()
             }
-            else -> emptyList()
         }
     }
 

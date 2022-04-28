@@ -46,6 +46,7 @@ class HabitsListFragment : Fragment() {
     private val bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout> by lazy {
         BottomSheetBehavior.from(viewBinding.searchBottomSheet)
     }
+    private var type: HabitType? = HabitType.GOOD_HABIT
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,23 +68,21 @@ class HabitsListFragment : Fragment() {
             R.string.navigation_close
         )
 
-        val type = arguments?.getParcelable<HabitType>(ITEMS_TYPE_EXTRA)
+        type = arguments?.getParcelable<HabitType>(ITEMS_TYPE_EXTRA)
 
         habitsListViewModel.habitsLiveData.observe(viewLifecycleOwner) { list ->
-            setItems(list, type)
+            setItems(list)
         }
 
 
         habitsListViewModel.getHabits().observe(viewLifecycleOwner) { list ->
-            setItems(list, type)
+            setItems(list)
         }
 
         viewBinding.searchEditText.afterTextChanged {
             val query = viewBinding.searchEditText.text.toString().trim()
-            habitsListViewModel.getSearchList(query).observe(viewLifecycleOwner){
-                if (query.length > 2) {
-                    setItems(it, type)
-                }
+            habitsListViewModel.getSearchList(query).observe(viewLifecycleOwner) {
+                setItems(it)
             }
             viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
         }
@@ -95,8 +94,8 @@ class HabitsListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        val sortedSpinnerPosition = viewBinding.sortSpinner.selectedItemPosition
-       // habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
+        // val sortedSpinnerPosition = viewBinding.sortSpinner.selectedItemPosition
+        // habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
         habitsListViewModel.getHabits()
     }
 
@@ -203,12 +202,14 @@ class HabitsListFragment : Fragment() {
     }
 
     private fun getSortedHabits(position: Int) {
-        habitsListViewModel.getSortedHabits(position, reversed)
+        habitsListViewModel.getSortedHabits(position, reversed).observe(viewLifecycleOwner) {
+            setItems(it)
+        }
         viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
         viewBinding.searchEditText.text.clear()
     }
 
-    private fun setItems(list: List<HabitItem>, type: HabitType?) {
+    private fun setItems(list: List<HabitItem>) {
         if (type != null) {
             habitsAdapter.data = if (type == HabitType.BAD_HABIT) {
                 items = list.filter { it.type == HabitType.BAD_HABIT }
