@@ -8,7 +8,7 @@ import com.example.habits.domain.usecase.HabitsListUseCase
 
 class HabitsListViewModel(private val habitsUseCase: HabitsListUseCase): ViewModel() {
 
-    private val habitsMutableLiveData = MutableLiveData<List<HabitItem>>()
+    private var habitsMutableLiveData = MutableLiveData<List<HabitItem>>()
 
     val habitsLiveData: LiveData<List<HabitItem>> = habitsMutableLiveData
 

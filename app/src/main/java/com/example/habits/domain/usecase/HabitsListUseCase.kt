@@ -1,6 +1,5 @@
 package com.example.habits.domain.usecase
 
-import android.util.Log
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitsListRepository
 import java.util.*
@@ -13,7 +12,6 @@ class HabitsListUseCase(
     fun getHabits(): List<HabitItem> {
         val databaseList = localRepository.getHabits()
         val remoteList = remoteRepository.getHabits()
-        Log.d("TAGGGG", "databaseList.value = ${databaseList.value}")
         return if (databaseList.value.isNullOrEmpty()) {
             localRepository.saveAllHabits(remoteList.value ?: arrayListOf())
             remoteList.value ?: arrayListOf()

@@ -2,7 +2,6 @@ package com.example.habits
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import androidx.room.Room
 import com.example.habits.data.database.HabitDatabase
 
@@ -27,7 +26,6 @@ class App : Application() {
                 .allowMainThreadQueries()
                 .build()
         }
-        Log.d("TAGGGG", "initRoom")
         return dataBaseInstance!!
     }
 
