@@ -2,34 +2,51 @@ package com.example.habits.domain.usecase
 
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitsListRepository
+import java.util.*
 
-class HabitsListUseCase(private val repository: HabitsListRepository) {
+class HabitsListUseCase(
+    private val localRepository: HabitsListRepository,
+    private val remoteRepository: HabitsListRepository
+) {
 
     fun getHabits(): List<HabitItem> {
-        return repository.getHabits().sortedBy { it.priority }.reversed().toMutableList()
+        val databaseList = localRepository.getHabits()
+        val remoteList = remoteRepository.getHabits()
+        return if (databaseList.value.isNullOrEmpty()) {
+            localRepository.saveAllHabits(remoteList.value ?: arrayListOf())
+            remoteList.value ?: arrayListOf()
+        } else databaseList.value ?: arrayListOf()
     }
 
     fun removeHabit(habit: HabitItem) {
-        repository.removeHabit(habit)
+        localRepository.removeHabit(habit)
+        remoteRepository.removeHabit(habit)
     }
 
-    fun setCheckForHabit(habit: HabitItem) {
-        repository.setCheckForHabit(habit)
+    fun setCheckForHabit(isChecked: Boolean, id: Int) {
+        localRepository.setCheckForHabit(isChecked, id)
+        remoteRepository.setCheckForHabit(isChecked, id)
     }
 
     fun getSearchHabits(query: String): List<HabitItem> {
-        return getHabits().filter { it.title.uppercase().startsWith(query.uppercase()) }
+        return getHabits().filter {
+            it.title.toUpperCase(Locale.getDefault())
+                .startsWith(
+                    query.toUpperCase(Locale.getDefault())
+                )
+        }
     }
 
     fun getSortedHabits(position: Int, reversed: Boolean): List<HabitItem> {
         return when (position) {
             0 -> {
                 if (reversed) getHabits()
-                else repository.getHabits().sortedBy { it.priority }.toMutableList()
+                else getHabits().sortedBy { it.priority }.toMutableList()
             }
             1 -> {
-                if (reversed) repository.getHabits().sortedBy { it.title }.reversed().toMutableList()
-                else repository.getHabits().sortedBy { it.title }.toMutableList()
+                if (reversed) getHabits().sortedBy { it.title }.reversed()
+                    .toMutableList()
+                else getHabits().sortedBy { it.title }.toMutableList()
             }
             else -> emptyList()
         }

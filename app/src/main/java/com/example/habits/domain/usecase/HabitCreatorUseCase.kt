@@ -3,17 +3,23 @@ package com.example.habits.domain.usecase
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitCreatorRepository
 
-class HabitCreatorUseCase(private val repository: HabitCreatorRepository) {
+class HabitCreatorUseCase(
+    private val localRepository: HabitCreatorRepository,
+    private val remoteRepository: HabitCreatorRepository
+) {
 
     fun addHabit(habit: HabitItem){
-        repository.addHabit(habit)
+        localRepository.addHabit(habit)
+        remoteRepository.addHabit(habit)
     }
 
     fun replaceHabit(newHabit: HabitItem){
-        repository.replaceHabit(newHabit)
+        localRepository.replaceHabit(newHabit)
+        remoteRepository.replaceHabit(newHabit)
     }
 
-    fun removeLastHabit(){
-        repository.removeLastHabit()
+    fun removeHabit(habit: HabitItem){
+        localRepository.removeHabit(habit)
+        remoteRepository.removeHabit(habit)
     }
 }

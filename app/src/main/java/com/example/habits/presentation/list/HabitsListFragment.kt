@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.presentation.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
@@ -35,7 +36,11 @@ class HabitsListFragment : Fragment() {
             checkButtonClickListener(checkImageButton, position)
         })
     }
-    private val habitsListViewModel: HabitsListViewModel by viewModels { factory() }
+    private val habitDao = App.dataBaseInstance!!.getHabitDao()
+
+    private val habitsListViewModel: HabitsListViewModel by viewModels {
+        factory(habitDao)
+    }
     private var items = listOf<HabitItem>()
     private var reversed = true
     private val bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout> by lazy {
@@ -139,7 +144,7 @@ class HabitsListFragment : Fragment() {
 
     private fun checkButtonClickListener(checkView: View, position: Int) {
         checkView.isSelected = !checkView.isSelected
-        habitsListViewModel.setCheckForHabit(items[position])
+        habitsListViewModel.setCheckForHabit(checkView.isSelected, items[position].id)
     }
 
     private fun swipeToDelete() {

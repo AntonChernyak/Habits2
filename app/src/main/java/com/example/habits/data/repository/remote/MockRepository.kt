@@ -1,6 +1,9 @@
-package com.example.habits.data.repository
+package com.example.habits.data.repository.remote
 
 import android.graphics.Color
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.habits.data.model.HabitType
 import com.example.habits.data.model.HabitItem
 import com.example.habits.domain.repository.HabitCreatorRepository
@@ -13,8 +16,11 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         habits = createHabitsRepository()
     }
 
-    override fun getHabits(): List<HabitItem> {
-        return habits
+    override fun getHabits(): LiveData<List<HabitItem>> {
+        val habitsLD = MutableLiveData<List<HabitItem>>().apply {
+            value = habits
+        }
+        return habitsLD
     }
 
     override fun removeHabit(habit: HabitItem) {
@@ -24,8 +30,8 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         }
     }
 
-    override fun setCheckForHabit(habit: HabitItem) {
-        val index = habits.indexOfFirst { it.id == habit.id }
+    override fun setCheckForHabit(isChecked: Boolean, id: Int) {
+        val index = habits.indexOfFirst { it.id == id }
         if (index != -1) {
             habits[index].isChecked = !habits[index].isChecked
 
@@ -43,8 +49,8 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         }
     }
 
-    override fun removeLastHabit() {
-        habits.removeLast()
+    override fun saveAllHabits(habitsList: List<HabitItem>) {
+        habits.addAll(habitsList)
     }
 
     private fun createHabitsRepository(): MutableList<HabitItem> {

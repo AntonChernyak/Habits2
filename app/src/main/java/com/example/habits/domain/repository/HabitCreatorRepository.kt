@@ -8,5 +8,5 @@ interface HabitCreatorRepository {
 
     fun replaceHabit(newHabit: HabitItem)
 
-    fun removeLastHabit()
+    fun removeHabit(habit: HabitItem)
 }
