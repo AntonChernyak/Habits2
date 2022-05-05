@@ -68,16 +68,7 @@ class HabitsListFragment : Fragment() {
             R.string.navigation_close
         )
 
-        type = arguments?.getParcelable<HabitType>(ITEMS_TYPE_EXTRA)
-
-        habitsListViewModel.habitsLiveData.observe(viewLifecycleOwner) { list ->
-            setItems(list)
-        }
-
-
-        habitsListViewModel.getHabits().observe(viewLifecycleOwner) { list ->
-            setItems(list)
-        }
+        type = arguments?.getParcelable(ITEMS_TYPE_EXTRA)
 
         viewBinding.searchEditText.afterTextChanged {
             val query = viewBinding.searchEditText.text.toString().trim()
@@ -90,13 +81,6 @@ class HabitsListFragment : Fragment() {
         createHabitSortSpinner()
         setSortItemSpinnerClickListener()
         setSortButtonsBehaviour()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        // val sortedSpinnerPosition = viewBinding.sortSpinner.selectedItemPosition
-        // habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
-        habitsListViewModel.getHabits()
     }
 
     override fun onPause() {

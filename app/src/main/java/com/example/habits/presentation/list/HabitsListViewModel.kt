@@ -1,7 +1,6 @@
 package com.example.habits.presentation.list
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.habits.data.model.HabitItem
@@ -12,10 +11,6 @@ import kotlinx.coroutines.launch
 class HabitsListViewModel(
     private val habitsUseCase: HabitsListUseCase
 ) : ViewModel() {
-
-    private var habitsMutableLiveData = MutableLiveData<List<HabitItem>>()
-
-    val habitsLiveData: LiveData<List<HabitItem>> = habitsMutableLiveData
 
     fun getHabits(): LiveData<List<HabitItem>> {
         return habitsUseCase.getHabits()
