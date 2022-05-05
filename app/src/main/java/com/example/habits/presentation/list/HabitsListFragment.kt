@@ -46,6 +46,7 @@ class HabitsListFragment : Fragment() {
     private val bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout> by lazy {
         BottomSheetBehavior.from(viewBinding.searchBottomSheet)
     }
+    private var type: HabitType? = HabitType.GOOD_HABIT
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,34 +68,19 @@ class HabitsListFragment : Fragment() {
             R.string.navigation_close
         )
 
-        val type = arguments?.getParcelable<HabitType>(ITEMS_TYPE_EXTRA)
-
-        habitsListViewModel.habitsLiveData.observe(viewLifecycleOwner) { list ->
-            if (type != null) {
-                habitsAdapter.data = if (type == HabitType.BAD_HABIT) {
-                    items = list.filter { it.type == HabitType.BAD_HABIT }
-                    items
-                } else {
-                    items = list.filter { it.type == HabitType.GOOD_HABIT }
-                    items
-                }
-            }
-        }
+        type = arguments?.getParcelable(ITEMS_TYPE_EXTRA)
 
         viewBinding.searchEditText.afterTextChanged {
-            habitsListViewModel.getSearchList(viewBinding.searchEditText.text.toString().trim())
+            val query = viewBinding.searchEditText.text.toString().trim()
+            habitsListViewModel.getSearchList(query).observe(viewLifecycleOwner) {
+                setItems(it)
+            }
             viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
         }
 
         createHabitSortSpinner()
         setSortItemSpinnerClickListener()
         setSortButtonsBehaviour()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val sortedSpinnerPosition = viewBinding.sortSpinner.selectedItemPosition
-        habitsListViewModel.getSortedHabits(sortedSpinnerPosition, reversed)
     }
 
     override fun onPause() {
@@ -173,20 +159,21 @@ class HabitsListFragment : Fragment() {
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         viewBinding.sortSpinner.adapter = spinnerAdapter
     }
-    
-    private fun setSortItemSpinnerClickListener(){
-        viewBinding.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                getSortedHabits(p2)
-            }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+    private fun setSortItemSpinnerClickListener() {
+        viewBinding.sortSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    getSortedHabits(p2)
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
             }
-        }
 
     }
 
-    private fun setSortButtonsBehaviour(){
+    private fun setSortButtonsBehaviour() {
         val sortedSpinnerPosition = viewBinding.sortSpinner.selectedItemPosition
         viewBinding.buttonUp.setOnClickListener {
             reversed = false
@@ -198,10 +185,24 @@ class HabitsListFragment : Fragment() {
         }
     }
 
-    private fun getSortedHabits(position: Int){
-        habitsListViewModel.getSortedHabits(position, reversed)
+    private fun getSortedHabits(position: Int) {
+        habitsListViewModel.getSortedHabits(position, reversed).observe(viewLifecycleOwner) {
+            setItems(it)
+        }
         viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
         viewBinding.searchEditText.text.clear()
+    }
+
+    private fun setItems(list: List<HabitItem>) {
+        if (type != null) {
+            habitsAdapter.data = if (type == HabitType.BAD_HABIT) {
+                items = list.filter { it.type == HabitType.BAD_HABIT }
+                items
+            } else {
+                items = list.filter { it.type == HabitType.GOOD_HABIT }
+                items
+            }
+        }
     }
 
     companion object {

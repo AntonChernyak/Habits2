@@ -7,9 +7,17 @@ interface HabitsListRepository {
 
     fun getHabits(): LiveData<List<HabitItem>>
 
-    fun removeHabit(habit: HabitItem)
+    fun getSearchHabits(query:String): LiveData<List<HabitItem>>
 
-    fun setCheckForHabit(isChecked: Boolean, id: Int)
+    fun getSortedHabitsByPriorityASC(): LiveData<List<HabitItem>>
+    fun getSortedHabitsByPriorityDESC(): LiveData<List<HabitItem>>
 
-    fun saveAllHabits(habitsList: List<HabitItem>)
+    fun getSortedHabitsByTitleASC(): LiveData<List<HabitItem>>
+    fun getSortedHabitsByTitleDESC(): LiveData<List<HabitItem>>
+
+    suspend fun saveAllHabits(habitsList: List<HabitItem>)
+
+    suspend fun removeHabit(habit: HabitItem)
+
+    suspend fun setCheckForHabit(isChecked: Boolean, id: Int)
 }

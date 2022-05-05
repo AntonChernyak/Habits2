@@ -9,26 +9,38 @@ import com.example.habits.data.model.HabitItem.Companion.HABITS_TABLE_NAME
 interface HabitDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addHabit(habitItem: HabitItem)
+    suspend fun addHabit(habitItem: HabitItem)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveAllHabits(habits: List<HabitItem>)
+    suspend fun saveAllHabits(habits: List<HabitItem>)
+
+    @Delete
+    suspend fun deleteHabit(habitItem: HabitItem)
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateHabit(habitItem: HabitItem)
+
+    @Query("UPDATE $HABITS_TABLE_NAME SET is_checked = :isChecked WHERE id =:id")
+    suspend fun updateCheck(isChecked: Boolean, id: Int)
+
+    @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE title LIKE '%' || :searchString || '%'")
+    fun getSearchHabits(searchString: String): LiveData<List<HabitItem>>
+
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY priority ASC")
+    fun getPrioritySortASC(): LiveData<List<HabitItem>>
+
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY priority DESC")
+    fun getPrioritySortDESC(): LiveData<List<HabitItem>>
+
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY title ASC")
+    fun getTitleSortASC(): LiveData<List<HabitItem>>
+
+    @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY title DESC")
+    fun getTitleSortDESC(): LiveData<List<HabitItem>>
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME")
     fun getAllHabits(): LiveData<List<HabitItem>>
 
-    @Delete
-    fun deleteHabit(habitItem: HabitItem)
-
-    @Query("DELETE FROM $HABITS_TABLE_NAME")
-    fun deleteAll()
-
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE id = :id")
     fun getHabitById(id: Int): LiveData<HabitItem>
-
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateHabit(habitItem: HabitItem)
-
-    @Query("UPDATE $HABITS_TABLE_NAME SET is_checked = :isChecked WHERE id =:id")
-    fun updateCheck(isChecked: Boolean, id: Int)
 }

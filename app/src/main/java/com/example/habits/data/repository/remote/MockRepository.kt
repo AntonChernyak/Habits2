@@ -23,14 +23,34 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         return habitsLD
     }
 
-    override fun removeHabit(habit: HabitItem) {
+    override fun getSearchHabits(query: String): LiveData<List<HabitItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSortedHabitsByPriorityASC(): LiveData<List<HabitItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSortedHabitsByPriorityDESC(): LiveData<List<HabitItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSortedHabitsByTitleASC(): LiveData<List<HabitItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getSortedHabitsByTitleDESC(): LiveData<List<HabitItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun removeHabit(habit: HabitItem) {
         val indexToDelete = habits.indexOfFirst { it.id == habit.id }
         if (indexToDelete != -1) {
             habits.removeAt(indexToDelete)
         }
     }
 
-    override fun setCheckForHabit(isChecked: Boolean, id: Int) {
+    override suspend fun setCheckForHabit(isChecked: Boolean, id: Int) {
         val index = habits.indexOfFirst { it.id == id }
         if (index != -1) {
             habits[index].isChecked = !habits[index].isChecked
@@ -38,18 +58,18 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         }
     }
 
-    override fun addHabit(habit: HabitItem) {
+    override suspend fun addHabit(habit: HabitItem) {
         habits.add(habit)
     }
 
-    override fun replaceHabit(newHabit: HabitItem) {
+    override suspend fun replaceHabit(newHabit: HabitItem) {
         val index = habits.indexOfFirst { it.id == newHabit.id }
         if (index != -1) {
             habits[index] = newHabit
         }
     }
 
-    override fun saveAllHabits(habitsList: List<HabitItem>) {
+    override suspend fun saveAllHabits(habitsList: List<HabitItem>) {
         habits.addAll(habitsList)
     }
 

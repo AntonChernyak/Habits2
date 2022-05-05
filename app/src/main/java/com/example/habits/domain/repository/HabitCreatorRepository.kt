@@ -4,9 +4,9 @@ import com.example.habits.data.model.HabitItem
 
 interface HabitCreatorRepository {
 
-    fun addHabit(habit: HabitItem)
+    suspend fun addHabit(habit: HabitItem)
 
-    fun replaceHabit(newHabit: HabitItem)
+    suspend fun replaceHabit(newHabit: HabitItem)
 
-    fun removeHabit(habit: HabitItem)
+    suspend fun removeHabit(habit: HabitItem)
 }

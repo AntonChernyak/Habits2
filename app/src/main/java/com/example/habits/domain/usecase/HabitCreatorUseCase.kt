@@ -8,17 +8,17 @@ class HabitCreatorUseCase(
     private val remoteRepository: HabitCreatorRepository
 ) {
 
-    fun addHabit(habit: HabitItem){
+    suspend fun addHabit(habit: HabitItem){
         localRepository.addHabit(habit)
         remoteRepository.addHabit(habit)
     }
 
-    fun replaceHabit(newHabit: HabitItem){
+    suspend fun replaceHabit(newHabit: HabitItem){
         localRepository.replaceHabit(newHabit)
         remoteRepository.replaceHabit(newHabit)
     }
 
-    fun removeHabit(habit: HabitItem){
+    suspend fun removeHabit(habit: HabitItem){
         localRepository.removeHabit(habit)
         remoteRepository.removeHabit(habit)
     }
