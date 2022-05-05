@@ -2,7 +2,7 @@ package com.example.habits.presentation.creator
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.habits.data.model_dto.HabitItem
+import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.domain.usecase.HabitCreatorUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -2,7 +2,7 @@ package com.example.habits.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.habits.data.model_dto.HabitItem
+import com.example.habits.data.model_vo.HabitItem
 
 @Database(entities = [HabitItem::class], version = 1)
 abstract class HabitDatabase : RoomDatabase() {

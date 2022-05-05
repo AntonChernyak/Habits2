@@ -3,8 +3,8 @@ package com.example.habits.data.repository.remote
 import android.graphics.Color
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.habits.data.model_dto.HabitType
-import com.example.habits.data.model_dto.HabitItem
+import com.example.habits.data.model_vo.HabitType
+import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.domain.repository.HabitCreatorRepository
 import com.example.habits.domain.repository.HabitsListRepository
 

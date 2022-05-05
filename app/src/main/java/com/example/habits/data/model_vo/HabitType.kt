@@ -1,4 +1,4 @@
-package com.example.habits.data.model_dto
+package com.example.habits.data.model_vo
 
 import android.os.Parcelable
 import androidx.annotation.StringRes

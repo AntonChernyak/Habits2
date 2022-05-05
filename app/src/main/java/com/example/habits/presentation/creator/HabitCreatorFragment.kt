@@ -18,9 +18,9 @@ import com.example.habits.R
 import com.example.habits.data.colorpicker.ColorPicker
 import com.example.habits.data.extension.factory
 import com.example.habits.data.extension.getBackgroundColor
-import com.example.habits.data.model_dto.HabitType
+import com.example.habits.data.model_vo.HabitType
 import com.example.habits.data.extension.hideKeyboard
-import com.example.habits.data.model_dto.HabitItem
+import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.databinding.FragmentHabitCreatorBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt

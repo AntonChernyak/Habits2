@@ -3,7 +3,7 @@ package com.example.habits.presentation.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.habits.data.model_dto.HabitItem
+import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.domain.usecase.HabitsListUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

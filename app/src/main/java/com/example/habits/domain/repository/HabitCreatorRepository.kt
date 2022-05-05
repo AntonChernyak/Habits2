@@ -1,6 +1,6 @@
 package com.example.habits.domain.repository
 
-import com.example.habits.data.model_dto.HabitItem
+import com.example.habits.data.model_vo.HabitItem
 
 interface HabitCreatorRepository {
 
