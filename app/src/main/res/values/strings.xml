@@ -55,5 +55,8 @@
     <string name="application_info">Информация о приложении</string>
     <string name="search_and_sorting">Поиск и сортировка</string>
     <string name="search">Поиск…</string>
+    <string name="high_priority">Высокий</string>
+    <string name="medium_priority">Средний</string>
+    <string name="low_priority">Низкий</string>
 
 </resources>

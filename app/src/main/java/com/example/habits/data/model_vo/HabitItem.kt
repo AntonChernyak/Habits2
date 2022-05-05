@@ -13,10 +13,10 @@ import java.util.*
 @Parcelize
 data class HabitItem(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = -1,
+    val id: String = "-1",
     val title: String ="",
     val description: String = "",
-    val priority: String,
+    val priority: PriorityType = PriorityType.HIGH,
     val type: HabitType = HabitType.GOOD_HABIT,
     @ColumnInfo(name = "period_count")
     val periodCount: String,
