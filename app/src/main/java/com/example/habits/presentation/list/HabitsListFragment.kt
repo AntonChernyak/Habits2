@@ -19,11 +19,11 @@ import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.presentation.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
-import com.example.habits.data.model.HabitType
+import com.example.habits.data.model_dto.HabitType
 import com.example.habits.data.extension.addToggleToNavigationDrawer
 import com.example.habits.data.extension.afterTextChanged
 import com.example.habits.data.extension.factory
-import com.example.habits.data.model.HabitItem
+import com.example.habits.data.model_dto.HabitItem
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
 class HabitsListFragment : Fragment() {

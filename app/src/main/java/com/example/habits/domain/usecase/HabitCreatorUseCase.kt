@@ -1,6 +1,6 @@
 package com.example.habits.domain.usecase
 
-import com.example.habits.data.model.HabitItem
+import com.example.habits.data.model_dto.HabitItem
 import com.example.habits.domain.repository.HabitCreatorRepository
 
 class HabitCreatorUseCase(

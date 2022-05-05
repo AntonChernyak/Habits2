@@ -1,10 +1,10 @@
-package com.example.habits.data.model
+package com.example.habits.data.model_dto
 
 import android.graphics.Color
 import android.os.Parcelable
 import androidx.room.*
 import com.example.habits.data.database.HabitTypeConverter
-import com.example.habits.data.model.HabitItem.Companion.HABITS_TABLE_NAME
+import com.example.habits.data.model_dto.HabitItem.Companion.HABITS_TABLE_NAME
 import kotlinx.parcelize.Parcelize
 import java.util.*
 

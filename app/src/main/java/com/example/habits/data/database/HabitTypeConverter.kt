@@ -1,7 +1,7 @@
 package com.example.habits.data.database
 
 import androidx.room.TypeConverter
-import com.example.habits.data.model.HabitType
+import com.example.habits.data.model_dto.HabitType
 
 class HabitTypeConverter {
 

@@ -1,7 +1,7 @@
 package com.example.habits.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.example.habits.data.model.HabitItem
+import com.example.habits.data.model_dto.HabitItem
 
 interface HabitsListRepository {
 

@@ -16,12 +16,11 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.data.colorpicker.ColorPicker
-import com.example.habits.data.database.HabitDatabase
 import com.example.habits.data.extension.factory
 import com.example.habits.data.extension.getBackgroundColor
-import com.example.habits.data.model.HabitType
+import com.example.habits.data.model_dto.HabitType
 import com.example.habits.data.extension.hideKeyboard
-import com.example.habits.data.model.HabitItem
+import com.example.habits.data.model_dto.HabitItem
 import com.example.habits.databinding.FragmentHabitCreatorBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
