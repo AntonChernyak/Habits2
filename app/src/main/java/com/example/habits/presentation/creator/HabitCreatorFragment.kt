@@ -21,17 +21,23 @@ import com.example.habits.data.extension.getBackgroundColor
 import com.example.habits.data.model_vo.HabitType
 import com.example.habits.data.extension.hideKeyboard
 import com.example.habits.data.model_vo.HabitItem
+import com.example.habits.data.network.HabitApiClient
 import com.example.habits.databinding.FragmentHabitCreatorBinding
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlin.math.roundToInt
 
+@ExperimentalSerializationApi
 class HabitCreatorFragment : Fragment() {
 
     private val binding: FragmentHabitCreatorBinding by viewBinding()
     private val habitDao by lazy {
         App.dataBaseInstance!!.getHabitDao()
     }
-    private val habitCreatorViewModel: HabitCreatorViewModel by viewModels { factory(habitDao) }
+    private val habitApi by lazy {
+        HabitApiClient.apiClient
+    }
+    private val habitCreatorViewModel: HabitCreatorViewModel by viewModels { factory(habitDao, habitApi) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

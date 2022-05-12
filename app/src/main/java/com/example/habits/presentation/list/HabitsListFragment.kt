@@ -23,9 +23,14 @@ import com.example.habits.data.model_vo.HabitType
 import com.example.habits.data.extension.addToggleToNavigationDrawer
 import com.example.habits.data.extension.afterTextChanged
 import com.example.habits.data.extension.factory
+import com.example.habits.data.model_dto.HabitDoneDto
 import com.example.habits.data.model_vo.HabitItem
+import com.example.habits.data.network.HabitApiClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.serialization.ExperimentalSerializationApi
+import java.util.*
 
+@ExperimentalSerializationApi
 class HabitsListFragment : Fragment() {
 
     private val viewBinding: FragmentHabitsListBinding by viewBinding()
@@ -37,9 +42,10 @@ class HabitsListFragment : Fragment() {
         })
     }
     private val habitDao = App.dataBaseInstance!!.getHabitDao()
+    private val habitApi by lazy { HabitApiClient.apiClient }
 
     private val habitsListViewModel: HabitsListViewModel by viewModels {
-        factory(habitDao)
+        factory(habitDao, habitApi)
     }
     private var items = listOf<HabitItem>()
     private var reversed = true
@@ -130,7 +136,8 @@ class HabitsListFragment : Fragment() {
 
     private fun checkButtonClickListener(checkView: View, position: Int) {
         checkView.isSelected = !checkView.isSelected
-        habitsListViewModel.setCheckForHabit(checkView.isSelected, items[position].id.toInt())
+        val habitDone = HabitDoneDto(Date().time.toInt(), items[position].id)
+        habitsListViewModel.setCheckForHabit(checkView.isSelected, items[position].id.toInt(), habitDone)
     }
 
     private fun swipeToDelete() {

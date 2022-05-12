@@ -3,6 +3,7 @@ package com.example.habits.presentation.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.habits.data.model_dto.HabitDoneDto
 import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.domain.usecase.HabitsListUseCase
 import kotlinx.coroutines.Dispatchers
@@ -23,9 +24,9 @@ class HabitsListViewModel(
         getHabits()
     }
 
-    fun setCheckForHabit(isChecked: Boolean, id: Int) {
+    fun setCheckForHabit(isChecked: Boolean, id: Int, habitDone: HabitDoneDto) {
         viewModelScope.launch(Dispatchers.IO) {
-            habitsUseCase.setCheckForHabit(isChecked, id)
+            habitsUseCase.setCheckForHabit(isChecked, id, habitDone)
         }
     }
 

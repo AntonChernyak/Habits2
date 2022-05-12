@@ -4,12 +4,13 @@ import android.graphics.Color
 import android.os.Parcelable
 import androidx.room.*
 import com.example.habits.data.database.HabitTypeConverter
+import com.example.habits.data.database.ListTypeConverter
 import com.example.habits.data.model_vo.HabitItem.Companion.HABITS_TABLE_NAME
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Entity(tableName = HABITS_TABLE_NAME)
-@TypeConverters(HabitTypeConverter::class)
+@TypeConverters(HabitTypeConverter::class, HabitTypeConverter::class, ListTypeConverter::class)
 @Parcelize
 data class HabitItem(
     @PrimaryKey
