@@ -103,10 +103,10 @@ class HabitCreatorFragment : Fragment() {
 
     private fun createHabit(): HabitItem {
         return HabitItem(
-            id = (13..10000).random(),
+            id = (13..10000).random().toString(),
             title = binding.habitTitleEditText.text.toString(),
             description = binding.habitDescriptionEditText.text.toString(),
-            priority = binding.prioritySpinner.selectedItem.toString(),
+           // priority = binding.prioritySpinner.selectedItem.toString(),
             type = getHabitType(),
             periodCount = binding.periodTimesEditText.text.toString(),
             periodDays = binding.periodDaysEditText.text.toString(),
@@ -130,7 +130,7 @@ class HabitCreatorFragment : Fragment() {
                 showCreateSnackbar(view, habit)
             } else {
                 val oldId = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)?.id ?: -1
-                replaceHabit(habit.copy(id = oldId))
+                replaceHabit(habit.copy(id = oldId.toString()))
                 showEditSnackBar(view)
             }
         }
@@ -199,7 +199,7 @@ class HabitCreatorFragment : Fragment() {
             binding.habitDescriptionEditText.setText(editingHabit.description)
             binding.periodDaysEditText.setText(editingHabit.periodDays)
             binding.periodTimesEditText.setText(editingHabit.periodCount)
-            binding.prioritySpinner.setSelection(editingHabit.priority.toInt() - 1)
+        //    binding.prioritySpinner.setSelection(editingHabit.priority.toInt() - 1)
             setHabitType(editingHabit.type)
             binding.selectedColorView.backgroundTintList =
                 ColorStateList.valueOf(editingHabit.color)

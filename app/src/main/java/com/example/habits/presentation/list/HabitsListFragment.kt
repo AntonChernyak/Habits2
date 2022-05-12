@@ -130,7 +130,7 @@ class HabitsListFragment : Fragment() {
 
     private fun checkButtonClickListener(checkView: View, position: Int) {
         checkView.isSelected = !checkView.isSelected
-        habitsListViewModel.setCheckForHabit(checkView.isSelected, items[position].id)
+        habitsListViewModel.setCheckForHabit(checkView.isSelected, items[position].id.toInt())
     }
 
     private fun swipeToDelete() {

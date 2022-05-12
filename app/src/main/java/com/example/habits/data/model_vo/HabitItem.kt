@@ -12,7 +12,7 @@ import java.util.*
 @TypeConverters(HabitTypeConverter::class)
 @Parcelize
 data class HabitItem(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: String = "-1",
     val title: String ="",
     val description: String = "",

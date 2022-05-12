@@ -12,7 +12,7 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
     private var habits: MutableList<HabitItem> = mutableListOf()
 
     init {
-        habits = createHabitsRepository()
+        habits = arrayListOf()
     }
 
     override fun getHabits(): LiveData<List<HabitItem>> {
@@ -50,7 +50,7 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
     }
 
     override suspend fun setCheckForHabit(isChecked: Boolean, id: Int) {
-        val index = habits.indexOfFirst { it.id == id }
+        val index = habits.indexOfFirst { it.id.toInt() == id }
         if (index != -1) {
             habits[index].isChecked = !habits[index].isChecked
 
@@ -72,7 +72,7 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         habits.addAll(habitsList)
     }
 
-    private fun createHabitsRepository(): MutableList<HabitItem> {
+/*    private fun createHabitsRepository(): MutableList<HabitItem> {
         val initialList = mutableListOf<HabitItem>()
         HabitItem(
             id = 1,
@@ -193,5 +193,5 @@ object MockRepository : HabitsListRepository, HabitCreatorRepository {
         ).apply { initialList.add(this) }
 
         return initialList
-    }
+    }*/
 }
