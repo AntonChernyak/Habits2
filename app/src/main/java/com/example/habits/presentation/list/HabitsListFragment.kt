@@ -23,6 +23,7 @@ import com.example.habits.data.model_vo.HabitType
 import com.example.habits.data.extension.addToggleToNavigationDrawer
 import com.example.habits.data.extension.afterTextChanged
 import com.example.habits.data.extension.factory
+import com.example.habits.data.mapper.HabitMapper
 import com.example.habits.data.model_dto.HabitDoneDto
 import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.data.network.HabitApiClient
@@ -82,6 +83,11 @@ class HabitsListFragment : Fragment() {
                 setItems(it)
             }
             viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
+        }
+
+        habitsListViewModel.getHabitsFromNetwork()
+        habitsListViewModel.habitsLiveData.observe(viewLifecycleOwner) {
+            setItems(it)
         }
 
         createHabitSortSpinner()

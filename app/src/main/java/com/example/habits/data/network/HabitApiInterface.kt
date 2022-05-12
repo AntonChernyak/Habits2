@@ -8,10 +8,6 @@ import retrofit2.http.*
 
 interface HabitApiInterface {
 
-    /**
-     * МОЖЕТ ПРИЛЕТЕТЬ ОШИБКА, А НЕ ID
-     */
-
     @GET("habit")
     suspend fun getHabits() : List<HabitDto>
 

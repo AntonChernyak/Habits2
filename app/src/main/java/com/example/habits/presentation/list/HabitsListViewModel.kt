@@ -1,20 +1,33 @@
 package com.example.habits.presentation.list
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.habits.data.model_dto.HabitDoneDto
 import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.domain.usecase.HabitsListUseCase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class HabitsListViewModel(
     private val habitsUseCase: HabitsListUseCase
 ) : ViewModel() {
 
+    private val mutableHabitsLiveData = MutableLiveData<List<HabitItem>>()
+    val habitsLiveData = mutableHabitsLiveData
+
     fun getHabits(): LiveData<List<HabitItem>> {
         return habitsUseCase.getHabits()
+    }
+
+    fun getHabitsFromNetwork(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val habits = habitsUseCase.getHabitsFromNetwork()
+            mutableHabitsLiveData.postValue(habits)
+            habitsUseCase.saveAllHabits(habits)
+        }
     }
 
     fun removeHabit(habitItem: HabitItem) {

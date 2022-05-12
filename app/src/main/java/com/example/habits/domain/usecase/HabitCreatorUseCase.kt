@@ -9,17 +9,17 @@ class HabitCreatorUseCase(
 ) {
 
     suspend fun addHabit(habit: HabitItem){
-        localRepository.addHabit(habit)
+       // localRepository.addHabit(habit)
         remoteRepository.addHabit(habit)
     }
 
     suspend fun replaceHabit(newHabit: HabitItem){
-        localRepository.replaceHabit(newHabit)
+        //localRepository.replaceHabit(newHabit)
         remoteRepository.replaceHabit(newHabit)
     }
 
     suspend fun removeHabit(habit: HabitItem){
-        localRepository.removeHabit(habit)
+        //localRepository.removeHabit(habit)
         remoteRepository.removeHabit(habit)
     }
 }

@@ -25,6 +25,10 @@ class HabitsListUseCase(
         return remoteRepository.getHabits()
     }
 
+    suspend fun saveAllHabits(list: List<HabitItem>) {
+        localRepository.saveAllHabits(list)
+    }
+
     fun getHabits(): LiveData<List<HabitItem>> {
         return localRepository.getHabits()
     }

@@ -20,4 +20,5 @@ interface HabitsListLocalRepository {
     suspend fun removeHabit(habit: HabitItem)
 
     suspend fun setCheckForHabit(isChecked: Boolean, id: Int)
+
 }
