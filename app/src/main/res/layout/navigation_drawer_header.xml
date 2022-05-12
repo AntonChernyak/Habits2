@@ -9,13 +9,14 @@
     android:padding="@dimen/spacing_medium_16"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/navigation_logo_size"
         android:layout_height="@dimen/navigation_logo_size"
         android:adjustViewBounds="true"
-        android:contentDescription="@string/logo"
+        android:contentDescription="@string/avatar"
         android:paddingTop="8dp"
+        app:shapeAppearanceOverlay="@style/circleImageView"
         app:srcCompat="@drawable/app_logo" />
 
     <TextView
