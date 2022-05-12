@@ -13,9 +13,10 @@ object HabitApiClient {
     private const val BASE_URL = "https://doublet.app/droid/8/api/"
 
     private val client = OkHttpClient.Builder()
-        .addInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.BODY
+        .addNetworkInterceptor(HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.HEADERS
         })
+        .authenticator(HabitAuthenticator())
         .build()
 
     private val contentType = "application/json".toMediaType()
