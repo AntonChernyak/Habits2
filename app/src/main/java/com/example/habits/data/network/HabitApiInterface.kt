@@ -1,12 +1,10 @@
 package com.example.habits.data.network
 
 import com.example.habits.data.model_dto.ErrorDto
+import com.example.habits.data.model_dto.HabitDoneDto
 import com.example.habits.data.model_dto.HabitDto
 import com.example.habits.data.model_dto.HabitUidDto
-import retrofit2.http.DELETE
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface HabitApiInterface {
 
@@ -18,13 +16,13 @@ interface HabitApiInterface {
     suspend fun getHabits() : List<HabitDto>
 
     @PUT("habit")
-    suspend fun putHabit() : HabitUidDto
+    suspend fun putHabit(@Body habit: HabitDto) : HabitUidDto
 
     @DELETE("habit")
-    suspend fun deleteHabit() : ErrorDto
+    suspend fun deleteHabit(@Body uid: String) : ErrorDto
 
     @POST("habit_done")
-    suspend fun checkHabit() : ErrorDto
+    suspend fun checkHabit(@Body habitDone: HabitDoneDto) : ErrorDto
 
 
 }

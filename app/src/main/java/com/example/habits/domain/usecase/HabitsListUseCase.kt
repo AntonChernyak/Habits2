@@ -2,11 +2,11 @@ package com.example.habits.domain.usecase
 
 import androidx.lifecycle.LiveData
 import com.example.habits.data.model_vo.HabitItem
-import com.example.habits.domain.repository.HabitsListRepository
+import com.example.habits.domain.repository.HabitsListLocalRepository
 
 class HabitsListUseCase(
-    private val localRepository: HabitsListRepository,
-    private val remoteRepository: HabitsListRepository
+    private val localRepository: HabitsListLocalRepository,
+    private val remoteRepository: HabitsListLocalRepository
 ) {
 
     suspend fun removeHabit(habit: HabitItem) {
@@ -26,7 +26,6 @@ class HabitsListUseCase(
    fun getSearchHabits(query: String): LiveData<List<HabitItem>> {
         return localRepository.getSearchHabits(query)
     }
-
 
     fun getSortedHabits(position: Int, reversed: Boolean): LiveData<List<HabitItem>> {
         return when (position) {

@@ -3,7 +3,7 @@ package com.example.habits.domain.repository
 import androidx.lifecycle.LiveData
 import com.example.habits.data.model_vo.HabitItem
 
-interface HabitsListRepository {
+interface HabitsListLocalRepository {
 
     fun getHabits(): LiveData<List<HabitItem>>
 

@@ -26,7 +26,9 @@ data class HabitItem(
     @ColumnInfo(name = "date_of_creation")
     val dateOfCreation: Long = Date().time,
     @ColumnInfo(name = "is_checked")
-    var isChecked: Boolean = false
+    var isChecked: Boolean = false,
+    @ColumnInfo(name ="done_dates")
+    val doneDates: List<Int> = arrayListOf()
 ): Parcelable {
 
     companion object {

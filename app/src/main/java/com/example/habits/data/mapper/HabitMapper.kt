@@ -4,8 +4,9 @@ import com.example.habits.data.model_dto.HabitDto
 import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.data.model_vo.HabitType
 import com.example.habits.data.model_vo.PriorityType
+import kotlinx.serialization.SerialName
 
-class HabitMapper: ViewObjectMapper<HabitItem, HabitDto> {
+class HabitMapper : ViewObjectMapper<HabitItem, HabitDto> {
     override fun toViewObject(dto: HabitDto): HabitItem {
         return HabitItem(
             id = dto.uid,
@@ -17,7 +18,23 @@ class HabitMapper: ViewObjectMapper<HabitItem, HabitDto> {
             periodDays = dto.frequency.toString(),
             color = dto.color,
             dateOfCreation = dto.date.toLong(),
-            isChecked = dto.doneDates.isNotEmpty()
+            isChecked = dto.doneDates.isNotEmpty(),
+            doneDates = dto.doneDates.toList()
+        )
+    }
+
+    override fun toDataTransferObject(vo: HabitItem): HabitDto {
+        return HabitDto(
+            color = vo.color,
+            count = vo.periodCount.toInt(),
+            date = vo.dateOfCreation.toInt(),
+            description = vo.description,
+            doneDates = vo.doneDates.toIntArray(),
+            frequency = vo.periodDays.toInt(),
+            priority = intArrayOf(vo.priority.ordinal),
+            title = vo.title,
+            type = intArrayOf(vo.type.ordinal),
+            uid = vo.id
         )
     }
 }
