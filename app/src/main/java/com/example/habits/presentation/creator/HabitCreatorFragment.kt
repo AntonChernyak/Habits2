@@ -215,12 +215,7 @@ class HabitCreatorFragment : Fragment() {
                 val editingHabit = requireArguments().getParcelable<HabitItem>(HABIT_EXTRA_KEY)
                 editingHabit?.let { habit -> replaceHabit(habit) }
             }
-            .setActionTextColor(
-                ContextCompat.getColor(
-                    requireActivity(),
-                    R.color.primary_color_green
-                )
-            )
+            .setActionTextColor(greenColor)
             .show()
     }
 

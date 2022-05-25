@@ -30,7 +30,7 @@ class HabitViewHolder(
         title.text = habit.title
         habitColorLabel.setBackgroundColor(habit.color)
         period.text = createPeriodString(habit)
-        priority.text = habit.priority.name
+        priority.text = itemView.resources.getString(habit.priority.priorityType)
         type.text = itemView.resources.getString(habit.type.typeName)
 
         if (habit.description.isNotEmpty()) {
