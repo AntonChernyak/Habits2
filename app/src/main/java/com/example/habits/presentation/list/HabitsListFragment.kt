@@ -1,7 +1,6 @@
 package com.example.habits.presentation.list
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +23,6 @@ import com.example.habits.data.model_vo.HabitType
 import com.example.habits.data.extension.addToggleToNavigationDrawer
 import com.example.habits.data.extension.afterTextChanged
 import com.example.habits.data.extension.factory
-import com.example.habits.data.mapper.HabitMapper
 import com.example.habits.data.model_dto.HabitDoneDto
 import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.data.network.HabitApiClient
