@@ -44,12 +44,14 @@ class HabitCreatorFragment : Fragment() {
             habitApi
         )
     }
-    private val greenColor = ColorStateList.valueOf(
-        ContextCompat.getColor(
-            requireActivity(),
-            R.color.primary_color_green
+    private val greenColor by lazy {
+        ColorStateList.valueOf(
+            ContextCompat.getColor(
+                requireActivity(),
+                R.color.primary_color_green
+            )
         )
-    )
+    }
     private val redColor = ColorStateList.valueOf(Color.RED)
 
     override fun onCreateView(
@@ -159,7 +161,8 @@ class HabitCreatorFragment : Fragment() {
     }
 
     private fun fillInRequiredFields(view: View) {
-        Snackbar.make(view, getString(R.string.fill_in_required_fields), Snackbar.LENGTH_LONG).show()
+        Snackbar.make(view, getString(R.string.fill_in_required_fields), Snackbar.LENGTH_LONG)
+            .show()
 
         if (binding.periodTimesEditText.text.isNullOrEmpty()) {
             binding.periodTimesEditText.backgroundTintList = redColor
