@@ -2,8 +2,8 @@ package com.example.habits.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.habits.data.model.HabitItem
-import com.example.habits.data.model.HabitItem.Companion.HABITS_TABLE_NAME
+import com.example.habits.data.model_vo.HabitItem
+import com.example.habits.data.model_vo.HabitItem.Companion.HABITS_TABLE_NAME
 
 @Dao
 interface HabitDao {
@@ -20,8 +20,8 @@ interface HabitDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateHabit(habitItem: HabitItem)
 
-    @Query("UPDATE $HABITS_TABLE_NAME SET is_checked = :isChecked WHERE id =:id")
-    suspend fun updateCheck(isChecked: Boolean, id: Int)
+    @Query("UPDATE $HABITS_TABLE_NAME SET done_dates = :doneDates WHERE id =:id")
+    suspend fun updateCheck(doneDates: List<Int>, id: String)
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE title LIKE '%' || :searchString || '%'")
     fun getSearchHabits(searchString: String): LiveData<List<HabitItem>>

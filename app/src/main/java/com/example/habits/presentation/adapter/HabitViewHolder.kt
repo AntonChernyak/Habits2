@@ -5,7 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habits.R
-import com.example.habits.data.model.HabitItem
+import com.example.habits.data.model_vo.HabitItem
 
 class HabitViewHolder(
     itemView: View,
@@ -30,7 +30,7 @@ class HabitViewHolder(
         title.text = habit.title
         habitColorLabel.setBackgroundColor(habit.color)
         period.text = createPeriodString(habit)
-        priority.text = habit.priority
+        priority.text = itemView.resources.getString(habit.priority.priorityType)
         type.text = itemView.resources.getString(habit.type.typeName)
 
         if (habit.description.isNotEmpty()) {
@@ -38,7 +38,6 @@ class HabitViewHolder(
             description.visibility = View.VISIBLE
         } else description.visibility = View.GONE
 
-        checkImageView.isSelected = habit.isChecked
     }
 
     private fun createPeriodString(habit: HabitItem): String {

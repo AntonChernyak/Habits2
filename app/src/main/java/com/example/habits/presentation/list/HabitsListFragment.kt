@@ -19,13 +19,19 @@ import com.example.habits.App
 import com.example.habits.R
 import com.example.habits.presentation.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
-import com.example.habits.data.model.HabitType
+import com.example.habits.data.model_vo.HabitType
 import com.example.habits.data.extension.addToggleToNavigationDrawer
 import com.example.habits.data.extension.afterTextChanged
 import com.example.habits.data.extension.factory
-import com.example.habits.data.model.HabitItem
+import com.example.habits.data.model_dto.HabitDoneDto
+import com.example.habits.data.model_vo.HabitItem
+import com.example.habits.data.network.HabitApiClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.*
+import kotlinx.serialization.ExperimentalSerializationApi
+import java.util.*
 
+@ExperimentalSerializationApi
 class HabitsListFragment : Fragment() {
 
     private val viewBinding: FragmentHabitsListBinding by viewBinding()
@@ -37,9 +43,10 @@ class HabitsListFragment : Fragment() {
         })
     }
     private val habitDao = App.dataBaseInstance!!.getHabitDao()
+    private val habitApi by lazy { HabitApiClient.apiClient }
 
     private val habitsListViewModel: HabitsListViewModel by viewModels {
-        factory(habitDao)
+        factory(habitDao, habitApi)
     }
     private var items = listOf<HabitItem>()
     private var reversed = true
@@ -76,6 +83,11 @@ class HabitsListFragment : Fragment() {
                 setItems(it)
             }
             viewBinding.habitsRecyclerView.layoutManager?.scrollToPosition(0)
+        }
+
+        habitsListViewModel.getHabitsFromNetwork()
+        habitsListViewModel.habitsLiveData.observe(viewLifecycleOwner) {
+            setItems(it)
         }
 
         createHabitSortSpinner()
@@ -129,8 +141,24 @@ class HabitsListFragment : Fragment() {
     }
 
     private fun checkButtonClickListener(checkView: View, position: Int) {
-        checkView.isSelected = !checkView.isSelected
-        habitsListViewModel.setCheckForHabit(checkView.isSelected, items[position].id)
+        checkView.isSelected = true
+        val doneDate = (Date().time / DAY_TO_MILLISECONDS).toInt()
+        val habitDone = HabitDoneDto(doneDate, items[position].id)
+        habitsListViewModel.setCheckForHabit(items[position].doneDates + doneDate, habitDone)
+        unselectedCheckButton(checkView)
+    }
+
+    private fun unselectedCheckButton(checkView: View){
+        val job = Job()
+        CoroutineScope(job).launch(Dispatchers.IO) {
+            checkView.isEnabled = false
+            delay(1000)
+            withContext(Dispatchers.Main) {
+                checkView.isSelected = false
+                checkView.isEnabled = true
+                job.complete()
+            }
+        }
     }
 
     private fun swipeToDelete() {
@@ -206,6 +234,8 @@ class HabitsListFragment : Fragment() {
     }
 
     companion object {
+        private const val DAY_TO_MILLISECONDS = 1000 * 60 * 60 * 24
+
         const val HABIT_EXTRA_KEY = "habit_extra_key"
         const val POSITION_KEY = "position_key"
         const val ITEMS_TYPE_EXTRA = "items_list_extra"

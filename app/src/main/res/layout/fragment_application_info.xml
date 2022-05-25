@@ -32,7 +32,7 @@
         android:layout_height="@dimen/logo_size"
         android:layout_marginTop="@dimen/spacing_medium_16"
         android:layout_marginBottom="@dimen/spacing_medium_16"
-        android:contentDescription="@string/logo"
+        android:contentDescription="@string/avatar"
         android:src="@drawable/app_logo"
         app:layout_constraintBottom_toTopOf="@id/title_label_text_view"
         app:layout_constraintEnd_toEndOf="parent"

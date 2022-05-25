@@ -1,9 +1,9 @@
 package com.example.habits.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.example.habits.data.model.HabitItem
+import com.example.habits.data.model_vo.HabitItem
 
-interface HabitsListRepository {
+interface HabitsListLocalRepository {
 
     fun getHabits(): LiveData<List<HabitItem>>
 
@@ -19,5 +19,6 @@ interface HabitsListRepository {
 
     suspend fun removeHabit(habit: HabitItem)
 
-    suspend fun setCheckForHabit(isChecked: Boolean, id: Int)
+    suspend fun setCheckForHabit(doneDates: List<Int>, id: String)
+
 }
