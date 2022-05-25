@@ -4,7 +4,6 @@ import com.example.habits.data.model_dto.HabitDto
 import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.data.model_vo.HabitType
 import com.example.habits.data.model_vo.PriorityType
-import kotlinx.serialization.SerialName
 
 class HabitMapper : ViewObjectMapper<HabitItem, HabitDto> {
     override fun toViewObject(dto: HabitDto): HabitItem {
@@ -12,8 +11,8 @@ class HabitMapper : ViewObjectMapper<HabitItem, HabitDto> {
             id = dto.uid,
             title = dto.title,
             description = dto.description,
-            priority = PriorityType.values()[dto.priority[0]],
-            type = HabitType.values()[dto.type[0]],
+            priority = PriorityType.values()[dto.priority],
+            type = HabitType.values()[dto.type],
             periodCount = dto.count.toString(),
             periodDays = dto.frequency.toString(),
             color = dto.color,
@@ -29,11 +28,11 @@ class HabitMapper : ViewObjectMapper<HabitItem, HabitDto> {
             count = vo.periodCount.toInt(),
             date = vo.dateOfCreation.toInt(),
             description = vo.description,
-            doneDates = vo.doneDates.toIntArray(),
+            doneDates = vo.doneDates.toList(),
             frequency = vo.periodDays.toInt(),
-            priority = intArrayOf(vo.priority.ordinal),
+            priority = vo.priority.ordinal,
             title = vo.title,
-            type = intArrayOf(vo.type.ordinal),
+            type = vo.type.ordinal,
             uid = vo.id
         )
     }

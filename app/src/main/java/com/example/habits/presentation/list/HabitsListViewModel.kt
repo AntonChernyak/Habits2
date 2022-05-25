@@ -1,5 +1,6 @@
 package com.example.habits.presentation.list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,9 +25,11 @@ class HabitsListViewModel(
 
     fun getHabitsFromNetwork(){
         viewModelScope.launch(Dispatchers.IO) {
+            Log.d("TAGGGG", "habitsFromNet")
             val habits = habitsUseCase.getHabitsFromNetwork()
-            mutableHabitsLiveData.postValue(habits)
-            habitsUseCase.saveAllHabits(habits)
+            Log.d("TAGGGG", "habitsSize = ${habits.size}")
+/*            mutableHabitsLiveData.postValue(habits)
+            habitsUseCase.saveAllHabits(habits)*/
         }
     }
 

@@ -10,10 +10,10 @@ class HabitDto(
     val date: Int,
     val description: String,
     @SerialName("done_dates")
-    val doneDates: IntArray,
+    val doneDates: List<Int>,
     val frequency: Int,
-    val priority: IntArray,
+    val priority: Int,
     val title: String,
-    val type: IntArray,
+    val type: Int,
     val uid: String
 )

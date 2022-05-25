@@ -10,7 +10,6 @@ import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Entity(tableName = HABITS_TABLE_NAME)
-@TypeConverters(HabitTypeConverter::class, HabitTypeConverter::class, ListTypeConverter::class)
 @Parcelize
 data class HabitItem(
     @PrimaryKey

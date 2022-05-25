@@ -10,11 +10,11 @@ import retrofit2.Retrofit
 
 object HabitApiClient {
 
-    private const val BASE_URL = "https://doublet.app/droid/8/api/"
+    private const val BASE_URL = "https://droid-test-server.doubletapp.ru/api/"
 
     private val client = OkHttpClient.Builder()
         .addNetworkInterceptor(HttpLoggingInterceptor().apply {
-            level = HttpLoggingInterceptor.Level.HEADERS
+            level = HttpLoggingInterceptor.Level.BODY
         })
         .authenticator(HabitAuthenticator())
         .build()

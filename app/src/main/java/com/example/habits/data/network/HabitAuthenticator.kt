@@ -18,6 +18,6 @@ class HabitAuthenticator : Authenticator {
     }
 
     companion object {
-        private const val TOKEN_KEY = "auth_token_key"
+        private const val TOKEN_KEY = "Authorization"
     }
 }
