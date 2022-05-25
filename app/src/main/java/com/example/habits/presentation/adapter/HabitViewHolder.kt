@@ -38,7 +38,6 @@ class HabitViewHolder(
             description.visibility = View.VISIBLE
         } else description.visibility = View.GONE
 
-        checkImageView.isSelected = habit.isChecked
     }
 
     private fun createPeriodString(habit: HabitItem): String {

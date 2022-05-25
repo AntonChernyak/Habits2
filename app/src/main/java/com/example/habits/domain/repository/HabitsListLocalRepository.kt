@@ -19,6 +19,6 @@ interface HabitsListLocalRepository {
 
     suspend fun removeHabit(habit: HabitItem)
 
-    suspend fun setCheckForHabit(isChecked: Boolean, id: Int)
+    suspend fun setCheckForHabit(doneDates: List<Int>, id: String)
 
 }

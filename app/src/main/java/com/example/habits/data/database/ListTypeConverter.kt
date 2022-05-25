@@ -9,6 +9,8 @@ class ListTypeConverter {
 
     @TypeConverter
     fun toList(string: String): List<Int> = string
-        .filter { it !in setOf(',', '[', ']')}
-        .map { it.toString().toInt() }
+            .filter { it !in setOf(',', '[', ']') && it.isDigit()}
+            .map {
+                it.toString().toInt()
+            }
 }

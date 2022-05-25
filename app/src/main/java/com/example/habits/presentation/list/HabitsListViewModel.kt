@@ -1,16 +1,16 @@
 package com.example.habits.presentation.list
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.habits.data.mapper.HabitMapper
 import com.example.habits.data.model_dto.HabitDoneDto
+import com.example.habits.data.model_dto.HabitUidDto
 import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.domain.usecase.HabitsListUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class HabitsListViewModel(
@@ -19,7 +19,8 @@ class HabitsListViewModel(
 
     private val habitMapper = HabitMapper()
     private val mutableHabitsLiveData = MutableLiveData<List<HabitItem>>()
-    val habitsLiveData = mutableHabitsLiveData
+
+    val habitsLiveData: LiveData<List<HabitItem>> = mutableHabitsLiveData
 
     fun getHabits(): LiveData<List<HabitItem>> {
         return habitsUseCase.getHabits()
@@ -27,9 +28,7 @@ class HabitsListViewModel(
 
     fun getHabitsFromNetwork(){
         viewModelScope.launch(Dispatchers.IO) {
-            Log.d("TAGGGG", "habitsFromNet")
             val habits =habitMapper.toViewObject(habitsUseCase.getHabitsFromNetwork())
-            Log.d("TAGGGG", "habitsSize = ${habits.size}")
             mutableHabitsLiveData.postValue(habits)
             habitsUseCase.saveAllHabits(habits)
         }
@@ -37,14 +36,15 @@ class HabitsListViewModel(
 
     fun removeHabit(habitItem: HabitItem) {
         viewModelScope.launch(Dispatchers.IO) {
-            habitsUseCase.removeHabit(habitItem)
+            val uid = HabitUidDto(habitItem.id)
+            habitsUseCase.removeHabit(habitItem, uid)
         }
         getHabits()
     }
 
-    fun setCheckForHabit(isChecked: Boolean, id: Int, habitDone: HabitDoneDto) {
+    fun setCheckForHabit(doneDates: List<Int>, habitDone: HabitDoneDto) {
         viewModelScope.launch(Dispatchers.IO) {
-            habitsUseCase.setCheckForHabit(isChecked, id, habitDone)
+            habitsUseCase.setCheckForHabit(habitDone, doneDates)
         }
     }
 

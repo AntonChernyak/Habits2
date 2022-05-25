@@ -20,8 +20,8 @@ interface HabitDao {
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateHabit(habitItem: HabitItem)
 
-    @Query("UPDATE $HABITS_TABLE_NAME SET is_checked = :isChecked WHERE id =:id")
-    suspend fun updateCheck(isChecked: Boolean, id: Int)
+    @Query("UPDATE $HABITS_TABLE_NAME SET done_dates = :doneDates WHERE id =:id")
+    suspend fun updateCheck(doneDates: List<Int>, id: String)
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE title LIKE '%' || :searchString || '%'")
     fun getSearchHabits(searchString: String): LiveData<List<HabitItem>>

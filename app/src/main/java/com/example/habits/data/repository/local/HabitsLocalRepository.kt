@@ -3,11 +3,11 @@ package com.example.habits.data.repository.local
 import androidx.lifecycle.LiveData
 import com.example.habits.data.database.HabitDao
 import com.example.habits.data.model_vo.HabitItem
-import com.example.habits.domain.repository.HabitCreatorRepository
+import com.example.habits.domain.repository.HabitCreatorLocalRepository
 import com.example.habits.domain.repository.HabitsListLocalRepository
 
 class HabitsLocalRepository(private val habitDao: HabitDao) : HabitsListLocalRepository,
-    HabitCreatorRepository {
+    HabitCreatorLocalRepository {
 
     override fun getHabits(): LiveData<List<HabitItem>> {
         return habitDao.getAllHabits()
@@ -45,8 +45,8 @@ class HabitsLocalRepository(private val habitDao: HabitDao) : HabitsListLocalRep
         habitDao.deleteHabit(habit)
     }
 
-    override suspend fun setCheckForHabit(isChecked: Boolean, id: Int) {
-        habitDao.updateCheck(isChecked, id)
+    override suspend fun setCheckForHabit(doneDates: List<Int>, id: String) {
+        habitDao.updateCheck(doneDates, id)
     }
 
     override suspend fun saveAllHabits(habitsList: List<HabitItem>) {

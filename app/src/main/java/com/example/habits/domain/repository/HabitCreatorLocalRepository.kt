@@ -2,7 +2,7 @@ package com.example.habits.domain.repository
 
 import com.example.habits.data.model_vo.HabitItem
 
-interface HabitCreatorRepository {
+interface HabitCreatorLocalRepository {
 
     suspend fun addHabit(habit: HabitItem)
 

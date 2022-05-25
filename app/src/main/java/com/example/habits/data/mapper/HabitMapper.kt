@@ -17,7 +17,6 @@ class HabitMapper : ViewObjectMapper<HabitItem, HabitDto> {
             periodDays = dto.frequency.toString(),
             color = dto.color,
             dateOfCreation = dto.date.toLong(),
-            isChecked = dto.doneDates.isNotEmpty(),
             doneDates = dto.doneDates.toList()
         )
     }

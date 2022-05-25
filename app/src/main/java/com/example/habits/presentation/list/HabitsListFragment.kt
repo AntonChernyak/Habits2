@@ -1,6 +1,7 @@
 package com.example.habits.presentation.list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,7 @@ import com.example.habits.data.model_dto.HabitDoneDto
 import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.data.network.HabitApiClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import kotlinx.coroutines.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import java.util.*
 
@@ -141,9 +143,24 @@ class HabitsListFragment : Fragment() {
     }
 
     private fun checkButtonClickListener(checkView: View, position: Int) {
-        checkView.isSelected = !checkView.isSelected
-        val habitDone = HabitDoneDto(Date().time.toInt(), items[position].id)
-        habitsListViewModel.setCheckForHabit(checkView.isSelected, items[position].id.toInt(), habitDone)
+        checkView.isSelected = true
+        val doneDate = (Date().time / DAY_TO_MILLISECONDS).toInt()
+        val habitDone = HabitDoneDto(doneDate, items[position].id)
+        habitsListViewModel.setCheckForHabit(items[position].doneDates + doneDate, habitDone)
+        unselectedCheckButton(checkView)
+    }
+
+    private fun unselectedCheckButton(checkView: View){
+        val job = Job()
+        CoroutineScope(job).launch(Dispatchers.IO) {
+            checkView.isEnabled = false
+            delay(1000)
+            withContext(Dispatchers.Main) {
+                checkView.isSelected = false
+                checkView.isEnabled = true
+                job.complete()
+            }
+        }
     }
 
     private fun swipeToDelete() {
@@ -219,6 +236,8 @@ class HabitsListFragment : Fragment() {
     }
 
     companion object {
+        private const val DAY_TO_MILLISECONDS = 1000 * 60 * 60 * 24
+
         const val HABIT_EXTRA_KEY = "habit_extra_key"
         const val POSITION_KEY = "position_key"
         const val ITEMS_TYPE_EXTRA = "items_list_extra"
