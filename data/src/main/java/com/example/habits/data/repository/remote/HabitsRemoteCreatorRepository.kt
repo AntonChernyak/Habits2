@@ -1,8 +1,8 @@
 package com.example.habits.data.repository.remote
 
-import com.example.habits.data.mapper.HabitMapper
-import com.example.habits.data.model_dto.HabitUidDto
-import com.example.habits.data.model_vo.HabitItem
+import com.example.habits.domain.models.mapper.HabitMapper
+import com.example.habits.domain.models.model_dto.HabitUidDto
+import com.example.habits.domain.models.model_vo.HabitItem
 import com.example.habits.data.network.HabitApiInterface
 import com.example.habits.domain.repository.HabitCreatorRemoteRepository
 

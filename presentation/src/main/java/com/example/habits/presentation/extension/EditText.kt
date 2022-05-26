@@ -1,4 +1,4 @@
-package com.example.habits.data.extension
+package com.example.habits.presentation.extension
 
 import android.text.Editable
 import android.widget.EditText

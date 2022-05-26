@@ -2,8 +2,8 @@ package com.example.habits.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.habits.data.model_vo.HabitItem
-import com.example.habits.data.model_vo.HabitItem.Companion.HABITS_TABLE_NAME
+import com.example.habits.domain.models.model_vo.HabitItem
+import com.example.habits.domain.models.model_vo.HabitItem.Companion.HABITS_TABLE_NAME
 
 @Dao
 interface HabitDao {

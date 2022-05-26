@@ -2,7 +2,7 @@ package com.example.habits.data.repository.local
 
 import androidx.lifecycle.LiveData
 import com.example.habits.data.database.HabitDao
-import com.example.habits.data.model_vo.HabitItem
+import com.example.habits.domain.models.model_vo.HabitItem
 import com.example.habits.domain.repository.HabitCreatorLocalRepository
 import com.example.habits.domain.repository.HabitsListLocalRepository
 

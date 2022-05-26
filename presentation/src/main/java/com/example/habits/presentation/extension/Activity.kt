@@ -1,4 +1,4 @@
-package com.example.habits.data.extension
+package com.example.habits.presentation.extension
 
 import android.app.Activity
 import android.content.Context

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.habits.R
-import com.example.habits.data.extension.addToggleToNavigationDrawer
+import com.example.habits.presentation.extension.addToggleToNavigationDrawer
 
 class ApplicationInfoFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package com.example.habits.data.model_dto
+package com.example.habits.domain.models.model_dto
 
 @Serializable
 class HabitUidDto(

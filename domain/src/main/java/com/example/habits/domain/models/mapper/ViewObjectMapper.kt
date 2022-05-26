@@ -1,4 +1,4 @@
-package com.example.habits.data.mapper
+package com.example.habits.domain.models.mapper
 
 interface ViewObjectMapper<VO, DTO> {
 

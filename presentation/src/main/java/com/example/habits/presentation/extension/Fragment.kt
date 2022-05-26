@@ -1,4 +1,4 @@
-package com.example.habits.data.extension
+package com.example.habits.presentation.extension
 
 import androidx.fragment.app.Fragment
 import com.example.habits.data.database.HabitDao
