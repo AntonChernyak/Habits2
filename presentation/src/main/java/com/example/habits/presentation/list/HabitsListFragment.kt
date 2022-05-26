@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.App
 import com.example.habits.R
+import com.example.habits.data.database.HabitDao
 import com.example.habits.presentation.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
 import com.example.habits.data.database.model_vo.HabitType
@@ -25,11 +26,12 @@ import com.example.habits.presentation.extension.afterTextChanged
 import com.example.habits.presentation.extension.factory
 import com.example.habits.domain.model_dto.HabitDoneDto
 import com.example.habits.data.database.model_vo.HabitItem
-import com.example.habits.data.network.HabitApiClient
+import com.example.habits.data.network.HabitApiInterface
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.*
 import kotlinx.serialization.ExperimentalSerializationApi
 import java.util.*
+import javax.inject.Inject
 
 @ExperimentalSerializationApi
 class HabitsListFragment : Fragment() {
@@ -42,8 +44,11 @@ class HabitsListFragment : Fragment() {
             checkButtonClickListener(checkImageButton, position)
         })
     }
-    private val habitDao = App.dataBaseInstance!!.getHabitDao()
-    private val habitApi by lazy { HabitApiClient.apiClient }
+
+    @Inject
+    lateinit var habitDao: HabitDao
+    @Inject
+    lateinit var habitApi: HabitApiInterface
 
     private val habitsListViewModel: HabitsListViewModel by viewModels {
         factory(habitDao, habitApi)
@@ -64,6 +69,7 @@ class HabitsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (requireActivity().application as App).component.inject(this)
         addHabitButtonOnClick()
         setRecyclerViewSettings()
         createAddButtonVisibilityBehavior()

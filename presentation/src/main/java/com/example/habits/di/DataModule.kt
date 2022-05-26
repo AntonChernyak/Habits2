@@ -27,7 +27,7 @@ import javax.inject.Singleton
 
 @ExperimentalSerializationApi
 @Module
-class DataModule(val appContext: App) {
+class DataModule(private val appContext: App) {
     private val baseUrl = "https://droid-test-server.doubletapp.ru/api/"
     private val contentType = "application/json".toMediaType()
     private val habitDbName = "habits_db"
