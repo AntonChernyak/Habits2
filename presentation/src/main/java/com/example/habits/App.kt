@@ -4,11 +4,24 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.habits.data.database.HabitDatabase
+import com.example.habits.di.*
 
 class App : Application() {
 
+    val component: AppComponent by lazy {
+        DaggerAppComponent.create()
+/*        DaggerAppComponent
+            .builder()
+            .presentationModule(PresentationModule())
+            .domainModule(DomainModule())
+            .dataModule(DataModule())
+            .build()*/
+    }
+
     override fun onCreate() {
         super.onCreate()
+
+        component.inject(this)
 
         instance = this
 
