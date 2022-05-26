@@ -19,5 +19,4 @@ interface HabitApiInterface {
     @POST("habit_done")
     suspend fun checkHabit(@Body habitDone: HabitDoneDto)
 
-
 }

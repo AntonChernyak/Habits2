@@ -14,7 +14,7 @@ import java.lang.Exception
 import javax.inject.Inject
 
 class HabitCreatorViewModel @Inject constructor(
-    val habitCreatorUseCase: HabitCreatorUseCase
+    private val habitCreatorUseCase: HabitCreatorUseCase
 ) : ViewModel() {
 
     private val mapper = HabitMapper()
@@ -29,7 +29,7 @@ class HabitCreatorViewModel @Inject constructor(
                     mapper.toDataTransferObject(habitItem)
                 )
             } catch (e: Exception) {
-                Log.d("TAGGGGGG", "EX = ${e.message}")
+                Log.d("Creator_VM_TAG", "ADD EXCEPTION = ${e.message}")
             }
 
         }

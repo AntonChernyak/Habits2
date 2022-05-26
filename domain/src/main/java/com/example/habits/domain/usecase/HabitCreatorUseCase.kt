@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class HabitCreatorUseCase @Inject constructor(
     val localRepository: HabitCreatorLocalRepository,
-    val remoteRepository: HabitCreatorRemoteRepository
+    private val remoteRepository: HabitCreatorRemoteRepository
 ) {
 
     suspend fun addHabit(habit: HabitDto): HabitUidDto {

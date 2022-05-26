@@ -3,20 +3,14 @@ package com.example.habits.presentation.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.bumptech.glide.Glide
 import com.example.habits.R
 import com.example.habits.databinding.ActivityMainBinding
-import com.example.habits.databinding.NavigationDrawerHeaderBinding
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {

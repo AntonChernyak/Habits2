@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HabitsListViewModel @Inject constructor(
-    val habitsUseCase: HabitsListUseCase
+    private val habitsUseCase: HabitsListUseCase
 ) : ViewModel() {
 
     private val habitMapper = HabitMapper()

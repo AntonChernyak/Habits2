@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class HabitsListUseCase @Inject constructor(
-    val localRepository: HabitsListLocalRepository,
-    val remoteRepository: HabitsListRemoteRepository
+    private val localRepository: HabitsListLocalRepository,
+    private val remoteRepository: HabitsListRemoteRepository
 ) {
 
     suspend fun removeHabit(habit: HabitDto, habitUidDto: HabitUidDto) {

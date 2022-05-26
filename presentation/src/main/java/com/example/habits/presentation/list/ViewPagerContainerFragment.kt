@@ -12,7 +12,9 @@ import com.example.habits.R
 import com.example.habits.presentation.adapter.HabitViewPagerAdapter
 import com.example.habits.databinding.FragmentViewPagerContainerBinding
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.serialization.ExperimentalSerializationApi
 
+@ExperimentalSerializationApi
 class ViewPagerContainerFragment : Fragment() {
 
     private val binding: FragmentViewPagerContainerBinding by viewBinding()
