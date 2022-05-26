@@ -27,6 +27,7 @@ import com.example.habits.data.network.HabitApiInterface
 import com.example.habits.databinding.FragmentHabitCreatorBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.serialization.ExperimentalSerializationApi
+import java.util.*
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -133,7 +134,8 @@ class HabitCreatorFragment : Fragment() {
             type = getHabitType(),
             periodCount = binding.periodTimesEditText.text.toString(),
             periodDays = binding.periodDaysEditText.text.toString(),
-            color = binding.selectedColorView.getBackgroundColor()
+            color = binding.selectedColorView.getBackgroundColor(),
+            dateOfCreation = (Date().time / DAY_TO_MILLISECONDS).toInt()
         )
     }
 
@@ -295,6 +297,8 @@ class HabitCreatorFragment : Fragment() {
     }
 
     companion object {
+        private const val DAY_TO_MILLISECONDS = 1000 * 60 * 60 * 24
+
         const val DEFAULT_POSITION = -1
         const val TITLE_KEY = "title_key"
         const val DESCRIPTION_KEY = "description_key"

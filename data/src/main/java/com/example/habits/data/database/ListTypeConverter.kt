@@ -8,9 +8,9 @@ class ListTypeConverter {
         .joinToString(separator = ", ", prefix = "[", postfix = "]")
 
     @TypeConverter
-    fun toList(string: String): List<Int> = string
-            .filter { it !in setOf(',', '[', ']') && it.isDigit()}
-            .map {
-                it.toString().toInt()
-            }
+    fun toList(string: String): List<Int> = string.trim()
+        .removeSurrounding("[", "]")
+        .split(", ")
+        .filter { it.isNotEmpty() }
+        .map { it.toInt() }
 }

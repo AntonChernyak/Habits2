@@ -18,7 +18,7 @@ class HabitsListUseCase(
     }
 
     suspend fun setCheckForHabit(habitDone: HabitDoneDto, doneDates: List<Int>) {
-       // localRepository.setCheckForHabit(doneDates, habitDone.habitUid)
+        localRepository.setCheckForHabit(doneDates, habitDone.habitUid)
         remoteRepository.setCheckForHabit(habitDone)
     }
 

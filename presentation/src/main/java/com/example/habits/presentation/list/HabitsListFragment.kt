@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
@@ -47,6 +48,7 @@ class HabitsListFragment : Fragment() {
 
     @Inject
     lateinit var habitDao: HabitDao
+
     @Inject
     lateinit var habitApi: HabitApiInterface
 
@@ -149,12 +151,29 @@ class HabitsListFragment : Fragment() {
     private fun checkButtonClickListener(checkView: View, position: Int) {
         checkView.isSelected = true
         val doneDate = (Date().time / DAY_TO_MILLISECONDS).toInt()
-        val habitDone = HabitDoneDto(doneDate, items[position].id)
-        habitsListViewModel.setCheckForHabit(items[position].doneDates + doneDate, habitDone)
+        val checkHabit = items[position]
+        val habitDone = HabitDoneDto(doneDate, checkHabit.id)
+        items[position]
+        habitsListViewModel.setCheckForHabit(checkHabit.doneDates + doneDate, habitDone)
+        showToastMessage(checkHabit)
         unselectedCheckButton(checkView)
     }
 
-    private fun unselectedCheckButton(checkView: View){
+    private fun showToastMessage(checkHabit: HabitItem){
+        if (checkHabit.dateOfCreation + checkHabit.periodDays.toInt() >= Date().time / DAY_TO_MILLISECONDS) {
+            var toastText = ""
+            if (checkHabit.type == HabitType.BAD_HABIT) {
+                toastText = if (checkHabit.doneDates.size + 1< checkHabit.periodCount.toInt()) "Можно ещё"
+                else "Хватит это делать"
+            } else if (checkHabit.type == HabitType.GOOD_HABIT) {
+                toastText = if (checkHabit.doneDates.size + 1 < checkHabit.periodCount.toInt()) "Выполни ещё"
+                else "You are breathtaking!"
+            }
+            Toast.makeText(requireActivity(), toastText, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun unselectedCheckButton(checkView: View) {
         val job = Job()
         CoroutineScope(job).launch(Dispatchers.IO) {
             checkView.isEnabled = false

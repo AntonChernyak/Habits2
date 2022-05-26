@@ -22,7 +22,7 @@ data class HabitItem(
     val periodDays: String,
     val color: Int = Color.WHITE,
     @ColumnInfo(name = "date_of_creation")
-    val dateOfCreation: Long = Date().time,
+    val dateOfCreation: Int = Date().time.toInt(),
     @ColumnInfo(name ="done_dates")
     val doneDates: List<Int> = arrayListOf()
 ): Parcelable {

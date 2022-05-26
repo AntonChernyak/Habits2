@@ -16,7 +16,7 @@ class HabitMapper : ViewObjectMapper<HabitItem, HabitDto> {
             periodCount = dto.count.toString(),
             periodDays = dto.frequency.toString(),
             color = dto.color,
-            dateOfCreation = dto.date.toLong(),
+            dateOfCreation = dto.date,
             doneDates = dto.doneDates.toList()
         )
     }
@@ -25,7 +25,7 @@ class HabitMapper : ViewObjectMapper<HabitItem, HabitDto> {
         return HabitDto(
             color = vo.color,
             count = vo.periodCount.toInt(),
-            date = vo.dateOfCreation.toInt(),
+            date = vo.dateOfCreation,
             description = vo.description,
             doneDates = vo.doneDates.toList(),
             frequency = vo.periodDays.toInt(),
