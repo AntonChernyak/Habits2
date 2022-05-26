@@ -8,8 +8,7 @@ import com.example.habits.domain.repository.HabitsListLocalRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class HabitsLocalRepository(private val habitDao: HabitDao) : HabitsListLocalRepository,
-    HabitCreatorLocalRepository {
+class HabitsLocalListRepository(private val habitDao: HabitDao) : HabitsListLocalRepository{
 
     private val mapper = HabitMapper()
 
@@ -36,7 +35,7 @@ class HabitsLocalRepository(private val habitDao: HabitDao) : HabitsListLocalRep
     override fun getSortedHabitsByTitleDESC(): Flow<List<HabitDto>> {
         return habitDao.getTitleSortDESC().map { mapper.toDataTransferObject(it)  }
     }
-
+/*
     override suspend fun addHabit(habit: HabitDto) {
         habitDao.addHabit(mapper.toViewObject(habit))
     }
@@ -47,7 +46,7 @@ class HabitsLocalRepository(private val habitDao: HabitDao) : HabitsListLocalRep
 
     override suspend fun removeHabit(habit: HabitDto) {
         habitDao.deleteHabit(mapper.toViewObject(habit))
-    }
+    }*/
 
     override suspend fun setCheckForHabit(doneDates: List<Int>, id: String) {
         habitDao.updateCheck(doneDates, id)
@@ -57,4 +56,7 @@ class HabitsLocalRepository(private val habitDao: HabitDao) : HabitsListLocalRep
         habitDao.saveAllHabits(mapper.toViewObject(habitsList))
     }
 
+    override suspend fun removeHabit(habit: HabitDto) {
+        habitDao.deleteHabit(mapper.toViewObject(habit))
+    }
 }

@@ -6,6 +6,14 @@ import com.example.habits.data.database.HabitDao
 import com.example.habits.data.database.HabitDatabase
 import com.example.habits.data.network.HabitApiInterface
 import com.example.habits.data.network.HabitAuthenticator
+import com.example.habits.data.repository.local.HabitsLocalCreatorRepository
+import com.example.habits.data.repository.local.HabitsLocalListRepository
+import com.example.habits.data.repository.remote.HabitsRemoteCreatorRepository
+import com.example.habits.data.repository.remote.HabitsRemoteListRepository
+import com.example.habits.domain.repository.HabitCreatorLocalRepository
+import com.example.habits.domain.repository.HabitCreatorRemoteRepository
+import com.example.habits.domain.repository.HabitsListLocalRepository
+import com.example.habits.domain.repository.HabitsListRemoteRepository
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -31,7 +39,7 @@ class DataModule(val appContext: App) {
     // Network
     @Provides
     @Singleton
-    fun provideClient() : OkHttpClient = OkHttpClient.Builder()
+    fun provideClient(): OkHttpClient = OkHttpClient.Builder()
         .addNetworkInterceptor(HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         })
@@ -39,16 +47,27 @@ class DataModule(val appContext: App) {
         .build()
 
 
-
     @Singleton
     @Provides
     fun provideApiClient(client: OkHttpClient): HabitApiInterface =
         Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .client(client)
-                .addConverterFactory(Json.asConverterFactory(contentType))
-                .build()
-                .create(HabitApiInterface::class.java)
+            .baseUrl(baseUrl)
+            .client(client)
+            .addConverterFactory(Json.asConverterFactory(contentType))
+            .build()
+            .create(HabitApiInterface::class.java)
+
+    @Singleton
+    @Provides
+    fun provideRemoteCreatorRepository(api: HabitApiInterface): HabitCreatorRemoteRepository {
+        return HabitsRemoteCreatorRepository(api)
+    }
+
+    @Singleton
+    @Provides
+    fun provideRemoteListRepository(api: HabitApiInterface): HabitsListRemoteRepository {
+        return HabitsRemoteListRepository(api)
+    }
 
     // Database
     @Singleton
@@ -67,6 +86,18 @@ class DataModule(val appContext: App) {
     @Provides
     fun provideUserDao(db: HabitDatabase): HabitDao {
         return db.getHabitDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideLocalListRepository(dao: HabitDao): HabitsListLocalRepository {
+        return HabitsLocalListRepository(dao)
+    }
+
+    @Singleton
+    @Provides
+    fun provideLocalCreatorRepository(dao: HabitDao): HabitCreatorLocalRepository {
+        return HabitsLocalCreatorRepository(dao)
     }
 
 }
