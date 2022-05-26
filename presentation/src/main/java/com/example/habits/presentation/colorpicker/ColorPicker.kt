@@ -1,4 +1,4 @@
-package com.example.habits.data.colorpicker
+package com.example.habits.presentation.colorpicker
 
 import android.app.Activity
 import android.content.Context

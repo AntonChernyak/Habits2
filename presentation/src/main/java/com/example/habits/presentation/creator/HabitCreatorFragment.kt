@@ -15,13 +15,13 @@ import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.App
 import com.example.habits.R
-import com.example.habits.data.colorpicker.ColorPicker
+import com.example.habits.presentation.colorpicker.ColorPicker
 import com.example.habits.presentation.extension.factory
 import com.example.habits.presentation.extension.getBackgroundColor
-import com.example.habits.domain.models.model_vo.HabitType
+import com.example.habits.data.database.model_vo.HabitType
 import com.example.habits.presentation.extension.hideKeyboard
-import com.example.habits.domain.models.model_vo.HabitItem
-import com.example.habits.domain.models.model_vo.PriorityType
+import com.example.habits.data.database.model_vo.HabitItem
+import com.example.habits.data.database.model_vo.PriorityType
 import com.example.habits.data.network.HabitApiClient
 import com.example.habits.databinding.FragmentHabitCreatorBinding
 import com.google.android.material.snackbar.Snackbar

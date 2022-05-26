@@ -1,9 +1,9 @@
 package com.example.habits.domain.models.mapper
 
 import com.example.habits.domain.models.model_dto.HabitDto
-import com.example.habits.domain.models.model_vo.HabitItem
-import com.example.habits.domain.models.model_vo.HabitType
-import com.example.habits.domain.models.model_vo.PriorityType
+import com.example.habits.data.database.model_vo.HabitItem
+import com.example.habits.data.database.model_vo.HabitType
+import com.example.habits.data.database.model_vo.PriorityType
 
 class HabitMapper : ViewObjectMapper<HabitItem, HabitDto> {
     override fun toViewObject(dto: HabitDto): HabitItem {

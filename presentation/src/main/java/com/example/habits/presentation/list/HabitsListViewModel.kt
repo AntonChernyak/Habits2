@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.habits.domain.models.mapper.HabitMapper
 import com.example.habits.domain.models.model_dto.HabitDoneDto
 import com.example.habits.domain.models.model_dto.HabitUidDto
-import com.example.habits.domain.models.model_vo.HabitItem
+import com.example.habits.data.database.model_vo.HabitItem
 import com.example.habits.domain.usecase.HabitsListUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers

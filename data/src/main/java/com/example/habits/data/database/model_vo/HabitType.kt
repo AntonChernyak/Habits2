@@ -1,4 +1,4 @@
-package com.example.habits.domain.models.model_vo
+package com.example.habits.data.database.model_vo
 
 import android.os.Parcelable
 import androidx.annotation.StringRes

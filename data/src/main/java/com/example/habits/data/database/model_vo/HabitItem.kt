@@ -1,9 +1,9 @@
-package com.example.habits.domain.models.model_vo
+package com.example.habits.data.database.model_vo
 
 import android.graphics.Color
 import android.os.Parcelable
 import androidx.room.*
-import com.example.habits.domain.models.model_vo.HabitItem.Companion.HABITS_TABLE_NAME
+import com.example.habits.data.database.model_vo.HabitItem.Companion.HABITS_TABLE_NAME
 import kotlinx.parcelize.Parcelize
 import java.util.*
 

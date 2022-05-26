@@ -1,4 +1,4 @@
-package com.example.habits.domain.models.model_vo
+package com.example.habits.data.database.model_vo
 
 import androidx.annotation.StringRes
 import com.example.habits.R

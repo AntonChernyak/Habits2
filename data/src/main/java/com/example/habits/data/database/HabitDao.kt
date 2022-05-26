@@ -1,9 +1,9 @@
 package com.example.habits.data.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.habits.domain.models.model_vo.HabitItem
-import com.example.habits.domain.models.model_vo.HabitItem.Companion.HABITS_TABLE_NAME
+import com.example.habits.data.database.model_vo.HabitItem
+import com.example.habits.data.database.model_vo.HabitItem.Companion.HABITS_TABLE_NAME
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HabitDao {
@@ -24,23 +24,23 @@ interface HabitDao {
     suspend fun updateCheck(doneDates: List<Int>, id: String)
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE title LIKE '%' || :searchString || '%'")
-    fun getSearchHabits(searchString: String): LiveData<List<HabitItem>>
+    fun getSearchHabits(searchString: String): Flow<List<HabitItem>>
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY priority ASC")
-    fun getPrioritySortASC(): LiveData<List<HabitItem>>
+    fun getPrioritySortASC(): Flow<List<HabitItem>>
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY priority DESC")
-    fun getPrioritySortDESC(): LiveData<List<HabitItem>>
+    fun getPrioritySortDESC(): Flow<List<HabitItem>>
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY title ASC")
-    fun getTitleSortASC(): LiveData<List<HabitItem>>
+    fun getTitleSortASC(): Flow<List<HabitItem>>
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME ORDER BY title DESC")
-    fun getTitleSortDESC(): LiveData<List<HabitItem>>
+    fun getTitleSortDESC(): Flow<List<HabitItem>>
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME")
-    fun getAllHabits(): LiveData<List<HabitItem>>
+    fun getAllHabits(): Flow<List<HabitItem>>
 
     @Query("SELECT * FROM $HABITS_TABLE_NAME WHERE id = :id")
-    fun getHabitById(id: Int): LiveData<HabitItem>
+    fun getHabitById(id: Int): Flow<HabitItem>
 }

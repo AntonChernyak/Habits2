@@ -5,7 +5,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habits.R
-import com.example.habits.domain.models.model_vo.HabitItem
+import com.example.habits.data.database.model_vo.HabitItem
 
 class HabitViewHolder(
     itemView: View,

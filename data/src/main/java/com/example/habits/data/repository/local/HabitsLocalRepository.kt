@@ -1,35 +1,35 @@
 package com.example.habits.data.repository.local
 
-import androidx.lifecycle.LiveData
 import com.example.habits.data.database.HabitDao
-import com.example.habits.domain.models.model_vo.HabitItem
+import com.example.habits.data.database.model_vo.HabitItem
 import com.example.habits.domain.repository.HabitCreatorLocalRepository
 import com.example.habits.domain.repository.HabitsListLocalRepository
+import kotlinx.coroutines.flow.Flow
 
 class HabitsLocalRepository(private val habitDao: HabitDao) : HabitsListLocalRepository,
     HabitCreatorLocalRepository {
 
-    override fun getHabits(): LiveData<List<HabitItem>> {
+    override fun getHabits(): Flow<List<HabitItem>> {
         return habitDao.getAllHabits()
     }
 
-    override fun getSearchHabits(query: String): LiveData<List<HabitItem>> {
+    override fun getSearchHabits(query: String): Flow<List<HabitItem>> {
         return habitDao.getSearchHabits(query)
     }
 
-    override fun getSortedHabitsByPriorityASC(): LiveData<List<HabitItem>> {
+    override fun getSortedHabitsByPriorityASC(): Flow<List<HabitItem>> {
         return habitDao.getPrioritySortASC()
     }
 
-    override fun getSortedHabitsByPriorityDESC(): LiveData<List<HabitItem>> {
+    override fun getSortedHabitsByPriorityDESC(): Flow<List<HabitItem>> {
         return habitDao.getPrioritySortDESC()
     }
 
-    override fun getSortedHabitsByTitleASC(): LiveData<List<HabitItem>> {
+    override fun getSortedHabitsByTitleASC(): Flow<List<HabitItem>> {
         return habitDao.getPrioritySortDESC()
     }
 
-    override fun getSortedHabitsByTitleDESC(): LiveData<List<HabitItem>> {
+    override fun getSortedHabitsByTitleDESC(): Flow<List<HabitItem>> {
         return habitDao.getTitleSortDESC()
     }
 

@@ -1,7 +1,7 @@
 package com.example.habits.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.habits.domain.models.model_vo.HabitItem
+import com.example.habits.data.database.model_vo.HabitItem
 
 class HabitDiffCallback(
     private val oldList: List<HabitItem>,

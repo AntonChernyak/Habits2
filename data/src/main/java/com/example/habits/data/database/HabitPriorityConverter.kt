@@ -1,7 +1,7 @@
 package com.example.habits.data.database
 
 import androidx.room.TypeConverter
-import com.example.habits.domain.models.model_vo.PriorityType
+import com.example.habits.data.database.model_vo.PriorityType
 
 class HabitPriorityConverter {
 
