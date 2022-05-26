@@ -1,12 +1,12 @@
 package com.example.habits.domain.repository
 
-import com.example.habits.data.model_vo.HabitItem
+import com.example.habits.domain.model_dto.HabitDto
 
 interface HabitCreatorLocalRepository {
 
-    suspend fun addHabit(habit: HabitItem)
+    suspend fun addHabit(habit: HabitDto)
 
-    suspend fun replaceHabit(newHabit: HabitItem)
+    suspend fun replaceHabit(newHabit: HabitDto)
 
-    suspend fun removeHabit(habit: HabitItem)
+    suspend fun removeHabit(habit: HabitDto)
 }

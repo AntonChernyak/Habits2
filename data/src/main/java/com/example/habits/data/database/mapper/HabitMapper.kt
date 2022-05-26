@@ -1,6 +1,6 @@
-package com.example.habits.domain.models.mapper
+package com.example.habits.data.database.mapper
 
-import com.example.habits.domain.models.model_dto.HabitDto
+import com.example.habits.domain.model_dto.HabitDto
 import com.example.habits.data.database.model_vo.HabitItem
 import com.example.habits.data.database.model_vo.HabitType
 import com.example.habits.data.database.model_vo.PriorityType

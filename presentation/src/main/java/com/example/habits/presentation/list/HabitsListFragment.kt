@@ -23,7 +23,7 @@ import com.example.habits.data.database.model_vo.HabitType
 import com.example.habits.presentation.extension.addToggleToNavigationDrawer
 import com.example.habits.presentation.extension.afterTextChanged
 import com.example.habits.presentation.extension.factory
-import com.example.habits.domain.models.model_dto.HabitDoneDto
+import com.example.habits.domain.model_dto.HabitDoneDto
 import com.example.habits.data.database.model_vo.HabitItem
 import com.example.habits.data.network.HabitApiClient
 import com.google.android.material.bottomsheet.BottomSheetBehavior

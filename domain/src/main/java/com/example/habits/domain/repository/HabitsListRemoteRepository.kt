@@ -1,8 +1,8 @@
 package com.example.habits.domain.repository
 
-import com.example.habits.data.model_dto.HabitDoneDto
-import com.example.habits.data.model_dto.HabitDto
-import com.example.habits.data.model_dto.HabitUidDto
+import com.example.habits.domain.model_dto.HabitDoneDto
+import com.example.habits.domain.model_dto.HabitDto
+import com.example.habits.domain.model_dto.HabitUidDto
 
 interface HabitsListRemoteRepository {
 

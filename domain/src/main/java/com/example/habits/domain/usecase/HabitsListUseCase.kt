@@ -1,19 +1,18 @@
 package com.example.habits.domain.usecase
 
-import androidx.lifecycle.LiveData
-import com.example.habits.data.model_dto.HabitDoneDto
-import com.example.habits.data.model_dto.HabitDto
-import com.example.habits.data.model_dto.HabitUidDto
-import com.example.habits.data.model_vo.HabitItem
+import com.example.habits.domain.model_dto.HabitDoneDto
+import com.example.habits.domain.model_dto.HabitDto
+import com.example.habits.domain.model_dto.HabitUidDto
 import com.example.habits.domain.repository.HabitsListLocalRepository
 import com.example.habits.domain.repository.HabitsListRemoteRepository
+import kotlinx.coroutines.flow.Flow
 
 class HabitsListUseCase(
     private val localRepository: HabitsListLocalRepository,
     private val remoteRepository: HabitsListRemoteRepository
 ) {
 
-    suspend fun removeHabit(habit: HabitItem, habitUidDto: HabitUidDto) {
+    suspend fun removeHabit(habit: HabitDto, habitUidDto: HabitUidDto) {
         localRepository.removeHabit(habit)
         remoteRepository.removeHabit(habitUidDto)
     }
@@ -27,19 +26,19 @@ class HabitsListUseCase(
         return remoteRepository.getHabits()
     }
 
-    suspend fun saveAllHabits(list: List<HabitItem>) {
+    suspend fun saveAllHabits(list: List<HabitDto>) {
         localRepository.saveAllHabits(list)
     }
 
-    fun getHabits(): LiveData<List<HabitItem>> {
+    fun getHabits(): Flow<List<HabitDto>> {
         return localRepository.getHabits()
     }
 
-    fun getSearchHabits(query: String): LiveData<List<HabitItem>> {
+    fun getSearchHabits(query: String): Flow<List<HabitDto>> {
         return localRepository.getSearchHabits(query)
     }
 
-    fun getSortedHabits(position: Int, reversed: Boolean): LiveData<List<HabitItem>> {
+    fun getSortedHabits(position: Int, reversed: Boolean): Flow<List<HabitDto>> {
 
         return when (position) {
             0 -> {
