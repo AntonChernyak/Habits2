@@ -5,8 +5,7 @@
     <string name="my_habits">Мои привычки</string>
     <string name="add_habit">Добавить привычку</string>
     <string name="period_string">%1$s раз в %2$s дней</string>
-    <string name="good_habit">Хорошая привычка</string>
-    <string name="bad_habit">Плохая привычка</string>
+
     <string name="create_habit">Создать привычку</string>
     <string name="habit_name">Название</string>
     <string name="habit_description">Описание</string>

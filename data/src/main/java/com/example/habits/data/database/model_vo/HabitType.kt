@@ -2,7 +2,7 @@ package com.example.habits.data.database.model_vo
 
 import android.os.Parcelable
 import androidx.annotation.StringRes
-import com.example.habits.R
+import com.example.habits.data.R
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

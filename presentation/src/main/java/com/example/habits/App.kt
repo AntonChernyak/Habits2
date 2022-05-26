@@ -16,11 +16,11 @@ class App : Application() {
     }
 
     @Synchronized
-    private fun initRoomDatabase(context: Context): com.example.habits.data.database.HabitDatabase {
+    private fun initRoomDatabase(context: Context): HabitDatabase {
         if (dataBaseInstance == null) {
             dataBaseInstance = Room.databaseBuilder(
                 context,
-                com.example.habits.data.database.HabitDatabase::class.java,
+                HabitDatabase::class.java,
                 HABIT_DB_NAME
             )
                 .allowMainThreadQueries()
@@ -33,7 +33,7 @@ class App : Application() {
     companion object {
         private const val HABIT_DB_NAME = "habits_db"
 
-        var dataBaseInstance: com.example.habits.data.database.HabitDatabase? = null
+        var dataBaseInstance: HabitDatabase? = null
 
         var instance: App? = null
             private set

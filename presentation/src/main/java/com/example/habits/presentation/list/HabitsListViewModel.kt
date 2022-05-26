@@ -1,9 +1,6 @@
 package com.example.habits.presentation.list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.habits.data.database.mapper.HabitMapper
 import com.example.habits.domain.model_dto.HabitDoneDto
 import com.example.habits.domain.model_dto.HabitUidDto
@@ -11,6 +8,7 @@ import com.example.habits.data.database.model_vo.HabitItem
 import com.example.habits.domain.usecase.HabitsListUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class HabitsListViewModel(
@@ -26,21 +24,24 @@ class HabitsListViewModel(
     val habitsLiveData: LiveData<List<HabitItem>> = mutableHabitsLiveData
 
     fun getHabits(): LiveData<List<HabitItem>> {
-        return habitsUseCase.getHabits()
+        return habitsUseCase.getHabits().map { habitMapper.toViewObject(it) }.asLiveData()
     }
 
     fun getHabitsFromNetwork(){
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val habits =habitMapper.toViewObject(habitsUseCase.getHabitsFromNetwork())
             mutableHabitsLiveData.postValue(habits)
-            habitsUseCase.saveAllHabits(habits)
+            habitsUseCase.saveAllHabits(habitMapper.toDataTransferObject(habits))
         }
     }
 
     fun removeHabit(habitItem: HabitItem) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val uid = HabitUidDto(habitItem.id)
-            habitsUseCase.removeHabit(habitItem, uid)
+            habitsUseCase.removeHabit(
+                habitMapper.toDataTransferObject(habitItem),
+                uid
+            )
         }
         getHabits()
     }
@@ -53,10 +54,12 @@ class HabitsListViewModel(
 
     fun getSearchList(query: String): LiveData<List<HabitItem>> {
         return habitsUseCase.getSearchHabits(query)
+            .map { habitMapper.toViewObject(it) }.asLiveData()
     }
 
     fun getSortedHabits(position: Int, reversed: Boolean): LiveData<List<HabitItem>> {
          return habitsUseCase.getSortedHabits(position, reversed)
+             .map { habitMapper.toViewObject(it) }.asLiveData()
     }
 
 }

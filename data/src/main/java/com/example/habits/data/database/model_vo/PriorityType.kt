@@ -1,7 +1,7 @@
 package com.example.habits.data.database.model_vo
 
 import androidx.annotation.StringRes
-import com.example.habits.R
+import com.example.habits.data.R
 
 enum class PriorityType(@StringRes val priorityType: Int) {
     HIGH(R.string.high_priority),
