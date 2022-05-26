@@ -25,10 +25,10 @@ class App : Application() {
 
         instance = this
 
-        initRoomDatabase(applicationContext)
+      //  initRoomDatabase(applicationContext)
     }
 
-    @Synchronized
+/*    @Synchronized
     private fun initRoomDatabase(context: Context): HabitDatabase {
         if (dataBaseInstance == null) {
             dataBaseInstance = Room.databaseBuilder(
@@ -40,13 +40,13 @@ class App : Application() {
                 .build()
         }
         return dataBaseInstance!!
-    }
+    }*/
 
 
     companion object {
-        private const val HABIT_DB_NAME = "habits_db"
+      //  private const val HABIT_DB_NAME = "habits_db"
 
-        var dataBaseInstance: HabitDatabase? = null
+        //var dataBaseInstance: HabitDatabase? = null
 
         var instance: App? = null
             private set

@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 
+/*
 object HabitApiClient {
 
     private const val BASE_URL = "https://droid-test-server.doubletapp.ru/api/"
@@ -33,4 +34,4 @@ object HabitApiClient {
         return@lazy retrofit.create(HabitApiInterface::class.java)
     }
 
-}
+}*/
