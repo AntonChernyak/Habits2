@@ -6,10 +6,11 @@ import com.example.habits.domain.model_dto.HabitUidDto
 import com.example.habits.domain.repository.HabitsListLocalRepository
 import com.example.habits.domain.repository.HabitsListRemoteRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class HabitsListUseCase(
-    private val localRepository: HabitsListLocalRepository,
-    private val remoteRepository: HabitsListRemoteRepository
+class HabitsListUseCase @Inject constructor(
+    val localRepository: HabitsListLocalRepository,
+    val remoteRepository: HabitsListRemoteRepository
 ) {
 
     suspend fun removeHabit(habit: HabitDto, habitUidDto: HabitUidDto) {

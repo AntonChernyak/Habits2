@@ -6,10 +6,11 @@ import com.example.habits.domain.usecase.HabitCreatorUseCase
 import com.example.habits.domain.usecase.HabitsListUseCase
 import com.example.habits.presentation.creator.HabitCreatorViewModel
 import com.example.habits.presentation.list.HabitsListViewModel
+import javax.inject.Inject
 
-class HabitViewModelFactory(
-    private val habitsListUseCase: HabitsListUseCase,
-    private val habitCreatorUseCase: HabitCreatorUseCase
+class HabitViewModelFactory @Inject constructor(
+    val habitsListUseCase: HabitsListUseCase,
+    val habitCreatorUseCase: HabitCreatorUseCase
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

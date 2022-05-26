@@ -18,16 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.App
 import com.example.habits.R
-import com.example.habits.data.database.HabitDao
 import com.example.habits.presentation.adapter.HabitAdapter
 import com.example.habits.databinding.FragmentHabitsListBinding
 import com.example.habits.data.database.model_vo.HabitType
 import com.example.habits.presentation.extension.addToggleToNavigationDrawer
 import com.example.habits.presentation.extension.afterTextChanged
-import com.example.habits.presentation.extension.factory
 import com.example.habits.domain.model_dto.HabitDoneDto
 import com.example.habits.data.database.model_vo.HabitItem
-import com.example.habits.data.network.HabitApiInterface
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.*
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -47,14 +44,8 @@ class HabitsListFragment : Fragment() {
     }
 
     @Inject
-    lateinit var habitDao: HabitDao
+    lateinit var habitsListViewModel: HabitsListViewModel
 
-    @Inject
-    lateinit var habitApi: HabitApiInterface
-
-    private val habitsListViewModel: HabitsListViewModel by viewModels {
-        factory(habitDao, habitApi)
-    }
     private var items = listOf<HabitItem>()
     private var reversed = true
     private val bottomSheetBehavior: BottomSheetBehavior<ConstraintLayout> by lazy {
@@ -163,11 +154,15 @@ class HabitsListFragment : Fragment() {
         if (checkHabit.dateOfCreation + checkHabit.periodDays.toInt() >= Date().time / DAY_TO_MILLISECONDS) {
             var toastText = ""
             if (checkHabit.type == HabitType.BAD_HABIT) {
-                toastText = if (checkHabit.doneDates.size + 1< checkHabit.periodCount.toInt()) "Можно ещё"
-                else "Хватит это делать"
+                toastText = if (checkHabit.doneDates.size + 1 < checkHabit.periodCount.toInt()) {
+                    requireActivity().resources.getString(R.string.one_more)
+                }
+                else requireActivity().resources.getString(R.string.stop)
             } else if (checkHabit.type == HabitType.GOOD_HABIT) {
-                toastText = if (checkHabit.doneDates.size + 1 < checkHabit.periodCount.toInt()) "Выполни ещё"
-                else "You are breathtaking!"
+                toastText = if (checkHabit.doneDates.size + 1 < checkHabit.periodCount.toInt()) {
+                    requireActivity().resources.getString(R.string.do_it_again)
+                }
+                else requireActivity().resources.getString(R.string.Keanu)
             }
             Toast.makeText(requireActivity(), toastText, Toast.LENGTH_SHORT).show()
         }

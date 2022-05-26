@@ -10,9 +10,10 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HabitsListViewModel(
-    private val habitsUseCase: HabitsListUseCase
+class HabitsListViewModel @Inject constructor(
+    val habitsUseCase: HabitsListUseCase
 ) : ViewModel() {
 
     private val habitMapper = HabitMapper()

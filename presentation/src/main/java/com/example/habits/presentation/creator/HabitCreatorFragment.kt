@@ -11,19 +11,15 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.App
 import com.example.habits.R
-import com.example.habits.data.database.HabitDao
 import com.example.habits.presentation.colorpicker.ColorPicker
-import com.example.habits.presentation.extension.factory
 import com.example.habits.presentation.extension.getBackgroundColor
 import com.example.habits.data.database.model_vo.HabitType
 import com.example.habits.presentation.extension.hideKeyboard
 import com.example.habits.data.database.model_vo.HabitItem
 import com.example.habits.data.database.model_vo.PriorityType
-import com.example.habits.data.network.HabitApiInterface
 import com.example.habits.databinding.FragmentHabitCreatorBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -35,16 +31,10 @@ import kotlin.math.roundToInt
 class HabitCreatorFragment : Fragment() {
 
     private val binding: FragmentHabitCreatorBinding by viewBinding()
+
     @Inject
-    lateinit var habitDao: HabitDao
-    @Inject
-    lateinit var habitApi: HabitApiInterface
-    private val habitCreatorViewModel: HabitCreatorViewModel by viewModels {
-        factory(
-            habitDao,
-            habitApi
-        )
-    }
+    lateinit var habitCreatorViewModel: HabitCreatorViewModel
+
     private val greenColor by lazy {
         ColorStateList.valueOf(
             ContextCompat.getColor(

@@ -56,4 +56,9 @@
     <string name="medium_priority">Сред.</string>
     <string name="low_priority">Низ.</string>
 
+    <string name="one_more">Можно ещё</string>
+    <string name="stop">Хватит</string>
+    <string name="do_it_again">Выполни ещё раз</string>
+    <string name="Keanu">You are breathtaking!</string>
+
 </resources>
