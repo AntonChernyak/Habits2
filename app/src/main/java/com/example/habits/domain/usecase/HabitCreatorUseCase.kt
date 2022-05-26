@@ -1,7 +1,7 @@
 package com.example.habits.domain.usecase
 
-import com.example.habits.data.model_dto.HabitUidDto
-import com.example.habits.data.model_vo.HabitItem
+import com.example.data.model_dto.HabitUidDto
+import com.example.data.model_vo.HabitItem
 import com.example.habits.domain.repository.HabitCreatorRemoteRepository
 import com.example.habits.domain.repository.HabitCreatorLocalRepository
 

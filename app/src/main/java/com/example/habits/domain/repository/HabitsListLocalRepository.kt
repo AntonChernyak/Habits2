@@ -1,7 +1,7 @@
 package com.example.habits.domain.repository
 
 import androidx.lifecycle.LiveData
-import com.example.habits.data.model_vo.HabitItem
+import com.example.data.model_vo.HabitItem
 
 interface HabitsListLocalRepository {
 

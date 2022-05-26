@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.habits.R
-import com.example.habits.data.model_vo.HabitItem
+import com.example.data.model_vo.HabitItem
 
 class HabitAdapter(
     private val itemClick: (position: Int) -> Unit,
