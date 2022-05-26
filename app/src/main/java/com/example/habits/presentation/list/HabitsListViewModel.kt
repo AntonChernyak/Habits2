@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.data.mapper.HabitMapper
-import com.example.data.model_dto.HabitDoneDto
-import com.example.data.model_dto.HabitUidDto
-import com.example.data.model_vo.HabitItem
+import com.example.habits.data.mapper.HabitMapper
+import com.example.habits.data.model_dto.HabitDoneDto
+import com.example.habits.data.model_dto.HabitUidDto
+import com.example.habits.data.model_vo.HabitItem
 import com.example.habits.domain.usecase.HabitsListUseCase
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers

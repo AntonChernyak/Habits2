@@ -3,7 +3,7 @@ package com.example.habits
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.example.data.database.HabitDatabase
+import com.example.habits.data.database.HabitDatabase
 
 class App : Application() {
 
@@ -16,11 +16,11 @@ class App : Application() {
     }
 
     @Synchronized
-    private fun initRoomDatabase(context: Context): com.example.data.database.HabitDatabase {
+    private fun initRoomDatabase(context: Context): com.example.habits.data.database.HabitDatabase {
         if (dataBaseInstance == null) {
             dataBaseInstance = Room.databaseBuilder(
                 context,
-                com.example.data.database.HabitDatabase::class.java,
+                com.example.habits.data.database.HabitDatabase::class.java,
                 HABIT_DB_NAME
             )
                 .allowMainThreadQueries()
@@ -33,7 +33,7 @@ class App : Application() {
     companion object {
         private const val HABIT_DB_NAME = "habits_db"
 
-        var dataBaseInstance: com.example.data.database.HabitDatabase? = null
+        var dataBaseInstance: com.example.habits.data.database.HabitDatabase? = null
 
         var instance: App? = null
             private set
