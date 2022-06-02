@@ -57,7 +57,8 @@ class HabitCreatorFragment : Fragment() {
         //(requireActivity().application as App).component.inject(this)
         (requireActivity().application as App).component.fragmentViewModelComponentBuilder()
             .fragment(this)
-            .build().inject(this)
+            .build().inject(this
+            )
         createHabitPrioritySpinner()
         binding.createHabitButton.setOnClickListener { createHabitButtonClick(it) }
         setDataFromArguments()
