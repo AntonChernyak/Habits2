@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="good_habit">Хорошая привычка</string>
+    <string name="bad_habit">Плохая привычка</string>
+
+    <string name="high_priority">Выс.</string>
+    <string name="medium_priority">Сред.</string>
+    <string name="low_priority">Низ.</string>
+</resources>
