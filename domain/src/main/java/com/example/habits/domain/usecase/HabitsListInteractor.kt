@@ -8,7 +8,7 @@ import com.example.habits.domain.repository.HabitsListRemoteRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class HabitsListUseCase @Inject constructor(
+class HabitsListInteractor @Inject constructor(
     private val localRepository: HabitsListLocalRepository,
     private val remoteRepository: HabitsListRemoteRepository
 ) {

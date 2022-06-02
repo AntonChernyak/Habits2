@@ -9,10 +9,11 @@ import javax.inject.Singleton
 
 @ExperimentalSerializationApi
 @Singleton
-@Component(modules = [PresentationModule::class, DomainModule::class, DataModule::class])
+@Component(modules = [DomainModule::class, DataModule::class])
 interface AppComponent {
 
     fun inject(app: App)
-    fun inject(listFragment: HabitsListFragment)
-    fun inject(creatorFragment: HabitCreatorFragment)
+
+    fun fragmentViewModelComponentBuilder():
+            FragmentViewModelComponent.Builder
 }

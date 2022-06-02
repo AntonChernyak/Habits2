@@ -6,7 +6,7 @@ import com.example.habits.domain.repository.HabitCreatorRemoteRepository
 import com.example.habits.domain.repository.HabitCreatorLocalRepository
 import javax.inject.Inject
 
-class HabitCreatorUseCase @Inject constructor(
+class HabitCreatorInteractor @Inject constructor(
     val localRepository: HabitCreatorLocalRepository,
     private val remoteRepository: HabitCreatorRemoteRepository
 ) {

@@ -1,4 +1,4 @@
-package com.example.habits.data.database.mapper
+package com.example.habits.data.mapper
 
 import com.example.habits.domain.model_dto.HabitDto
 import com.example.habits.data.database.model_vo.HabitItem

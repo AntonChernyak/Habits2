@@ -3,18 +3,18 @@ package com.example.habits.presentation.creator
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.habits.data.database.mapper.HabitMapper
+import com.example.habits.data.mapper.HabitMapper
 import com.example.habits.domain.model_dto.HabitUidDto
 import com.example.habits.data.database.model_vo.HabitItem
-import com.example.habits.domain.usecase.HabitCreatorUseCase
+import com.example.habits.domain.usecase.HabitCreatorInteractor
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import javax.inject.Inject
 
-class HabitCreatorViewModel @Inject constructor(
-    private val habitCreatorUseCase: HabitCreatorUseCase
+class HabitCreatorViewModel(
+    private val habitCreatorInteractor: HabitCreatorInteractor
 ) : ViewModel() {
 
     private val mapper = HabitMapper()
@@ -25,7 +25,7 @@ class HabitCreatorViewModel @Inject constructor(
     fun addHabit(habitItem: HabitItem) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             try {
-                val id = habitCreatorUseCase.addHabit(
+                val id = habitCreatorInteractor.addHabit(
                     mapper.toDataTransferObject(habitItem)
                 )
             } catch (e: Exception) {
@@ -37,7 +37,7 @@ class HabitCreatorViewModel @Inject constructor(
 
     fun replaceHabit(habitItem: HabitItem) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
-            habitCreatorUseCase.replaceHabit(
+            habitCreatorInteractor.replaceHabit(
                 mapper.toDataTransferObject(habitItem)
             )
         }
@@ -46,7 +46,7 @@ class HabitCreatorViewModel @Inject constructor(
     fun removeHabit(habitItem: HabitItem) {
         viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
             val uid = HabitUidDto(habitItem.id)
-            habitCreatorUseCase.removeHabit(
+            habitCreatorInteractor.removeHabit(
                 mapper.toDataTransferObject(habitItem),
                 uid
             )

@@ -54,8 +54,10 @@ class HabitCreatorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity().application as App).component.inject(this)
-
+        //(requireActivity().application as App).component.inject(this)
+        (requireActivity().application as App).component.fragmentViewModelComponentBuilder()
+            .fragment(this)
+            .build().inject(this)
         createHabitPrioritySpinner()
         binding.createHabitButton.setOnClickListener { createHabitButtonClick(it) }
         setDataFromArguments()

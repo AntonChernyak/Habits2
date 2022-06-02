@@ -1,7 +1,7 @@
 package com.example.habits.data.repository.local
 
 import com.example.habits.data.database.HabitDao
-import com.example.habits.data.database.mapper.HabitMapper
+import com.example.habits.data.mapper.HabitMapper
 import com.example.habits.domain.model_dto.HabitDto
 import com.example.habits.domain.repository.HabitCreatorLocalRepository
 

@@ -1,55 +1,53 @@
 package com.example.habits.di
 
-import androidx.lifecycle.ViewModel
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import dagger.Binds
-import dagger.MapKey
+import com.example.habits.domain.usecase.HabitCreatorInteractor
+import com.example.habits.domain.usecase.HabitsListInteractor
+import com.example.habits.presentation.creator.HabitCreatorViewModel
+import com.example.habits.presentation.factory.HabitViewModelFactory
+import com.example.habits.presentation.list.HabitsListViewModel
 import dagger.Module
-import dagger.multibindings.IntoMap
-import javax.inject.Inject
-import javax.inject.Provider
-import javax.inject.Singleton
-import kotlin.reflect.KClass
+import dagger.Provides
+import javax.inject.Scope
+
+
+@Scope
+@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
+annotation class FragmentScope
 
 @Module
 class PresentationModule {
 
-/*    @Target(
-        AnnotationTarget.FUNCTION,
-        AnnotationTarget.PROPERTY_GETTER,
-        AnnotationTarget.PROPERTY_SETTER
-    )
-    @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-    @MapKey
-    internal annotation class ViewModelKey(val value: KClass<out ViewModel>)
-
-    @Singleton
-    class ViewModelFactory @Inject constructor(
-        private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) :
-        ViewModelProvider.Factory {
-
-        *//**
-         * 2 - Т.е. viewModels - это HashMap, в метод create мы передаём класс, который использует его как ключ и
-         *  возвращает нам VM по этому ключу
-         *//*
-        override fun <T : ViewModel> create(modelClass: Class<T>): T =
-            viewModels[modelClass]?.get() as T
+    @Provides
+    @FragmentScope
+    fun provideHabitListViewModel(
+        habitListFragment: Fragment,
+        habitsListInteractor: HabitsListInteractor,
+        habitCreatorInteractor: HabitCreatorInteractor
+    ): HabitsListViewModel {
+        return ViewModelProvider(
+            habitListFragment,
+            HabitViewModelFactory(
+                habitsListInteractor,
+                habitCreatorInteractor
+            )
+        )[HabitsListViewModel::class.java]
     }
 
-    *//**
-     * 1 - описываем модуль для ViewModel, который и будет создавать нашу вьюмодельку
-     *//*
-    @Module
-    abstract class ViewModelModule {
-
-        @Binds
-        abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
-
-        @Binds
-        @IntoMap
-        @ViewModelKey(MainViewModel::class)
-        abstract fun mainViewModel(viewModel: MainViewModel): ViewModel
-
-    }*/
-
+    @Provides
+    @FragmentScope
+    fun provideHabitCreatorViewModel(
+        habitCreatorFragment: Fragment,
+        habitsListInteractor: HabitsListInteractor,
+        habitCreatorInteractor: HabitCreatorInteractor
+    ): HabitCreatorViewModel {
+        return ViewModelProvider(
+            habitCreatorFragment,
+            HabitViewModelFactory(
+                habitsListInteractor,
+                habitCreatorInteractor
+            )
+        )[HabitCreatorViewModel::class.java]
+    }
 }

@@ -10,7 +10,6 @@ class App : Application() {
     val component: AppComponent by lazy {
       DaggerAppComponent
             .builder()
-            .presentationModule(PresentationModule())
             .domainModule(DomainModule())
             .dataModule(DataModule(this))
             .build()

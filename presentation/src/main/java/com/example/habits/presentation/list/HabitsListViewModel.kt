@@ -1,19 +1,19 @@
 package com.example.habits.presentation.list
 
 import androidx.lifecycle.*
-import com.example.habits.data.database.mapper.HabitMapper
+import com.example.habits.data.mapper.HabitMapper
 import com.example.habits.domain.model_dto.HabitDoneDto
 import com.example.habits.domain.model_dto.HabitUidDto
 import com.example.habits.data.database.model_vo.HabitItem
-import com.example.habits.domain.usecase.HabitsListUseCase
+import com.example.habits.domain.usecase.HabitsListInteractor
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HabitsListViewModel @Inject constructor(
-    private val habitsUseCase: HabitsListUseCase
+class HabitsListViewModel(
+    private val habitsUseCase: HabitsListInteractor
 ) : ViewModel() {
 
     private val habitMapper = HabitMapper()
