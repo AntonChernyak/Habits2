@@ -1,5 +1,6 @@
 package com.example.habits.presentation.creator
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
@@ -45,6 +46,14 @@ class HabitCreatorFragment : Fragment() {
     }
     private val redColor = ColorStateList.valueOf(Color.RED)
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as App).component.fragmentViewModelComponentBuilder()
+            .fragment(this)
+            .build().inject(this
+            )
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,11 +63,6 @@ class HabitCreatorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //(requireActivity().application as App).component.inject(this)
-        (requireActivity().application as App).component.fragmentViewModelComponentBuilder()
-            .fragment(this)
-            .build().inject(this
-            )
         createHabitPrioritySpinner()
         binding.createHabitButton.setOnClickListener { createHabitButtonClick(it) }
         setDataFromArguments()

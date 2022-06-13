@@ -99,5 +99,4 @@ class DataModule(private val appContext: App) {
     fun provideLocalCreatorRepository(dao: HabitDao): HabitCreatorLocalRepository {
         return HabitsLocalCreatorRepository(dao)
     }
-
 }

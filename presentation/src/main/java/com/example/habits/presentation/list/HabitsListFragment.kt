@@ -1,5 +1,6 @@
 package com.example.habits.presentation.list
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -52,6 +53,13 @@ class HabitsListFragment : Fragment() {
     }
     private var type: HabitType? = HabitType.GOOD_HABIT
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireActivity().application as App).component.fragmentViewModelComponentBuilder()
+            .fragment(this)
+            .build().inject(this)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,9 +70,6 @@ class HabitsListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
        // (requireActivity().application as App).component.inject(this)
-        (requireActivity().application as App).component.fragmentViewModelComponentBuilder()
-            .fragment(this)
-            .build().inject(this)
         addHabitButtonOnClick()
         setRecyclerViewSettings()
         createAddButtonVisibilityBehavior()

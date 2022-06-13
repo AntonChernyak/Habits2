@@ -8,7 +8,7 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
+//@RunWith(AndroidJUnit4::class)
 class DatabaseRule: TestWatcher() {
 
     lateinit var appDatabase: HabitDatabase

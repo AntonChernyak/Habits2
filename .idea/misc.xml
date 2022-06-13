@@ -31,7 +31,12 @@
         <entry key="..\:/Android/Doubletapp/Habits/app/src/main/res/layout/search_and_sorting_bottom_sheet.xml" value="0.36666666666666664" />
         <entry key="..\:/Android/Doubletapp/Habits/app/src/main/res/menu/navigation_drawer.xml" value="0.36666666666666664" />
         <entry key="..\:/Android/Doubletapp/Habits/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2985" />
+        <entry key="..\:/Android/Doubletapp/Habits/presentation/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Android/Doubletapp/Habits/presentation/src/main/res/layout/fragment_habit_creator.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android/Doubletapp/Habits/presentation/src/main/res/layout/fragment_habits_list.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android/Doubletapp/Habits/presentation/src/main/res/layout/fragment_view_pager_container.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android/Doubletapp/Habits/presentation/src/main/res/layout/item_habit.xml" value="0.36666666666666664" />
+        <entry key="..\:/Android/Doubletapp/Habits/presentation/src/main/res/layout/navigation_drawer_header.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

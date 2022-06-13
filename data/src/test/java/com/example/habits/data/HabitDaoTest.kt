@@ -1,41 +1,32 @@
 package com.example.habits.data
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.habits.data.database.model_vo.HabitItem
 import com.example.habits.data.database.model_vo.HabitType
 import com.example.habits.data.database.model_vo.PriorityType
-import com.example.habits.presentation.activity.MainActivity
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.count
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
-import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@Rule
-var mainActivityActivityTestRule = ActivityScenarioRule(MainActivity::class.java)
+//@Rule
+//var mainActivityActivityTestRule = ActivityScenarioRule(MainActivity::class.java)
 
 @ExperimentalCoroutinesApi
-@RunWith(AndroidJUnit4::class)
 class HabitDaoTest {
 
     @get:Rule
     val databaseRule = DatabaseRule()
 
-    @get:Rule
-    var instantTaskExecutorRule = InstantTaskExecutorRule()
+    //@get:Rule
+    //var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @get:Rule
     val coroutineRule = MainCoroutineRule()
 
-    @get:Rule
-    var mainActivityActivityTestRule = ActivityScenarioRule(MainActivity::class.java)
+   // @get:Rule
+   // var mainActivityActivityTestRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
     fun addHabit() {
