@@ -8,7 +8,7 @@ import android.util.Log
 class FirstActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_first)
         Log.d(FIRST_ACTIVITY_TAG, "onCreate()_1")
 
     }
