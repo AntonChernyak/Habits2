@@ -1,16 +1,25 @@
 package com.antoncherniak.habits
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.antoncherniak.habits.databinding.ActivitySecondBinding
 
 class SecondActivity : AppCompatActivity() {
+
+    private val binding: ActivitySecondBinding by viewBinding()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_second)
         Log.d(SECOND_ACTIVITY_TAG, "onCreate()_2")
 
+        val number = intent.getStringExtra(NUMBER_KEY)?.toInt() ?: 0
+        binding.secondActivityNumberTextView.text = (number * number).toString()
     }
 
     override fun onStart() {
@@ -57,7 +66,15 @@ class SecondActivity : AppCompatActivity() {
         Log.d(SECOND_ACTIVITY_TAG, "onRestart()_2")
     }
 
-    companion object{
+    companion object {
         private const val SECOND_ACTIVITY_TAG = "second activity"
+        private const val NUMBER_KEY = "number_key"
+
+        fun createIntent(context: Context, number: String): Intent {
+            return Intent(context, SecondActivity::class.java).apply {
+                putExtra(NUMBER_KEY, number)
+            }
+        }
     }
+
 }

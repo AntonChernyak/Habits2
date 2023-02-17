@@ -9,6 +9,8 @@ import com.antoncherniak.habits.databinding.ActivityFirstBinding
 class FirstActivity : AppCompatActivity() {
 
     private val binding: ActivityFirstBinding by viewBinding()
+    private var isIntent = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_first)
@@ -18,11 +20,15 @@ class FirstActivity : AppCompatActivity() {
             binding.firstActivityNumberTextView.text = DEFAULT_COUNTER_VALUE
         }
 
+        binding.toSecondActivityButton.setOnClickListener {
+            toSecondActivityButtonOnClick()
+        }
     }
 
     override fun onStart() {
         super.onStart()
         Log.d(FIRST_ACTIVITY_TAG, "onStart()_1")
+        isIntent = false
     }
 
     override fun onResume() {
@@ -53,9 +59,7 @@ class FirstActivity : AppCompatActivity() {
             .text
             .toString()
             .toInt()
-            .plus(1)
-
-        outState.putInt(COUNTER_KEY, saveValue)
+        outState.putInt(COUNTER_KEY, if (isIntent) saveValue else saveValue.plus(1))
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -69,6 +73,15 @@ class FirstActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
         Log.d(FIRST_ACTIVITY_TAG, "onRestart()_1")
+    }
+
+    private fun toSecondActivityButtonOnClick() {
+        val intent = SecondActivity.createIntent(
+            this@FirstActivity,
+            binding.firstActivityNumberTextView.text.toString()
+        )
+        isIntent = true
+        startActivity(intent)
     }
 
     companion object {
