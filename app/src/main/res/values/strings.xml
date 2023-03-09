@@ -3,7 +3,7 @@
 
     <!-- screen list -->
     <string name="to_second_activity_btn">Перейти на второй экран</string>
-    <string name="add_new_habit_button">Add new habit button</string>
+    <string name="add_new_habit_button">Add new habit</string>
 
     <!-- screen creator -->
     <string name="create_habit">Создание привычки</string>

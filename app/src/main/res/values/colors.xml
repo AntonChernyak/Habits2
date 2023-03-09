@@ -19,7 +19,7 @@
     <color name="gray_material_200">#eeeeee</color>
 
     <!-- app colors -->
-    <color name="primary_light_color">@color/green_material_400</color>>
+    <color name="primary_light_color">@color/green_material_600</color>>
     <color name="secondary_light_color">@color/green_material_200</color>>
     <color name="separator_color">@color/gray_material_400</color>
 </resources>
