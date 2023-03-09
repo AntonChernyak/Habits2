@@ -3,11 +3,12 @@ package com.antoncherniak.habits
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class FirstActivity : AppCompatActivity() {
+class CreatorActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_first)
+        setContentView(R.layout.activity_creator)
+
     }
 
 }

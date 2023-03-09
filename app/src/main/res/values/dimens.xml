@@ -8,7 +8,7 @@
 
     <!-- item card -->
     <dimen name="item_card_corner_external_radius_8">8dp</dimen>
-    <dimen name="item_card_elevation_4">4dp</dimen>
     <dimen name="item_card_corner_inner_radius_6">6dp</dimen>
+    <dimen name="item_card_elevation_4">4dp</dimen>
 
 </resources>

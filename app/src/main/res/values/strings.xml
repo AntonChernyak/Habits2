@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Habits</string>
     <string name="to_second_activity_btn">Перейти на второй экран</string>
+    <string name="add_new_habit_button">Add new habit button</string>
 </resources>
