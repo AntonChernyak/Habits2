@@ -1,9 +1,310 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".CreatorActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/creatorToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/create_habit" />
 
-</FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/separator_height"
+        android:background="@color/separator_color"
+        android:elevation="@dimen/toolbar_separator_elevation" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_small_8">
+
+            <EditText
+                android:id="@+id/titleEditText"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primary_light_color"
+                android:hint="@string/habit_title"
+                android:imeOptions="flagNoExtractUi"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/descriptionEditText"
+                style="@style/TextAppearance.MaterialComponents.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primary_light_color"
+                android:hint="@string/habit_description"
+                android:imeOptions="flagNoExtractUi"
+                android:inputType="textMultiLine"
+                android:maxLines="5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleEditText"
+                android:importantForAutofill="no" />
+
+            <View
+                android:id="@+id/view5"
+                style="@style/habitCreatorSeparatorStyle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/separator_height"
+                android:layout_marginTop="@dimen/spacing_medium_16"
+                app:layout_constraintBottom_toTopOf="@id/priorityLabelTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionEditText" />
+
+            <TextView
+                android:id="@+id/priorityLabelTextView"
+                style="@style/habitCreatorSubtitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium_16"
+                android:text="@string/habit_priority"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view5" />
+
+            <Spinner
+                android:id="@+id/prioritySpinner"
+                style="@style/TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/prioritySpinnerDataArray"
+                app:layout_constraintBottom_toBottomOf="@+id/priorityLabelTextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/priorityLabelTextView" />
+
+            <View
+                android:id="@+id/view3"
+                style="@style/habitCreatorSeparatorStyle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/separator_height"
+                android:layout_marginTop="@dimen/spacing_medium_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/priorityLabelTextView" />
+
+            <TextView
+                android:id="@+id/habitTypeLabelTextView"
+                style="@style/habitCreatorSubtitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_medium_16"
+                android:text="@string/habit_type"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+            <RadioGroup
+                android:id="@+id/habitTypesRadioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/habitTypeLabelTextView">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/goodHabitRadioButton"
+                    style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/primary_light_color"
+                    android:checked="true"
+                    android:text="@string/good_habit" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/badHabitRadioButton"
+                    style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:buttonTint="@color/primary_light_color"
+                    android:text="@string/bad_habit" />
+
+            </RadioGroup>
+
+            <View
+                android:id="@+id/view"
+                style="@style/habitCreatorSeparatorStyle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/separator_height"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/habitTypesRadioGroup" />
+
+            <TextView
+                android:id="@+id/periodLabelTextView"
+                style="@style/habitCreatorSubtitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_tiny_4"
+                android:layout_marginTop="@dimen/spacing_medium_16"
+                android:text="@string/habit_period"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_tiny_4"
+                android:layout_marginTop="@dimen/spacing_medium_16"
+                android:text="@string/repeat"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/periodLabelTextView" />
+
+            <EditText
+                android:id="@+id/periodTimesEditText"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="@dimen/period_edit_text_width"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_tiny_4"
+                android:backgroundTint="@color/primary_light_color"
+                android:gravity="center"
+                android:imeOptions="flagNoExtractUi"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                app:layout_constraintBaseline_toBaselineOf="@id/textView3"
+                app:layout_constraintEnd_toStartOf="@id/textView4"
+                app:layout_constraintStart_toEndOf="@+id/textView3" />
+
+            <TextView
+                android:id="@+id/textView4"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_tiny_4"
+                android:text="@string/times"
+                app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                app:layout_constraintStart_toEndOf="@+id/periodTimesEditText"
+                app:layout_constraintTop_toTopOf="@+id/textView3" />
+
+            <EditText
+                android:id="@+id/periodDaysEditText"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="@dimen/period_edit_text_width"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_tiny_4"
+                android:backgroundTint="@color/primary_light_color"
+                android:gravity="center"
+                android:imeOptions="flagNoExtractUi"
+                android:importantForAutofill="no"
+                android:inputType="number"
+                app:layout_constraintBaseline_toBaselineOf="@id/textView3"
+                app:layout_constraintStart_toEndOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/textView5"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_tiny_4"
+                android:text="@string/days"
+                app:layout_constraintBottom_toBottomOf="@+id/textView4"
+                app:layout_constraintStart_toEndOf="@+id/periodDaysEditText"
+                app:layout_constraintTop_toTopOf="@+id/textView4" />
+
+            <View
+                android:id="@+id/view2"
+                style="@style/habitCreatorSeparatorStyle"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/separator_height"
+                android:layout_marginTop="@dimen/spacing_medium_16"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/periodDaysEditText" />
+
+            <TextView
+                android:id="@+id/textView6"
+                style="@style/habitCreatorSubtitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/choose_color"
+                app:layout_constraintBottom_toBottomOf="@id/selectedColorView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/selectedColorView" />
+
+            <View
+                android:id="@+id/selectedColorView"
+                android:layout_width="@dimen/item_color_picker_size_40"
+                android:layout_height="@dimen/item_color_picker_size_40"
+                android:layout_marginTop="@dimen/spacing_huge_32"
+                android:layout_marginEnd="@dimen/spacing_tiny_4"
+                android:background="@drawable/background_item_colorpicker"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+            <TextView
+                android:id="@+id/rgbTextView"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_medium_16"
+                android:layout_marginBottom="@dimen/spacing_small_8"
+                app:layout_constraintBottom_toTopOf="@+id/hsvTextView"
+                app:layout_constraintEnd_toStartOf="@+id/selectedColorView"
+                app:layout_constraintTop_toTopOf="@+id/selectedColorView"
+                tools:text="R:214 | G:138 | B:86" />
+
+            <TextView
+                android:id="@+id/hsvTextView"
+                style="@style/TextAppearance.MaterialComponents.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_small_8"
+                android:layout_marginEnd="@dimen/spacing_medium_16"
+                app:layout_constraintBottom_toBottomOf="@+id/selectedColorView"
+                app:layout_constraintEnd_toStartOf="@+id/selectedColorView"
+                app:layout_constraintTop_toBottomOf="@+id/rgbTextView"
+                tools:text="H:24 | S:58 | V:84" />
+
+            <View
+                android:id="@+id/colorScrollView"
+
+
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_tiny_4"
+                android:layout_marginTop="@dimen/spacing_huge_32"
+                android:layout_marginEnd="@dimen/spacing_tiny_4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/selectedColorView" />
+
+            <Button
+                android:id="@+id/createHabitButton"
+                style="@style/TextAppearance.MaterialComponents.Button"
+                android:layout_width="@dimen/create_habit_button_width_220"
+                android:layout_height="@dimen/create_habit_button_height_52"
+                android:layout_marginTop="@dimen/spacing_large_24"
+                android:layout_marginBottom="@dimen/spacing_large_24"
+                android:background="@drawable/background_save_button"
+                android:text="@string/save"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/colorScrollView" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+
+</LinearLayout>

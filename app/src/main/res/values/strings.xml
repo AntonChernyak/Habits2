@@ -1,5 +1,26 @@
 <resources>
     <string name="app_name">Habits</string>
+
+    <!-- screen list -->
     <string name="to_second_activity_btn">Перейти на второй экран</string>
     <string name="add_new_habit_button">Add new habit button</string>
+
+    <!-- screen creator -->
+    <string name="create_habit">Создание привычки</string>
+    <string name="habit_title">Название привычки</string>
+    <string name="habit_description">Описание привычки</string>
+    <string name="habit_priority">Приоритет</string>
+    <string name="high_priority">Высокий</string>
+    <string name="medium_priority">Средний</string>
+    <string name="low_priority">Низкий</string>
+    <string name="habit_type">Тип</string>
+    <string name="good_habit">Хорошая привычка</string>
+    <string name="bad_habit">Плохая привычка</string>
+    <string name="habit_period">Периодичность</string>
+    <string name="repeat">Повторять</string>
+    <string name="times">раз</string>
+    <string name="days">дней</string>
+    <string name="choose_color">Выбрать цвет</string>
+    <string name="save">Сохранить</string>
+
 </resources>

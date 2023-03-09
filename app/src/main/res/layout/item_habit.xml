@@ -13,7 +13,7 @@
         android:id="@+id/itemColorView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_200"
+        android:background="@color/purple_material_200"
         android:padding="@dimen/spacing_tiny_4">
 
         <androidx.constraintlayout.widget.ConstraintLayout

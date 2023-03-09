@@ -20,7 +20,7 @@
         android:layout_gravity="end|bottom"
         android:layout_marginEnd="@dimen/spacing_small_8"
         android:layout_marginBottom="@dimen/spacing_small_8"
-        android:backgroundTint="@color/green_primary"
+        android:backgroundTint="@color/green_material_400"
         android:contentDescription="@string/add_new_habit_button"
         android:src="@drawable/fab_add_habit_24"
         app:tint="@color/white" />
