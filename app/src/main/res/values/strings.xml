@@ -22,5 +22,6 @@
     <string name="days">дней</string>
     <string name="choose_color">Выбрать цвет</string>
     <string name="save">Сохранить</string>
+    <string name="period_string">%1$s раз в %2$s дней</string>
 
 </resources>

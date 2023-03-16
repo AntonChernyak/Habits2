@@ -37,7 +37,7 @@ class ColorPicker @JvmOverloads constructor(
     override fun onItemClick(itemView: View) {
     }
 
-    fun createBackgroundBitmap(context: Context): Bitmap? {
+    private fun createBackgroundBitmap(context: Context): Bitmap? {
         val bitmap = Bitmap.createBitmap(getWidth(context).roundToInt(), 1, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         canvas.drawRect(RectF(0f, 0f, getWidth(context), 1f), getBackgroundDrawable(context))
