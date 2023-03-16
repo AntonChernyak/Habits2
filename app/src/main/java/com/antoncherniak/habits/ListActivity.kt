@@ -1,12 +1,15 @@
 package com.antoncherniak.habits
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.antoncherniak.habits.CreatorActivity.Companion.ID_RESULT_KEY
 import com.antoncherniak.habits.databinding.ActivityListBinding
 import com.antoncherniak.habits.habitslist.HabitListAdapter
 import com.antoncherniak.habits.repository.MockRepository
@@ -25,6 +28,19 @@ class ListActivity : AppCompatActivity() {
     private val habitsRepository: MockRepository by lazy {
         (applicationContext as App).habitRepository
     }
+
+    private val creatorActivityResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val id: Int = result.data?.getStringExtra(ID_RESULT_KEY)?.toInt() ?: 0
+                val newItems = habitsRepository.getHabits()
+                for (i in newItems.indices) {
+                    if (newItems[i].id == id) {
+                        binding.habitRecyclerView.scrollToPosition(i)
+                    }
+                }
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +66,7 @@ class ListActivity : AppCompatActivity() {
     private fun addHabitButtonOnClick() {
         binding.addNewHabitButton.setOnClickListener {
             val intent = CreatorActivity.newIntent(this)
-            startActivity(intent)
+            creatorActivityResult.launch(intent)
         }
     }
 
@@ -71,7 +87,7 @@ class ListActivity : AppCompatActivity() {
             habit = habitsRepository.getHabits()[position],
             position = position
         )
-        startActivity(intent)
+        creatorActivityResult.launch(intent)
     }
 
     private fun swipeToDelete() {

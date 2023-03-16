@@ -293,7 +293,7 @@
             </include>
 
             <Button
-                android:id="@+id/createHabitButton"
+                android:id="@+id/saveHabitButton"
                 style="@style/TextAppearance.MaterialComponents.Button"
                 android:layout_width="@dimen/create_habit_button_width_220"
                 android:layout_height="@dimen/create_habit_button_height_52"

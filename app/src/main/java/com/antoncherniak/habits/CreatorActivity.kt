@@ -1,5 +1,6 @@
 package com.antoncherniak.habits
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -35,7 +36,7 @@ class CreatorActivity : AppCompatActivity() {
         setContentView(R.layout.activity_creator)
 
         createHabitPrioritySpinner()
-        binding.createHabitButton.setOnClickListener { createHabitButtonClick(it) }
+        binding.saveHabitButton.setOnClickListener { saveHabitButtonClick(it) }
         setDataFromIntent()
         setColorPicker()
         setRgbString()
@@ -103,7 +104,7 @@ class CreatorActivity : AppCompatActivity() {
         }
     }
 
-    private fun createHabitButtonClick(view: View) {
+    private fun saveHabitButtonClick(view: View) {
         if (binding.titleEditText.text.isNullOrEmpty() ||
             binding.periodDaysEditText.text.isNullOrEmpty() ||
             binding.periodTimesEditText.text.isNullOrEmpty()
@@ -113,9 +114,11 @@ class CreatorActivity : AppCompatActivity() {
             allRequiredDataEntered()
             val position = intent.getIntExtra(POSITION_KEY, DEFAULT_POSITION)
             val habit = createHabit()
+            var resultId = 0
 
             if (position == DEFAULT_POSITION) {
                 habitsRepository.addHabit(habit = habit)
+                resultId = habit.id
                 showCreateSnackbar(view)
             } else {
                 val oldId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -123,11 +126,13 @@ class CreatorActivity : AppCompatActivity() {
                 } else {
                     intent.getParcelableExtra<Habit>(HABIT_EXTRA_KEY)?.id ?: -1
                 }
+                resultId = oldId
                 replaceHabit(habit.copy(id = oldId))
                 showEditSnackBar(view)
             }
+            val data = Intent().putExtra(ID_RESULT_KEY, resultId.toString())
+            setResult(Activity.RESULT_OK, data)
         }
-
         this.hideKeyboard()
     }
 
@@ -278,6 +283,7 @@ class CreatorActivity : AppCompatActivity() {
         const val PRIORITY_KEY = "priority_key"
         const val POSITION_KEY = "position_key"
         const val COLOR_KEY = "color_key"
+        const val ID_RESULT_KEY = "id_res_key"
 
         const val HABIT_EXTRA_KEY = "habit_extra_key"
 
