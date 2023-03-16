@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.databinding.ActivityListBinding
 import com.antoncherniak.habits.habitslist.HabitListAdapter
+import com.antoncherniak.habits.repository.MockRepository
 
 class ListActivity : AppCompatActivity() {
 
@@ -19,7 +20,9 @@ class ListActivity : AppCompatActivity() {
     private val linearLayoutManager: LinearLayoutManager by lazy {
         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
-    private val habitsRepository = (applicationContext as App).habitRepository
+    private val habitsRepository: MockRepository by lazy {
+        (applicationContext as App).habitRepository
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,13 +56,11 @@ class ListActivity : AppCompatActivity() {
         binding.habitRecyclerView.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                when {
-                    dy >= 0 -> binding.addNewHabitButton.visibility = View.VISIBLE
-                    dy < 0 -> binding.addNewHabitButton.visibility = View.GONE
-                }
+                if (dy < 0) {
+                    binding.addNewHabitButton.visibility = View.GONE
+                } else binding.addNewHabitButton.visibility = View.VISIBLE
             }
-        }
-        )
+        })
     }
 
     private fun openHabitForEditing(position: Int) {

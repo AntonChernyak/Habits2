@@ -13,4 +13,15 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="habitCreatorSeparatorStyle">
+        <item name="android:layout_marginStart">@dimen/spacing_tiny_4</item>
+        <item name="android:layout_marginEnd">@dimen/spacing_tiny_4</item>
+        <item name="android:background">@color/separator_color</item>
+    </style>
+
+    <style name="habitCreatorSubtitleStyle" parent="TextAppearance.AppCompat.Subhead">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginStart">@dimen/spacing_tiny_4</item>
+    </style>
 </resources>
