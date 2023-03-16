@@ -15,7 +15,9 @@ class ListActivity : AppCompatActivity() {
 
     private val binding: ActivityListBinding by viewBinding()
     private val habitAdapter: HabitListAdapter by lazy {
-        HabitListAdapter { position -> openHabitForEditing(position) }
+        HabitListAdapter { position ->
+            openHabitForEditing(position)
+        }
     }
     private val linearLayoutManager: LinearLayoutManager by lazy {
         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)

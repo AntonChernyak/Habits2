@@ -88,13 +88,19 @@ class CreatorActivity : AppCompatActivity() {
             id = (13..10000).random(),
             title = binding.titleEditText.text.toString(),
             description = binding.descriptionEditText.text.toString(),
-           // priority = binding.prioritySpinner.selectedItem.toString(),
-            priority = PriorityType.MEDIUM,
+            priority = getTypeBySpinnerPosition(binding.prioritySpinner.selectedItem.toString()),
             type = getHabitType(),
             periodTimes = binding.periodTimesEditText.text.toString(),
             periodDays = binding.periodDaysEditText.text.toString(),
             color = binding.selectedColorView.getBackgroundColor()
         )
+    }
+    private fun getTypeBySpinnerPosition(pos: String) : PriorityType {
+        return when(pos) {
+            resources.getString(R.string.high_priority) -> PriorityType.HIGH
+            resources.getString(R.string.medium_priority) -> PriorityType.MEDIUM
+            else -> PriorityType.LOW
+        }
     }
 
     private fun createHabitButtonClick(view: View) {
@@ -190,15 +196,16 @@ class CreatorActivity : AppCompatActivity() {
             intent.getParcelableExtra(HABIT_EXTRA_KEY)
         }
         if (editingHabit != null) {
+            binding.creatorToolbar.title = getString(R.string.edited_habit)
             binding.titleEditText.setText(editingHabit.title)
             binding.descriptionEditText.setText(editingHabit.description)
             binding.periodDaysEditText.setText(editingHabit.periodDays)
             binding.periodTimesEditText.setText(editingHabit.periodTimes)
-          //  binding.prioritySpinner.setSelection(editingHabit.priority.toInt() - 1)
-            binding.prioritySpinner.setSelection(0)
+            binding.prioritySpinner.setSelection(editingHabit.priority.spinnerPos)
             setHabitType(editingHabit.type)
             binding.selectedColorView.backgroundTintList =
                 ColorStateList.valueOf(editingHabit.color)
+            binding.selectedColorView.foreground = ContextCompat.getDrawable(this, R.drawable.selected_color_foreground)
         }
     }
 
