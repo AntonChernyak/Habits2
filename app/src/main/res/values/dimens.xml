@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- spacing -->
+    <dimen name="spacing_huge_32">32dp</dimen>
+    <dimen name="spacing_large_24">24dp</dimen>
+    <dimen name="spacing_medium_16">16dp</dimen>
+    <dimen name="spacing_small_8">8dp</dimen>
+    <dimen name="spacing_tiny_4">4dp</dimen>
+
+    <!-- general -->
+    <dimen name="toolbar_separator_elevation">3dp</dimen>
+    <dimen name="separator_height">2dp</dimen>
+
+    <!-- item card -->
+    <dimen name="item_card_corner_external_radius_8">8dp</dimen>
+    <dimen name="item_card_corner_inner_radius_6">6dp</dimen>
+    <dimen name="item_card_elevation_4">4dp</dimen>
+
+    <!-- creator screen -->
+    <dimen name="period_edit_text_width">50dp</dimen>
+    <dimen name="create_habit_button_width_220">220dp</dimen>
+    <dimen name="create_habit_button_height_52">52dp</dimen>
+    <dimen name="item_color_picker_size_40">40dp</dimen>
+    <dimen name="save_button_corner_radius_20">20dp</dimen>
+    <dimen name="item_color_picker_corner_radius_10">10dp</dimen>
+    <dimen name="item_color_picker_stroke_width_2">2dp</dimen>
+    <dimen name="color_picker_item_space_size">32dp</dimen>
+    <dimen name="item_color_picker_size">40dp</dimen>
+    <dimen name="item_color_corner_radius">10dp</dimen>
+
+
+</resources>
