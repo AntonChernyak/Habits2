@@ -273,24 +273,27 @@
                 app:layout_constraintTop_toBottomOf="@+id/rgbTextView"
                 tools:text="H:24 | S:58 | V:84" />
 
-            <include
+            <HorizontalScrollView
                 android:id="@+id/colorScrollView"
-                layout="@layout/color_picker_layout"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacing_tiny_4"
                 android:layout_marginTop="@dimen/spacing_huge_32"
                 android:layout_marginEnd="@dimen/spacing_tiny_4"
+                android:orientation="horizontal"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/selectedColorView">
 
                 <com.antoncherniak.habits.customview.ColorPickerLL
+                    android:id="@+id/myColorPicker"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="2dp" />
-
-            </include>
+            </HorizontalScrollView>
 
             <Button
                 android:id="@+id/saveHabitButton"

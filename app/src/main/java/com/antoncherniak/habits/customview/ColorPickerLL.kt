@@ -24,10 +24,14 @@ class ColorPickerLL @JvmOverloads constructor(
         private const val ITEM_COLOR_COUNT = 16
     }
 
+    var listener: ((color: ColorStateList?)->Unit)? = null
+
     init {
         this.orientation = HORIZONTAL
         background = BitmapDrawable(resources, createBackgroundBitmap(context))
-        createColorPickerItems(context){}
+        createColorPickerItems(context){
+            listener?.invoke(it.backgroundTintList)
+        }
     }
 
     override fun onDraw(canvas: Canvas?) {
@@ -97,6 +101,7 @@ class ColorPickerLL @JvmOverloads constructor(
                         left = marginSpace
                     )
                 }
+                isClickable = true
                 background =
                     ContextCompat.getDrawable(this.context, R.drawable.selected_color_background)
                 foreground = ContextCompat.getDrawable(

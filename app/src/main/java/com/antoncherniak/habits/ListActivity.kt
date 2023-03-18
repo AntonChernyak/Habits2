@@ -3,10 +3,9 @@ package com.antoncherniak.habits
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.CreatorActivity.Companion.ID_RESULT_KEY
@@ -21,9 +20,6 @@ class ListActivity : AppCompatActivity() {
         HabitListAdapter { position ->
             openHabitForEditing(position)
         }
-    }
-    private val linearLayoutManager: LinearLayoutManager by lazy {
-        LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     }
     private val habitsRepository: MockRepository by lazy {
         (applicationContext as App).habitRepository
@@ -59,14 +55,14 @@ class ListActivity : AppCompatActivity() {
     private fun setRecyclerViewSettings() {
         binding.habitRecyclerView.apply {
             adapter = habitAdapter
-            layoutManager = linearLayoutManager
         }
     }
 
     private fun addHabitButtonOnClick() {
         binding.addNewHabitButton.setOnClickListener {
-            val intent = CreatorActivity.newIntent(this)
-            creatorActivityResult.launch(intent)
+            CreatorActivity.newIntent(this@ListActivity).apply {
+                creatorActivityResult.launch(this)
+            }
         }
     }
 
@@ -74,20 +70,18 @@ class ListActivity : AppCompatActivity() {
         binding.habitRecyclerView.addOnScrollListener(object :
             RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy < 0) {
-                    binding.addNewHabitButton.visibility = View.GONE
-                } else binding.addNewHabitButton.visibility = View.VISIBLE
+                binding.addNewHabitButton.isVisible = dy >= 0
             }
         })
     }
 
     private fun openHabitForEditing(position: Int) {
-        val intent = CreatorActivity.newIntent(
-            this,
+        CreatorActivity.newIntent(
+            context = this@ListActivity,
             habit = habitsRepository.getHabits()[position],
             position = position
-        )
-        creatorActivityResult.launch(intent)
+        ).apply { creatorActivityResult.launch(this) }
+
     }
 
     private fun swipeToDelete() {

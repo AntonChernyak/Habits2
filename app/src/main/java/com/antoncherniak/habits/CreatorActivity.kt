@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,7 +12,6 @@ import android.view.View
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.antoncherniak.habits.customview.ColorPicker
 import com.antoncherniak.habits.databinding.ActivityCreatorBinding
 import com.antoncherniak.habits.extensions.getBackgroundColor
 import com.antoncherniak.habits.extensions.hideKeyboard
@@ -34,7 +32,6 @@ class CreatorActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_creator)
-
         createHabitPrioritySpinner()
         binding.saveHabitButton.setOnClickListener { saveHabitButtonClick(it) }
         setDataFromIntent()
@@ -59,8 +56,8 @@ class CreatorActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         savedInstanceState.apply {
-            binding.titleEditText.setText(this.getString(TITLE_KEY))
-            binding.descriptionEditText.setText(this.getString(DESCRIPTION_KEY))
+            binding.titleEditText.setText(getString(TITLE_KEY))
+            binding.descriptionEditText.setText(getString(DESCRIPTION_KEY))
             binding.periodDaysEditText.setText(this.getString(PERIOD_DAYS_KEY))
             binding.periodTimesEditText.setText(this.getString(PERIOD_COUNT_KEY))
             this.getString(PRIORITY_KEY)?.toInt()
@@ -231,21 +228,15 @@ class CreatorActivity : AppCompatActivity() {
 
     private fun setColorPicker() {
         binding.selectedColorView.setOnClickListener {
-            val scrollViewVisibility = binding.colorScrollView.scrollView.visibility
-            binding.colorScrollView.scrollView.visibility =
+            val scrollViewVisibility = binding.colorScrollView.visibility
+            binding.colorScrollView.visibility =
                 if (scrollViewVisibility == View.GONE) View.VISIBLE
                 else View.GONE
         }
 
-        binding.colorScrollView.colorPickerContainer.background = BitmapDrawable(
-            resources,
-            ColorPicker.createBackgroundBitmap(this)
-        )
-
-        ColorPicker.createColorPickerItems(this) {
-            val color = it.backgroundTintList
+        binding.myColorPicker.listener = {color ->
             binding.selectedColorView.backgroundTintList = color
-            binding.colorScrollView.scrollView.visibility = View.GONE
+            binding.colorScrollView.visibility = View.GONE
             setRgbString()
             setHsvString()
         }
