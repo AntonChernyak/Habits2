@@ -1,6 +1,7 @@
 package com.antoncherniak.habits
 
 import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
@@ -8,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.antoncherniak.habits.CreatorActivity.Companion.ID_RESULT_KEY
 import com.antoncherniak.habits.databinding.ActivityListBinding
 import com.antoncherniak.habits.habitslist.HabitListAdapter
 import com.antoncherniak.habits.repository.MockRepository
@@ -32,7 +32,11 @@ class ListActivity : AppCompatActivity() {
                 val newItems = habitsRepository.getHabits()
                 for (i in newItems.indices) {
                     if (newItems[i].id == id) {
-                        binding.habitRecyclerView.scrollToPosition(i)
+                        binding.habitRecyclerView.apply {
+                            post {
+                                smoothScrollToPosition(i)
+                            }
+                        }
                     }
                 }
             }
@@ -81,7 +85,6 @@ class ListActivity : AppCompatActivity() {
             habit = habitsRepository.getHabits()[position],
             position = position
         ).apply { creatorActivityResult.launch(this) }
-
     }
 
     private fun swipeToDelete() {
@@ -97,12 +100,19 @@ class ListActivity : AppCompatActivity() {
                 habitsRepository.removeHabitAtPosition(viewHolder.adapterPosition)
                 updateHabitsData()
             }
-
         }).attachToRecyclerView(binding.habitRecyclerView)
     }
 
     private fun updateHabitsData() {
         habitAdapter.submitList(habitsRepository.getHabits())
+    }
+
+    companion object {
+        const val ID_RESULT_KEY = "id_res_key"
+
+        fun newIntent(habitId: String): Intent {
+            return Intent().putExtra(ID_RESULT_KEY, habitId)
+        }
     }
 
 }

@@ -56,18 +56,20 @@ class CreatorActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         savedInstanceState.apply {
-            binding.titleEditText.setText(getString(TITLE_KEY))
-            binding.descriptionEditText.setText(getString(DESCRIPTION_KEY))
-            binding.periodDaysEditText.setText(this.getString(PERIOD_DAYS_KEY))
-            binding.periodTimesEditText.setText(this.getString(PERIOD_COUNT_KEY))
-            this.getString(PRIORITY_KEY)?.toInt()
-                ?.minus(1)?.let { binding.prioritySpinner.setSelection(it) }
-            when (this.getString(TYPE_KEY)) {
-                HabitType.GOOD_HABIT.name -> setHabitType(HabitType.GOOD_HABIT)
-                HabitType.BAD_HABIT.name -> setHabitType(HabitType.BAD_HABIT)
+            with(binding) {
+                titleEditText.setText(getString(TITLE_KEY))
+                descriptionEditText.setText(getString(DESCRIPTION_KEY))
+                periodDaysEditText.setText(this@apply.getString(PERIOD_DAYS_KEY))
+                periodTimesEditText.setText(this@apply.getString(PERIOD_COUNT_KEY))
+                this@apply.getString(PRIORITY_KEY)?.toInt()
+                    ?.minus(1)?.let { prioritySpinner.setSelection(it) }
+                when (this@apply.getString(TYPE_KEY)) {
+                    HabitType.GOOD_HABIT.name -> setHabitType(HabitType.GOOD_HABIT)
+                    HabitType.BAD_HABIT.name -> setHabitType(HabitType.BAD_HABIT)
+                }
+                selectedColorView.backgroundTintList =
+                    ColorStateList.valueOf(savedInstanceState.getInt(COLOR_KEY, Color.WHITE))
             }
-            binding.selectedColorView.backgroundTintList =
-                ColorStateList.valueOf(savedInstanceState.getInt(COLOR_KEY, Color.WHITE))
         }
     }
 
@@ -82,19 +84,22 @@ class CreatorActivity : AppCompatActivity() {
     }
 
     private fun createHabit(): Habit {
-        return Habit(
-            id = (13..10000).random(),
-            title = binding.titleEditText.text.toString(),
-            description = binding.descriptionEditText.text.toString(),
-            priority = getTypeBySpinnerPosition(binding.prioritySpinner.selectedItem.toString()),
-            type = getHabitType(),
-            periodTimes = binding.periodTimesEditText.text.toString(),
-            periodDays = binding.periodDaysEditText.text.toString(),
-            color = binding.selectedColorView.getBackgroundColor()
-        )
+        return with(binding) {
+            Habit(
+                id = (13..10000).random(),
+                title = titleEditText.text.toString(),
+                description = descriptionEditText.text.toString(),
+                priority = getTypeBySpinnerPosition(prioritySpinner.selectedItem.toString()),
+                type = getHabitType(),
+                periodTimes = periodTimesEditText.text.toString(),
+                periodDays = periodDaysEditText.text.toString(),
+                color = selectedColorView.getBackgroundColor()
+            )
+        }
     }
-    private fun getTypeBySpinnerPosition(pos: String) : PriorityType {
-        return when(pos) {
+
+    private fun getTypeBySpinnerPosition(pos: String): PriorityType {
+        return when (pos) {
             resources.getString(R.string.high_priority) -> PriorityType.HIGH
             resources.getString(R.string.medium_priority) -> PriorityType.MEDIUM
             else -> PriorityType.LOW
@@ -102,16 +107,17 @@ class CreatorActivity : AppCompatActivity() {
     }
 
     private fun saveHabitButtonClick(view: View) {
-        if (binding.titleEditText.text.isNullOrEmpty() ||
-            binding.periodDaysEditText.text.isNullOrEmpty() ||
-            binding.periodTimesEditText.text.isNullOrEmpty()
-        ) {
+        if (with(binding) {
+                titleEditText.text.isNullOrEmpty() ||
+                        periodDaysEditText.text.isNullOrEmpty() ||
+                        periodTimesEditText.text.isNullOrEmpty()
+            }) {
             fillInRequiredFields(view)
         } else {
             allRequiredDataEntered()
             val position = intent.getIntExtra(POSITION_KEY, DEFAULT_POSITION)
             val habit = createHabit()
-            var resultId = 0
+            val resultId: Int
 
             if (position == DEFAULT_POSITION) {
                 habitsRepository.addHabit(habit = habit)
@@ -127,7 +133,7 @@ class CreatorActivity : AppCompatActivity() {
                 replaceHabit(habit.copy(id = oldId))
                 showEditSnackBar(view)
             }
-            val data = Intent().putExtra(ID_RESULT_KEY, resultId.toString())
+            val data = ListActivity.newIntent(resultId.toString())
             setResult(Activity.RESULT_OK, data)
         }
         this.hideKeyboard()
@@ -136,35 +142,57 @@ class CreatorActivity : AppCompatActivity() {
     private fun fillInRequiredFields(view: View) {
         Snackbar.make(view, getString(R.string.fill_in_required_fields), Snackbar.LENGTH_LONG)
             .show()
-        if (binding.periodTimesEditText.text.isNullOrEmpty()) {
-            binding.periodTimesEditText.backgroundTintList = ColorStateList.valueOf(Color.RED)
-        } else {
-            binding.periodTimesEditText.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_light_color))
-        }
+        with(binding) {
+            periodTimesEditText.backgroundTintList = if (periodTimesEditText.text.isNullOrEmpty()) {
+                ColorStateList.valueOf(Color.RED)
+            } else {
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(this@CreatorActivity, R.color.primary_light_color)
+                )
+            }
 
-        if (binding.periodDaysEditText.text.isNullOrEmpty()) {
-            binding.periodDaysEditText.backgroundTintList = ColorStateList.valueOf(Color.RED)
-        } else {
-            binding.periodDaysEditText.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_light_color))
-        }
+            periodDaysEditText.backgroundTintList = if (periodDaysEditText.text.isNullOrEmpty()) {
+                ColorStateList.valueOf(Color.RED)
+            } else {
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(this@CreatorActivity, R.color.primary_light_color)
+                )
+            }
 
-        if (binding.titleEditText.text.isNullOrEmpty()) {
-            binding.titleEditText.backgroundTintList = ColorStateList.valueOf(Color.RED)
-        } else {
-            binding.titleEditText.backgroundTintList =
-                ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_light_color))
+            titleEditText.backgroundTintList = if (titleEditText.text.isNullOrEmpty()) {
+                ColorStateList.valueOf(Color.RED)
+            } else {
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(this@CreatorActivity, R.color.primary_light_color)
+                )
+            }
         }
     }
 
     private fun allRequiredDataEntered() {
-        binding.titleEditText.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_light_color))
-        binding.periodDaysEditText.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_light_color))
-        binding.periodTimesEditText.backgroundTintList =
-            ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_light_color))
+        with(binding) {
+            titleEditText.backgroundTintList =
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        this@CreatorActivity,
+                        R.color.primary_light_color
+                    )
+                )
+            periodDaysEditText.backgroundTintList =
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        this@CreatorActivity,
+                        R.color.primary_light_color
+                    )
+                )
+            periodTimesEditText.backgroundTintList =
+                ColorStateList.valueOf(
+                    ContextCompat.getColor(
+                        this@CreatorActivity,
+                        R.color.primary_light_color
+                    )
+                )
+        }
     }
 
     private fun showCreateSnackbar(view: View) {
@@ -198,16 +226,22 @@ class CreatorActivity : AppCompatActivity() {
             intent.getParcelableExtra(HABIT_EXTRA_KEY)
         }
         if (editingHabit != null) {
-            binding.creatorToolbar.title = getString(R.string.edited_habit)
-            binding.titleEditText.setText(editingHabit.title)
-            binding.descriptionEditText.setText(editingHabit.description)
-            binding.periodDaysEditText.setText(editingHabit.periodDays)
-            binding.periodTimesEditText.setText(editingHabit.periodTimes)
-            binding.prioritySpinner.setSelection(editingHabit.priority.spinnerPos)
-            setHabitType(editingHabit.type)
-            binding.selectedColorView.backgroundTintList =
-                ColorStateList.valueOf(editingHabit.color)
-            binding.selectedColorView.foreground = ContextCompat.getDrawable(this, R.drawable.selected_color_foreground)
+            with(binding) {
+                creatorToolbar.title = getString(R.string.edited_habit)
+                titleEditText.setText(editingHabit.title)
+                descriptionEditText.setText(editingHabit.description)
+                periodDaysEditText.setText(editingHabit.periodDays)
+                periodTimesEditText.setText(editingHabit.periodTimes)
+                prioritySpinner.setSelection(editingHabit.priority.spinnerPos)
+                setHabitType(editingHabit.type)
+                selectedColorView.backgroundTintList =
+                    ColorStateList.valueOf(editingHabit.color)
+                selectedColorView.foreground =
+                    ContextCompat.getDrawable(
+                        this@CreatorActivity,
+                        R.drawable.selected_color_foreground
+                    )
+            }
         }
     }
 
@@ -227,29 +261,33 @@ class CreatorActivity : AppCompatActivity() {
     }
 
     private fun setColorPicker() {
-        binding.selectedColorView.setOnClickListener {
-            val scrollViewVisibility = binding.colorScrollView.visibility
-            binding.colorScrollView.visibility =
-                if (scrollViewVisibility == View.GONE) View.VISIBLE
-                else View.GONE
-        }
+        with(binding) {
+            selectedColorView.setOnClickListener {
+                val scrollViewVisibility = colorScrollView.visibility
+                colorScrollView.visibility =
+                    if (scrollViewVisibility == View.GONE) View.VISIBLE
+                    else View.GONE
+            }
 
-        binding.myColorPicker.listener = {color ->
-            binding.selectedColorView.backgroundTintList = color
-            binding.colorScrollView.visibility = View.GONE
-            setRgbString()
-            setHsvString()
+            myColorPicker.listener = { color ->
+                selectedColorView.backgroundTintList = color
+                colorScrollView.visibility = View.GONE
+                setRgbString()
+                setHsvString()
+            }
         }
     }
 
     private fun setRgbString() {
-        val colorCode = binding.selectedColorView.getBackgroundColor()
-        binding.rgbTextView.text = resources.getString(
-            R.string.rgb_string,
-            Color.red(colorCode).toString(),
-            Color.green(colorCode).toString(),
-            Color.blue(colorCode).toString()
-        )
+        with(binding) {
+            val colorCode = selectedColorView.getBackgroundColor()
+            rgbTextView.text = resources.getString(
+                R.string.rgb_string,
+                Color.red(colorCode).toString(),
+                Color.green(colorCode).toString(),
+                Color.blue(colorCode).toString()
+            )
+        }
     }
 
     private fun setHsvString() {
@@ -274,7 +312,6 @@ class CreatorActivity : AppCompatActivity() {
         const val PRIORITY_KEY = "priority_key"
         const val POSITION_KEY = "position_key"
         const val COLOR_KEY = "color_key"
-        const val ID_RESULT_KEY = "id_res_key"
 
         const val HABIT_EXTRA_KEY = "habit_extra_key"
 
@@ -283,11 +320,10 @@ class CreatorActivity : AppCompatActivity() {
             habit: Habit? = null,
             position: Int = DEFAULT_POSITION
         ): Intent {
-            val intent = Intent(context, CreatorActivity::class.java).apply {
+            return Intent(context, CreatorActivity::class.java).apply {
                 putExtra(POSITION_KEY, position)
                 putExtra(HABIT_EXTRA_KEY, habit)
             }
-            return intent
         }
     }
 }
