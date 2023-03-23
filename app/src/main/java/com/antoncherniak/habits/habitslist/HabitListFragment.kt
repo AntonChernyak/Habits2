@@ -119,7 +119,18 @@ class HabitListFragment : Fragment() {
     }
 
     companion object {
-        const val ID_RESULT_KEY = "id_res_key"
+        private const val ID_RESULT_KEY = "id_res_key"
+        private const val HABIT_TYPE_EXTRA_KEY = "habit type key"
+        fun newInstance(habitType: String): HabitListFragment =
+            HabitListFragment().apply {
+                arguments = Bundle().apply {
+                    putString(
+                        HABIT_TYPE_EXTRA_KEY,
+                        habitType
+                    )
+                }
+            }
+
 
         fun newIntent(habitId: String): Intent {
             return Intent().putExtra(ID_RESULT_KEY, habitId)

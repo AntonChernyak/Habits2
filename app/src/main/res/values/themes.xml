@@ -25,4 +25,10 @@
         <item name="android:layout_marginStart">@dimen/spacing_tiny_4</item>
     </style>
 
+    <style name="TabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
+        <item name="android:textSize">22sp</item>
+        <item name="tabIndicatorColor">@color/primary_light_color</item>
+        <item name="tabTextColor">@color/white</item>
+        <item name="android:background">@color/primary_light_color</item>
+    </style>
 </resources>
