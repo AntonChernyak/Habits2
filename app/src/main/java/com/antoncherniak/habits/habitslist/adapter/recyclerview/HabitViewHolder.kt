@@ -1,4 +1,4 @@
-package com.antoncherniak.habits.habitslist
+package com.antoncherniak.habits.habitslist.adapter.recyclerview
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

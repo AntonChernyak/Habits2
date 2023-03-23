@@ -30,5 +30,7 @@
     <string name="rgb_string">R:%1$s | G:%2$s | B:%3$s</string>
     <string name="hsv_string">H:%1$s | S:%2$s%% | V:%3$s%%</string>
     <string name="edited_habit">Редактирование привычки</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
