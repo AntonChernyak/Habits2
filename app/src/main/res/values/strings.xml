@@ -43,7 +43,7 @@
     <string name="app_version_value">hw_4</string>
     <string name="developer_name_value">Черняк А.О.</string>
     <string name="habits_list">Список привычек</string>
-    <string name="navigation_open">Боковое меню открыто</string>
-    <string name="navigation_close">Боковое меню закрыто</string>
+    <string name="navigation_open">Боковая панель открыта</string>
+    <string name="navigation_close">Боковая панель закрыта</string>
 
 </resources>

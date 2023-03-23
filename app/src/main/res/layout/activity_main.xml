@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
+
     <!-- Это будет появляться, когда drawer закрыт -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
@@ -16,6 +17,7 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/app_navigation_graph"
         tools:context=".MainActivity" />
+
     <!-- Это будет появляться, когда drawer открыт -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_drawer_view"
@@ -23,5 +25,5 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/navigation_drawer_header"
-        app:menu="@menu/navigation_drawer" />
+        app:menu="@menu/navigation_drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

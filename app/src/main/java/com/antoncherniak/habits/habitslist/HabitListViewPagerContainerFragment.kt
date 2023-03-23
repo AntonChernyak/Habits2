@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentHabitListViewPagerContainerBinding
+import com.antoncherniak.habits.extensions.addToggleToNavigationDrawer
 import com.antoncherniak.habits.habitslist.adapter.viewpager.HabitViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -26,6 +27,13 @@ class HabitListViewPagerContainerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().addToggleToNavigationDrawer(
+            R.id.drawer_layout,
+            R.id.habitsListToolbar,
+            R.string.navigation_open,
+            R.string.navigation_close
+        )
+
         binding.habitsViewPager.apply {
             adapter = HabitViewPagerAdapter(this@HabitListViewPagerContainerFragment)
             orientation = ViewPager2.ORIENTATION_HORIZONTAL

@@ -1,53 +1,34 @@
 package com.antoncherniak.habits.habitslist
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.App
-import com.antoncherniak.habits.MainActivity
 import com.antoncherniak.habits.R
-import com.antoncherniak.habits.databinding.ActivityListBinding
-import com.antoncherniak.habits.extensions.addToggleToNavigationDrawer
+import com.antoncherniak.habits.databinding.FragmentHabitListBinding
+import com.antoncherniak.habits.habitcreator.HabitCreatorFragment
 import com.antoncherniak.habits.habitslist.adapter.recyclerview.HabitListAdapter
+import com.antoncherniak.habits.model.HabitType
 import com.antoncherniak.habits.repository.MockRepository
 
 class HabitListFragment : Fragment() {
 
-    private val binding: ActivityListBinding by viewBinding()
+    private val binding: FragmentHabitListBinding by viewBinding()
     private val habitAdapter: HabitListAdapter by lazy {
         HabitListAdapter { position ->
             openHabitForEditing(position)
         }
     }
     private val habitsRepository: MockRepository by lazy {
-        (requireContext() as App).habitRepository
+        (requireActivity().applicationContext as App).habitRepository
     }
-
-    private val creatorActivityResult =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val id: Int = result.data?.getStringExtra(MainActivity.ID_RESULT_KEY)?.toInt() ?: 0
-                val newItems = habitsRepository.getHabits()
-                for (i in newItems.indices) {
-                    if (newItems[i].id == id) {
-                        binding.habitRecyclerView.apply {
-                            post {
-                                smoothScrollToPosition(i)
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,16 +38,27 @@ class HabitListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        requireActivity().addToggleToNavigationDrawer(
-            R.id.drawer_layout,
-            R.id.info_toolbar,
-            R.string.navigation_open,
-            R.string.navigation_close
-        )
+        super.onViewCreated(view, savedInstanceState)
+
         addHabitButtonOnClick()
         setRecyclerViewSettings()
         createAddButtonVisibilityBehavior()
         swipeToDelete()
+
+        requireActivity().supportFragmentManager.setFragmentResultListener(
+            REQUEST_ID_KEY,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val resultId = bundle.getString(ID_RESULT_KEY)?.toInt() ?: 0
+            val newItems = habitsRepository.getHabits()
+            for (i in newItems.indices) {
+                if (newItems[i].id == resultId) {
+                    binding.habitRecyclerView.post {
+                        binding.habitRecyclerView.layoutManager?.scrollToPosition(i)
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {
@@ -82,9 +74,7 @@ class HabitListFragment : Fragment() {
 
     private fun addHabitButtonOnClick() {
         binding.addNewHabitButton.setOnClickListener {
-            CreatorActivity.newIntent(this@HabitListFragment).apply {
-                creatorActivityResult.launch(this)
-            }
+            findNavController().navigate(R.id.action_habitListViewPagerContainerFragment_to_habitCreatorFragment)
         }
     }
 
@@ -98,11 +88,13 @@ class HabitListFragment : Fragment() {
     }
 
     private fun openHabitForEditing(position: Int) {
-        CreatorActivity.newIntent(
-            context = this@ListActivity,
-            habit = habitsRepository.getHabits()[position],
-            position = position
-        ).apply { creatorActivityResult.launch(this) }
+        findNavController().navigate(
+            R.id.action_habitListViewPagerContainerFragment_to_habitCreatorFragment,
+            HabitCreatorFragment.newBundle(
+                habit = habitsRepository.getHabits()[position],
+                position = position
+            )
+        )
     }
 
     private fun swipeToDelete() {
@@ -122,12 +114,23 @@ class HabitListFragment : Fragment() {
     }
 
     private fun updateHabitsData() {
-        habitAdapter.submitList(habitsRepository.getHabits())
+        val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY)
+
+        if (type == HabitType.BAD_HABIT.name) {
+            habitAdapter.submitList(
+                habitsRepository.getHabits().filter { it.type == HabitType.BAD_HABIT })
+        } else {
+            habitAdapter.submitList(
+                habitsRepository.getHabits().filter { it.type == HabitType.GOOD_HABIT })
+        }
     }
+
 
     companion object {
         private const val ID_RESULT_KEY = "id_res_key"
         private const val HABIT_TYPE_EXTRA_KEY = "habit type key"
+        const val REQUEST_ID_KEY = "requestKey"
+
         fun newInstance(habitType: String): HabitListFragment =
             HabitListFragment().apply {
                 arguments = Bundle().apply {
@@ -138,9 +141,10 @@ class HabitListFragment : Fragment() {
                 }
             }
 
-
-        fun newIntent(habitId: String): Intent {
-            return Intent().putExtra(ID_RESULT_KEY, habitId)
+        fun resultIdBundle(id: String): Bundle {
+            return Bundle().apply {
+                putString(ID_RESULT_KEY, id)
+            }
         }
     }
 
