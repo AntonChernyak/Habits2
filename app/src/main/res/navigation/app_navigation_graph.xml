@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation_graph"
+    app:startDestination="@id/habitListViewPagerContainerFragment">
+
+    <fragment
+        android:id="@+id/habitListViewPagerContainerFragment"
+        android:name="com.antoncherniak.habits.habitslist.HabitListViewPagerContainerFragment"
+        android:label="fragment_habit_list_view_pager_container"
+        tools:layout="@layout/fragment_habit_list_view_pager_container" >
+        <action
+            android:id="@+id/action_habitListViewPagerContainerFragment_to_habitCreatorFragment"
+            app:destination="@id/habitCreatorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/habitCreatorFragment"
+        android:name="com.antoncherniak.habits.habitcreator.HabitCreatorFragment"
+        android:label="fragment_habit_creator"
+        tools:layout="@layout/fragment_habit_creator" />
+</navigation>
