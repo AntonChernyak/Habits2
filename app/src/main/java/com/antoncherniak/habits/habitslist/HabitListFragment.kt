@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.App
-import com.antoncherniak.habits.CreatorActivity
-import com.antoncherniak.habits.ListActivity
+import com.antoncherniak.habits.MainActivity
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.ActivityListBinding
 import com.antoncherniak.habits.habitslist.adapter.recyclerview.HabitListAdapter
@@ -35,7 +34,7 @@ class HabitListFragment : Fragment() {
     private val creatorActivityResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val id: Int = result.data?.getStringExtra(ListActivity.ID_RESULT_KEY)?.toInt() ?: 0
+                val id: Int = result.data?.getStringExtra(MainActivity.ID_RESULT_KEY)?.toInt() ?: 0
                 val newItems = habitsRepository.getHabits()
                 for (i in newItems.indices) {
                     if (newItems[i].id == id) {

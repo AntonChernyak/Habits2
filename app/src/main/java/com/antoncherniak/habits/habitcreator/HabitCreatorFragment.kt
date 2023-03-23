@@ -1,4 +1,4 @@
-package com.antoncherniak.habits
+package com.antoncherniak.habits.habitcreator
 
 import android.app.Activity
 import android.content.Context
@@ -6,12 +6,17 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.antoncherniak.habits.App
+import com.antoncherniak.habits.MainActivity
+import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.ActivityCreatorBinding
 import com.antoncherniak.habits.extensions.getBackgroundColor
 import com.antoncherniak.habits.extensions.hideKeyboard
@@ -22,16 +27,22 @@ import com.antoncherniak.habits.repository.MockRepository
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
 
-class CreatorActivity : AppCompatActivity() {
+class HabitCreatorFragment : Fragment() {
 
     private val binding: ActivityCreatorBinding by viewBinding()
     private val habitsRepository: MockRepository by lazy {
-        (applicationContext as App).habitRepository
+        (requireContext() as App).habitRepository
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_creator)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_habit_creator, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         createHabitPrioritySpinner()
         binding.saveHabitButton.setOnClickListener { saveHabitButtonClick(it) }
         setDataFromIntent()
@@ -133,7 +144,7 @@ class CreatorActivity : AppCompatActivity() {
                 replaceHabit(habit.copy(id = oldId))
                 showEditSnackBar(view)
             }
-            val data = ListActivity.newIntent(resultId.toString())
+            val data = MainActivity.newIntent(resultId.toString())
             setResult(Activity.RESULT_OK, data)
         }
         this.hideKeyboard()
@@ -325,5 +336,16 @@ class CreatorActivity : AppCompatActivity() {
                 putExtra(HABIT_EXTRA_KEY, habit)
             }
         }
+
+        /*
+                fun newInstance(param1: String, param2: String) =
+            HabitCreatorFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
+         */
     }
+
 }

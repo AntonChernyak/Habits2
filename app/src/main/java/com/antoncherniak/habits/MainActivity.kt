@@ -3,7 +3,7 @@ package com.antoncherniak.habits
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class ListActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
