@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".applicationinfo.ApplicationInfoFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/info_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="@string/application_info" />
+
+    <View
+        android:id="@+id/info_divider"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/divider_height"
+        android:background="@color/habit_creator_divider_color"
+        android:elevation="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/info_toolbar" />
+
+    <ImageView
+        android:id="@+id/logo_image_view"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="@dimen/spacing_medium_16"
+        android:layout_marginBottom="@dimen/spacing_medium_16"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/app_logo"
+        app:layout_constraintBottom_toTopOf="@id/title_label_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/info_divider" />
+
+    <TextView
+        android:id="@+id/title_label_text_view"
+        style="@style/habitCreatorSubtitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_medium_16"
+        android:layout_marginTop="@dimen/spacing_huge_32"
+        android:text="@string/app_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/logo_image_view" />
+
+    <TextView
+        android:id="@+id/version_label_text_view"
+        style="@style/habitCreatorSubtitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_medium_16"
+        android:layout_marginTop="@dimen/spacing_medium_16"
+        android:text="@string/app_version"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_label_text_view" />
+
+    <TextView
+        android:id="@+id/developer_label_text_view"
+        style="@style/habitCreatorSubtitleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_medium_16"
+        android:layout_marginTop="@dimen/spacing_medium_16"
+        android:text="@string/app_developer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/version_label_text_view" />
+
+    <TextView
+        android:id="@+id/app_title_text_view"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_small_8"
+        android:text="@string/app_title_value"
+        app:layout_constraintBaseline_toBaselineOf="@id/title_label_text_view"
+        app:layout_constraintStart_toEndOf="@id/info_barrier"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/app_version_text_view"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_small_8"
+        android:text="@string/app_version_value"
+        app:layout_constraintBaseline_toBaselineOf="@id/version_label_text_view"
+        app:layout_constraintStart_toEndOf="@id/info_barrier"
+        app:layout_constraintTop_toBottomOf="@+id/app_title_text_view" />
+
+    <TextView
+        android:id="@+id/app_developer_text_view"
+        style="@style/TextAppearance.MaterialComponents.Subtitle1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_small_8"
+        android:text="@string/developer_name_value"
+        app:layout_constraintBaseline_toBaselineOf="@id/developer_label_text_view"
+        app:layout_constraintStart_toEndOf="@id/info_barrier"
+        app:layout_constraintTop_toBottomOf="@+id/app_version_text_view"
+        tools:layout_editor_absoluteX="157dp" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/info_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="title_label_text_view,version_label_text_view,developer_label_text_view" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

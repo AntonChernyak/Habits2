@@ -28,6 +28,8 @@
     <dimen name="item_color_picker_size">40dp</dimen>
     <dimen name="item_color_corner_radius">10dp</dimen>
     <dimen name="divider_height">1.5dp</dimen>
+    <dimen name="navigation_logo_size">100dp</dimen>
+    <dimen name="navigation_drawer_header_height">180dp</dimen>
 
 
 </resources>

@@ -16,6 +16,7 @@ import com.antoncherniak.habits.App
 import com.antoncherniak.habits.MainActivity
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.ActivityListBinding
+import com.antoncherniak.habits.extensions.addToggleToNavigationDrawer
 import com.antoncherniak.habits.habitslist.adapter.recyclerview.HabitListAdapter
 import com.antoncherniak.habits.repository.MockRepository
 
@@ -56,6 +57,12 @@ class HabitListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        requireActivity().addToggleToNavigationDrawer(
+            R.id.drawer_layout,
+            R.id.info_toolbar,
+            R.string.navigation_open,
+            R.string.navigation_close
+        )
         addHabitButtonOnClick()
         setRecyclerViewSettings()
         createAddButtonVisibilityBehavior()

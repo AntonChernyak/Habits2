@@ -19,4 +19,9 @@
         android:name="com.antoncherniak.habits.habitcreator.HabitCreatorFragment"
         android:label="fragment_habit_creator"
         tools:layout="@layout/fragment_habit_creator" />
+    <fragment
+        android:id="@+id/applicationInfoFragment"
+        android:name="com.antoncherniak.habits.applicationinfo.ApplicationInfoFragment"
+        android:label="fragment_application_info"
+        tools:layout="@layout/fragment_application_info" />
 </navigation>

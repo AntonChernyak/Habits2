@@ -40,7 +40,6 @@ class HabitCreatorFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_habit_creator, container, false)
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createHabitPrioritySpinner()
@@ -49,6 +48,7 @@ class HabitCreatorFragment : Fragment() {
         setColorPicker()
         setRgbString()
         setHsvString()
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
