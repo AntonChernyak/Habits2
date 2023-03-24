@@ -43,7 +43,7 @@ class MockRepository {
         val initialList = mutableListOf<Habit>()
         Habit(
             id = 1,
-            title = "Погладить кота",
+            title = "Погладить кота1",
             priority = PriorityType.HIGH,
             periodTimes = "3",
             periodDays = "1",
@@ -52,7 +52,7 @@ class MockRepository {
 
         Habit(
             id = 2,
-            title = "Покормить кота",
+            title = "Покормить кота2",
             description = "Лучше кормить кота, а то он будет злиться. А до этого лучше не доводить, ибо страшен кот в гневе!",
             priority = PriorityType.MEDIUM,
             periodTimes = "4",
@@ -62,7 +62,7 @@ class MockRepository {
 
         Habit(
             id = 3,
-            title = "Погладить кота",
+            title = "Погладить кота3",
             priority = PriorityType.HIGH,
             periodTimes = "3",
             periodDays = "1"
@@ -70,7 +70,7 @@ class MockRepository {
 
         Habit(
             id = 4,
-            title = "Покормить кота",
+            title = "Покормить кота4",
             description = "Лучше кормить кота, а то он будет злиться. А до этого лучше не доводить, ибо страшен кот в гневе!",
             priority = PriorityType.MEDIUM,
             periodTimes = "4",
@@ -80,7 +80,7 @@ class MockRepository {
 
         Habit(
             id = 5,
-            title = "Погладить кота",
+            title = "Погладить кота5",
             priority = PriorityType.LOW,
             periodTimes = "3",
             periodDays = "1",
@@ -89,7 +89,7 @@ class MockRepository {
 
         Habit(
             id = 6,
-            title = "Покормить кота",
+            title = "Покормить кота6",
             description = "Лучше кормить кота, а то он будет злиться. А до этого лучше не доводить, ибо страшен кот в гневе!",
             priority = PriorityType.HIGH,
             periodTimes = "4",
@@ -99,7 +99,7 @@ class MockRepository {
 
         Habit(
             id = 7,
-            title = "Погладить кота",
+            title = "Погладить кота777",
             priority = PriorityType.MEDIUM,
             periodTimes = "3",
             periodDays = "1",
@@ -108,7 +108,7 @@ class MockRepository {
 
         Habit(
             id = 8,
-            title = "Покормить кота Покормить кота Покормить кота Покормить кота Покормить кота",
+            title = "8Покормить кота Покормить кота Покормить кота Покормить кота Покормить кота",
             description = "Лучше кормить кота, а то он будет злиться. А до этого лучше не доводить, ибо страшен кот в гневе!",
             priority = PriorityType.HIGH,
             periodTimes = "4",
@@ -118,7 +118,7 @@ class MockRepository {
 
         Habit(
             id = 9,
-            title = "Погладить кота",
+            title = "Погладить кота9",
             priority = PriorityType.HIGH,
             periodTimes = "3",
             periodDays = "1",
@@ -127,7 +127,7 @@ class MockRepository {
 
         Habit(
             id = 10,
-            title = "Покормить кота",
+            title = "Покормить кота10",
             description = "Лучше кормить кота, а то он будет злиться. А до этого лучше не доводить," +
                     " ибо страшен кот в гневе! Лучше кормить кота, а то он будет злиться. А до этого " +
                     "лучше не доводить, ибо страшен кот в гневе! Ещё текст выаоы щыо аыоаш щыоао ыщаоыщ оаыщвоа " +
@@ -140,7 +140,7 @@ class MockRepository {
 
         Habit(
             id = 11,
-            title = "Погладить кота",
+            title = "Погладить кота11",
             priority = PriorityType.HIGH,
             periodTimes = "3",
             periodDays = "1",
@@ -149,7 +149,7 @@ class MockRepository {
 
         Habit(
             id = 12,
-            title = "Покормить кота",
+            title = "Покормить кота12",
             description = "Лучше кормить кота, а то он будет злиться. А до этого лучше не доводить, ибо страшен кот в гневе!",
             priority = PriorityType.MEDIUM,
             periodTimes = "4",

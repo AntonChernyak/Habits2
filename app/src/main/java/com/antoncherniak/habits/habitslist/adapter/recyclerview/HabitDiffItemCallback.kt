@@ -1,4 +1,4 @@
-package com.antoncherniak.habits.habitslist
+package com.antoncherniak.habits.habitslist.adapter.recyclerview
 
 import androidx.recyclerview.widget.DiffUtil
 import com.antoncherniak.habits.model.Habit

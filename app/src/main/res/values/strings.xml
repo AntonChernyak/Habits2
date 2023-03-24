@@ -30,5 +30,20 @@
     <string name="rgb_string">R:%1$s | G:%2$s | B:%3$s</string>
     <string name="hsv_string">H:%1$s | S:%2$s%% | V:%3$s%%</string>
     <string name="edited_habit">Редактирование привычки</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_habits">Мои привычки</string>
+    <string name="goods">Хорошие</string>
+    <string name="bads">Плохие</string>
+    <string name="application_info">Информация о приложении</string>
+    <string name="logo">Логотип приложения</string>
+    <string name="app_title">Название</string>
+    <string name="app_version">Версия</string>
+    <string name="app_developer">Разработчик</string>
+    <string name="app_title_value">Мои привычки</string>
+    <string name="app_version_value">hw_4</string>
+    <string name="developer_name_value">Черняк А.О.</string>
+    <string name="habits_list">Список привычек</string>
+    <string name="navigation_open">Боковая панель открыта</string>
+    <string name="navigation_close">Боковая панель закрыта</string>
 
 </resources>
