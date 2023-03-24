@@ -7,7 +7,8 @@ import com.antoncherniak.habits.databinding.ItemHabitBinding
 import com.antoncherniak.habits.model.Habit
 
 class HabitViewHolder(
-    private val binding: ItemHabitBinding
+    private val binding: ItemHabitBinding,
+    private val itemClick: (id: Int) -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(model: Habit){
@@ -23,6 +24,7 @@ class HabitViewHolder(
                 itemDescriptionTextView.visibility = View.VISIBLE
             } else itemDescriptionTextView.visibility = View.GONE
         }
+        itemView.setOnClickListener { itemClick.invoke(model.id) }
     }
 
     private fun createPeriodString(habit: Habit): String {

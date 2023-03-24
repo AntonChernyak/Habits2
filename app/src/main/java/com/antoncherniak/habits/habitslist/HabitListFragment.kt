@@ -15,15 +15,14 @@ import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentHabitListBinding
 import com.antoncherniak.habits.habitcreator.HabitCreatorFragment
 import com.antoncherniak.habits.habitslist.adapter.recyclerview.HabitListAdapter
-import com.antoncherniak.habits.model.HabitType
 import com.antoncherniak.habits.repository.MockRepository
 
 class HabitListFragment : Fragment() {
 
     private val binding: FragmentHabitListBinding by viewBinding()
     private val habitAdapter: HabitListAdapter by lazy {
-        HabitListAdapter { position ->
-            openHabitForEditing(position)
+        HabitListAdapter { habitId ->
+            openHabitForEditing(habitId)
         }
     }
     private val habitsRepository: MockRepository by lazy {
@@ -87,12 +86,12 @@ class HabitListFragment : Fragment() {
         })
     }
 
-    private fun openHabitForEditing(position: Int) {
+    private fun openHabitForEditing(habitId: Int) {
         findNavController().navigate(
             R.id.action_habitListViewPagerContainerFragment_to_habitCreatorFragment,
             HabitCreatorFragment.newBundle(
-                habit = habitsRepository.getHabits()[position],
-                position = position
+                habit = habitsRepository.getHabits().first { it.id == habitId },
+                id = habitId
             )
         )
     }
@@ -115,14 +114,7 @@ class HabitListFragment : Fragment() {
 
     private fun updateHabitsData() {
         val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY)
-
-        if (type == HabitType.BAD_HABIT.name) {
-            habitAdapter.submitList(
-                habitsRepository.getHabits().filter { it.type == HabitType.BAD_HABIT })
-        } else {
-            habitAdapter.submitList(
-                habitsRepository.getHabits().filter { it.type == HabitType.GOOD_HABIT })
-        }
+        habitAdapter.submitList(habitsRepository.getHabits().filter { it.type.name == type })
     }
 
 

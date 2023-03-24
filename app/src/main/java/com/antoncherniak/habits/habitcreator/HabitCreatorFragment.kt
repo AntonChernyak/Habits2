@@ -48,6 +48,7 @@ class HabitCreatorFragment : Fragment() {
         setColorPicker()
         setRgbString()
         setHsvString()
+
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -124,12 +125,12 @@ class HabitCreatorFragment : Fragment() {
             fillInRequiredFields(view)
         } else {
             allRequiredDataEntered()
-            val position = arguments?.getInt(POSITION_KEY) ?: DEFAULT_POSITION
+            val habitId = arguments?.getInt(ID_KEY) ?: DEFAULT_ID
 
             val habit = createHabit()
             val resultId: Int
 
-            if (position == DEFAULT_POSITION) {
+            if (habitId == DEFAULT_ID) {
                 habitsRepository.addHabit(habit = habit)
                 resultId = habit.id
                 showCreateSnackbar(view)
@@ -316,24 +317,24 @@ class HabitCreatorFragment : Fragment() {
     }
 
     companion object {
-        const val DEFAULT_POSITION = -1
+        const val DEFAULT_ID = -1
         const val TITLE_KEY = "title_key"
         const val DESCRIPTION_KEY = "description_key"
         const val PERIOD_COUNT_KEY = "period_count_key"
         const val PERIOD_DAYS_KEY = "period_days_key"
         const val TYPE_KEY = "type_key"
         const val PRIORITY_KEY = "priority_key"
-        const val POSITION_KEY = "position_key"
+        const val ID_KEY = "id_key"
         const val COLOR_KEY = "color_key"
 
         const val HABIT_EXTRA_KEY = "habit_extra_key"
 
         fun newBundle(
             habit: Habit? = null,
-            position: Int = DEFAULT_POSITION
+            id: Int = DEFAULT_ID
         ): Bundle  {
             return Bundle().apply {
-                putInt(POSITION_KEY, position)
+                putInt(ID_KEY, id)
                 putParcelable(HABIT_EXTRA_KEY, habit)
             }
         }

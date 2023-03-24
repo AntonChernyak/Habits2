@@ -7,18 +7,16 @@ import com.antoncherniak.habits.databinding.ItemHabitBinding
 import com.antoncherniak.habits.model.Habit
 
 class HabitListAdapter(
-    private val openHabitItemClick: (position: Int) -> Unit
+    private val openHabitItemClick: (habitId: Int) -> Unit
 ) : ListAdapter<Habit, HabitViewHolder>(HabitDiffItemCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
-        val holder = HabitViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder =
+        HabitViewHolder(
             ItemHabitBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            )
+            ),
+            openHabitItemClick
         )
-        holder.itemView.setOnClickListener { openHabitItemClick(holder.adapterPosition) }
-        return holder
-    }
 
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
         holder.bind(getItem(position))

@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.databinding.ActivityMainBinding
@@ -16,7 +15,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val binding: ActivityMainBinding by viewBinding()
     private lateinit var navController: NavController
-    private lateinit var appBarConfig: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +22,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment
         val navController: NavController = navHostFragment.navController
-        appBarConfig = AppBarConfiguration(navController.graph, binding.drawerLayout)
 
         binding.navigationDrawerView.setupWithNavController(navController)
     }
