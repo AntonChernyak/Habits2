@@ -9,4 +9,8 @@ class HabitListInteractor(
 
     fun getHabits(): List<HabitModel> = habitListRepository.getHabits()
 
+    fun removeHabit(habitId: Int) {
+        habitListRepository.removeHabit(habitId)
+    }
+
 }

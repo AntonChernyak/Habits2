@@ -1,11 +1,13 @@
 package com.antoncherniak.habits.presentation.habitslist
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +18,9 @@ import com.antoncherniak.habits.databinding.FragmentHabitListBinding
 import com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment
 import com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview.HabitListAdapter
 import com.antoncherniak.habits.data.repository.MockRepository
+import com.antoncherniak.habits.domain.model.HabitType
+import com.antoncherniak.habits.presentation.ScreenState
+import com.antoncherniak.habits.presentation.extensions.viewModelFactory
 
 class HabitListFragment : Fragment() {
 
@@ -28,6 +33,7 @@ class HabitListFragment : Fragment() {
     private val habitsRepository: MockRepository by lazy {
         (requireActivity().applicationContext as App).habitRepository
     }
+    private val viewModel: HabitListViewModel by viewModels { viewModelFactory(habitsRepository) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,12 +44,31 @@ class HabitListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         addHabitButtonOnClick()
-        setRecyclerViewSettings()
         createAddButtonVisibilityBehavior()
         swipeToDelete()
+        setScrollToEditedHabitPositionSettings()
 
+        binding.habitRecyclerView.adapter = habitAdapter
+        viewModel.screenState.observe(viewLifecycleOwner, ::listFragmentUiRender)
+    }
+
+    private fun listFragmentUiRender(screenState: ScreenState) {
+        when (screenState) {
+            is ScreenState.Data -> {
+                habitAdapter.submitList(screenState.habits)
+            }
+            ScreenState.Loading -> {}
+            is ScreenState.Error -> {}
+            ScreenState.Init -> {
+                val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
+                Log.e("TAGGGG", "init, type = ${type}")
+                viewModel.getHabits(type)
+            }
+        }
+    }
+
+    private fun setScrollToEditedHabitPositionSettings() {
         requireActivity().supportFragmentManager.setFragmentResultListener(
             REQUEST_ID_KEY,
             viewLifecycleOwner
@@ -57,17 +82,6 @@ class HabitListFragment : Fragment() {
                     }
                 }
             }
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        updateHabitsData()
-    }
-
-    private fun setRecyclerViewSettings() {
-        binding.habitRecyclerView.apply {
-            adapter = habitAdapter
         }
     }
 
@@ -106,17 +120,10 @@ class HabitListFragment : Fragment() {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                habitsRepository.removeHabitAtPosition(viewHolder.adapterPosition)
-                updateHabitsData()
+                viewModel.removeHabit(habitAdapter.getItemById(viewHolder.adapterPosition).id)
             }
         }).attachToRecyclerView(binding.habitRecyclerView)
     }
-
-    private fun updateHabitsData() {
-        val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY)
-        habitAdapter.submitList(habitsRepository.getHabits().filter { it.type.name == type })
-    }
-
 
     companion object {
         private const val ID_RESULT_KEY = "id_res_key"

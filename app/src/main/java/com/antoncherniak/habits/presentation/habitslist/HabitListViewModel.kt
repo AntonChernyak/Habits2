@@ -11,33 +11,55 @@ class HabitListViewModel(
     private val habitListInteractor: HabitListInteractor
 ) : ViewModel() {
 
-    private val _screenState: MutableLiveData<ScreenState> = MutableLiveData()
+    private val _screenState: MutableLiveData<ScreenState> = MutableLiveData(ScreenState.Init)
     private val habitsList: MutableList<HabitModel> = mutableListOf()
     val screenState: LiveData<ScreenState> = _screenState
 
-    init {
-        getInitHabits()
-    }
-
-    private fun getInitHabits() {
+    private fun getInitHabits(habitType: String): ScreenState {
         _screenState.value = ScreenState.Loading
-        try {
+        val result = try {
             habitsList.addAll(habitListInteractor.getHabits())
-            _screenState.value = ScreenState.Data(habitsList)
+            ScreenState.Data(habitsList.filter { it.type.name == habitType})
         } catch (e: Exception) {
-            _screenState.value  = ScreenState.Error(e.message ?: "unknown error")
+            ScreenState.Error(e.message ?: "unknown error")
         }
+        return result
     }
 
-    fun searchHabit(searchQuery: String) {
+    private fun setSearchQuery(searchQuery: String): ScreenState {
         _screenState.value = ScreenState.Loading
-        try {
+        val result = try {
             val searchHabits = habitsList.filter { it.title.contains(searchQuery.trim()) }
-            _screenState.value = ScreenState.Data(searchHabits)
-        } catch (e : Exception) {
-            _screenState.value  = ScreenState.Error(e.message ?: "unknown error")
+            ScreenState.Data(searchHabits)
+        } catch (e: Exception) {
+            ScreenState.Error(e.message ?: "unknown error")
         }
+        return result
     }
 
+    private fun removeHabitById(habitId: Int): ScreenState {
+        _screenState.value = ScreenState.Loading
+        val result = try {
+            habitListInteractor.removeHabit(habitId)
+            habitsList.indexOfFirst { it.id == habitId}.apply {
+                habitsList.removeAt(this)
+            }
+            ScreenState.Data(habitsList)
+        } catch (e: Exception) {
+            ScreenState.Error(e.message ?: "unknown error")
+        }
+        return result
+    }
 
+    fun getHabits(type: String) {
+        _screenState.value = getInitHabits(type)
+    }
+
+    fun searchHabit(query: String) {
+        _screenState.value = setSearchQuery(query)
+    }
+
+    fun removeHabit(habitId: Int) {
+        _screenState.value = removeHabitById(habitId)
+    }
 }

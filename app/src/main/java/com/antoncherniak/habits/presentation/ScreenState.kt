@@ -7,7 +7,7 @@ sealed interface ScreenState {
 
     object Init : ScreenState
 
-    class Data(habits: List<HabitModel>) : ScreenState
+    class Data(val habits: List<HabitModel>) : ScreenState
 
-    class Error(errorMessage: String) : ScreenState
+    class Error(val errorMessage: String) : ScreenState
 }
