@@ -1,7 +1,6 @@
 package com.antoncherniak.habits.presentation.habitslist
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -62,7 +61,6 @@ class HabitListFragment : Fragment() {
             is ScreenState.Error -> {}
             ScreenState.Init -> {
                 val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
-                Log.e("TAGGGG", "init, type = ${type}")
                 viewModel.getHabits(type)
             }
         }
@@ -120,7 +118,7 @@ class HabitListFragment : Fragment() {
             ): Boolean = false
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewModel.removeHabit(habitAdapter.getItemById(viewHolder.adapterPosition).id)
+                viewModel.removeHabit(habitAdapter.getItemByPosition(viewHolder.adapterPosition))
             }
         }).attachToRecyclerView(binding.habitRecyclerView)
     }

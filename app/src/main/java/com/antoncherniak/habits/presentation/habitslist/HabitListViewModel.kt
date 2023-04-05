@@ -37,13 +37,11 @@ class HabitListViewModel(
         return result
     }
 
-    private fun removeHabitById(habitId: Int): ScreenState {
+    private fun removeHabitById(habit: HabitModel): ScreenState {
         _screenState.value = ScreenState.Loading
         val result = try {
-            habitListInteractor.removeHabit(habitId)
-            habitsList.indexOfFirst { it.id == habitId}.apply {
-                habitsList.removeAt(this)
-            }
+            habitListInteractor.removeHabit(habit.id)
+            habitsList.remove(habit)
             ScreenState.Data(habitsList)
         } catch (e: Exception) {
             ScreenState.Error(e.message ?: "unknown error")
@@ -59,7 +57,7 @@ class HabitListViewModel(
         _screenState.value = setSearchQuery(query)
     }
 
-    fun removeHabit(habitId: Int) {
-        _screenState.value = removeHabitById(habitId)
+    fun removeHabit(habit: HabitModel) {
+        _screenState.value = removeHabitById(habit)
     }
 }

@@ -26,5 +26,5 @@ class HabitListAdapter(
 
     override fun getItemId(position: Int): Long = position.toLong()
 
-    fun getItemById(position: Int): HabitModel = currentList[position]
+    fun getItemByPosition(position: Int): HabitModel = currentList[position]
 }
