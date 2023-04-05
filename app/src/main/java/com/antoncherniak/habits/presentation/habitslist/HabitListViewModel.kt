@@ -3,61 +3,69 @@ package com.antoncherniak.habits.presentation.habitslist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.antoncherniak.habits.domain.interactor.HabitListInteractor
 import com.antoncherniak.habits.domain.model.HabitModel
-import com.antoncherniak.habits.presentation.ScreenState
+import kotlinx.coroutines.launch
 
 class HabitListViewModel(
     private val habitListInteractor: HabitListInteractor
 ) : ViewModel() {
 
-    private val _screenState: MutableLiveData<ScreenState> = MutableLiveData(ScreenState.Init)
+    private val _screenState: MutableLiveData<ListScreenState> =
+        MutableLiveData(ListScreenState.Init)
     private val habitsList: MutableList<HabitModel> = mutableListOf()
-    val screenState: LiveData<ScreenState> = _screenState
+    val screenState: LiveData<ListScreenState> = _screenState
 
-    private fun getInitHabits(habitType: String): ScreenState {
-        _screenState.value = ScreenState.Loading
+    private fun getInitHabits(habitType: String): ListScreenState {
+        _screenState.value = ListScreenState.Loading
         val result = try {
             habitsList.addAll(habitListInteractor.getHabits())
-            ScreenState.Data(habitsList.filter { it.type.name == habitType})
+            ListScreenState.Data(habitsList.filter { it.type.name == habitType })
         } catch (e: Exception) {
-            ScreenState.Error(e.message ?: "unknown error")
+            ListScreenState.Error(e.message ?: "unknown error")
         }
         return result
     }
 
-    private fun setSearchQuery(searchQuery: String): ScreenState {
-        _screenState.value = ScreenState.Loading
+    private fun setSearchQuery(searchQuery: String): ListScreenState {
+        _screenState.value = ListScreenState.Loading
         val result = try {
             val searchHabits = habitsList.filter { it.title.contains(searchQuery.trim()) }
-            ScreenState.Data(searchHabits)
+            ListScreenState.Data(searchHabits)
         } catch (e: Exception) {
-            ScreenState.Error(e.message ?: "unknown error")
+            ListScreenState.Error(e.message ?: "unknown error")
         }
         return result
     }
 
-    private fun removeHabitById(habit: HabitModel): ScreenState {
-        _screenState.value = ScreenState.Loading
+    private fun removeHabitById(habit: HabitModel): ListScreenState {
+        _screenState.value = ListScreenState.Loading
         val result = try {
             habitListInteractor.removeHabit(habit.id)
             habitsList.remove(habit)
-            ScreenState.Data(habitsList)
+            ListScreenState.Data(habitsList)
         } catch (e: Exception) {
-            ScreenState.Error(e.message ?: "unknown error")
+            ListScreenState.Error(e.message ?: "unknown error")
         }
         return result
     }
 
     fun getHabits(type: String) {
-        _screenState.value = getInitHabits(type)
+        viewModelScope.launch {
+            _screenState.value = getInitHabits(type)
+        }
     }
 
     fun searchHabit(query: String) {
-        _screenState.value = setSearchQuery(query)
+        viewModelScope.launch {
+            _screenState.value = setSearchQuery(query)
+        }
     }
 
     fun removeHabit(habit: HabitModel) {
-        _screenState.value = removeHabitById(habit)
+        viewModelScope.launch {
+            _screenState.value = removeHabitById(habit)
+        }
     }
 }

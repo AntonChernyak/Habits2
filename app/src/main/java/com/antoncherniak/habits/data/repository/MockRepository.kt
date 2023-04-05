@@ -4,33 +4,33 @@ import android.graphics.Color
 import com.antoncherniak.habits.domain.model.HabitModel
 import com.antoncherniak.habits.domain.model.HabitType
 import com.antoncherniak.habits.domain.model.PriorityType
+import com.antoncherniak.habits.domain.repository.HabitCreatorRepositoryInterface
 import com.antoncherniak.habits.domain.repository.HabitListRepositoryInterface
 
 
-class MockRepository: HabitListRepositoryInterface {
+class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInterface {
     private var habits: MutableList<HabitModel> = mutableListOf()
 
     init {
         habits = createHabitsRepository()
     }
 
-    override fun getHabits(): List<HabitModel> = habits.sortedBy { it.priority }.reversed().toMutableList()
+    override fun getHabits(): List<HabitModel> = habits
+        .sortedByDescending { it.priority }
+        .toMutableList()
+
+    override fun addHabit(habit: HabitModel) {
+        habits.add(habit)
+    }
+
+    override fun updateHabit(habit: HabitModel) {
+        val index = habits.indexOfFirst { it.id == habit.id }
+        habits[index] = habit
+    }
+
     override fun removeHabit(habitId: Int) {
         val index = habits.indexOfFirst { it.id == habitId }
         if (index != -1) habits.removeAt(index)
-    }
-
-    fun addHabit(position: Int = habits.size, habit: HabitModel) {
-        habits.add(position, habit)
-    }
-
-    fun replaceHabit(newHabit: HabitModel){
-        val index = habits.indexOfFirst { it.id == newHabit.id }
-        habits[index] = newHabit
-    }
-
-    fun removeLastHabit(){
-        habits.removeLast()
     }
 
     private fun createHabitsRepository(): MutableList<HabitModel> {

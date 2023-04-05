@@ -11,14 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
-import com.antoncherniak.habits.App
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentHabitListBinding
 import com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment
 import com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview.HabitListAdapter
-import com.antoncherniak.habits.data.repository.MockRepository
 import com.antoncherniak.habits.domain.model.HabitType
-import com.antoncherniak.habits.presentation.ScreenState
 import com.antoncherniak.habits.presentation.extensions.viewModelFactory
 
 class HabitListFragment : Fragment() {
@@ -29,10 +26,7 @@ class HabitListFragment : Fragment() {
             openHabitForEditing(habitId)
         }
     }
-    private val habitsRepository: MockRepository by lazy {
-        (requireActivity().applicationContext as App).habitRepository
-    }
-    private val viewModel: HabitListViewModel by viewModels { viewModelFactory(habitsRepository) }
+    private val viewModel: HabitListViewModel by viewModels { viewModelFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,14 +46,14 @@ class HabitListFragment : Fragment() {
         viewModel.screenState.observe(viewLifecycleOwner, ::listFragmentUiRender)
     }
 
-    private fun listFragmentUiRender(screenState: ScreenState) {
+    private fun listFragmentUiRender(screenState: ListScreenState) {
         when (screenState) {
-            is ScreenState.Data -> {
+            is ListScreenState.Data -> {
                 habitAdapter.submitList(screenState.habits)
             }
-            ScreenState.Loading -> {}
-            is ScreenState.Error -> {}
-            ScreenState.Init -> {
+            ListScreenState.Loading -> {}
+            is ListScreenState.Error -> {}
+            ListScreenState.Init -> {
                 val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
                 viewModel.getHabits(type)
             }
@@ -72,13 +66,9 @@ class HabitListFragment : Fragment() {
             viewLifecycleOwner
         ) { _, bundle ->
             val resultId = bundle.getString(ID_RESULT_KEY)?.toInt() ?: 0
-            val newItems = habitsRepository.getHabits()
-            for (i in newItems.indices) {
-                if (newItems[i].id == resultId) {
-                    binding.habitRecyclerView.post {
-                        binding.habitRecyclerView.layoutManager?.scrollToPosition(i)
-                    }
-                }
+            val newPosition = habitAdapter.getItemPositionById(resultId)
+            binding.habitRecyclerView.post {
+                binding.habitRecyclerView.layoutManager?.scrollToPosition(newPosition)
             }
         }
     }
@@ -102,7 +92,7 @@ class HabitListFragment : Fragment() {
         findNavController().navigate(
             R.id.action_habitListViewPagerContainerFragment_to_habitCreatorFragment,
             HabitCreatorFragment.newBundle(
-                habit = habitsRepository.getHabits().first { it.id == habitId },
+                habit = habitAdapter.getItemById(habitId),
                 id = habitId
             )
         )

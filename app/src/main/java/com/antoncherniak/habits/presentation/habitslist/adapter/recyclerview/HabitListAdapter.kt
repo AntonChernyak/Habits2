@@ -27,4 +27,9 @@ class HabitListAdapter(
     override fun getItemId(position: Int): Long = position.toLong()
 
     fun getItemByPosition(position: Int): HabitModel = currentList[position]
+
+    fun getItemById(habitId: Int): HabitModel = currentList.first { it.id == habitId }
+
+    fun getItemPositionById(habitId: Int): Int = currentList.indexOfFirst { it.id == habitId }
+
 }

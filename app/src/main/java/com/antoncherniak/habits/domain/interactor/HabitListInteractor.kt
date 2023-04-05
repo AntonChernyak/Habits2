@@ -5,12 +5,10 @@ import com.antoncherniak.habits.domain.repository.HabitListRepositoryInterface
 
 class HabitListInteractor(
     private val habitListRepository: HabitListRepositoryInterface
-) {
+): HabitListRepositoryInterface {
 
-    fun getHabits(): List<HabitModel> = habitListRepository.getHabits()
+    override fun getHabits(): List<HabitModel> = habitListRepository.getHabits()
 
-    fun removeHabit(habitId: Int) {
-        habitListRepository.removeHabit(habitId)
-    }
+    override fun removeHabit(habitId: Int) = habitListRepository.removeHabit(habitId)
 
 }

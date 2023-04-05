@@ -18,6 +18,8 @@
     <color name="gray_material_400">#bdbdbd</color>
     <color name="gray_material_200">#eeeeee</color>
 
+    <color name="red_material_600">#E53935</color>
+
     <!-- app colors -->
     <color name="primary_light_color">@color/green_material_600</color>>
     <color name="secondary_light_color">@color/green_material_200</color>>
@@ -25,4 +27,7 @@
 
     <!-- HabitsList screen -->
     <color name="habit_creator_divider_color">#E0E0E0</color>
+
+    <!-- HabitCreator screen -->
+    <color name="error_color">@color/red_material_600</color>>
 </resources>
