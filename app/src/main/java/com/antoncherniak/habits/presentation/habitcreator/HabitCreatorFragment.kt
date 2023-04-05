@@ -18,7 +18,7 @@ import com.antoncherniak.habits.presentation.extensions.getBackgroundColor
 import com.antoncherniak.habits.presentation.extensions.hideKeyboard
 import com.antoncherniak.habits.presentation.habitslist.HabitListFragment
 import com.antoncherniak.habits.presentation.habitslist.HabitListFragment.Companion.REQUEST_ID_KEY
-import com.antoncherniak.habits.domain.model.Habit
+import com.antoncherniak.habits.domain.model.HabitModel
 import com.antoncherniak.habits.domain.model.HabitType
 import com.antoncherniak.habits.domain.model.PriorityType
 import com.antoncherniak.habits.data.repository.MockRepository
@@ -93,9 +93,9 @@ class HabitCreatorFragment : Fragment() {
         binding.prioritySpinner.adapter = spinnerAdapter
     }
 
-    private fun createHabit(): Habit {
+    private fun createHabit(): HabitModel {
         return with(binding) {
-            Habit(
+            HabitModel(
                 id = (13..10000).random(),
                 title = titleEditText.text.toString(),
                 description = descriptionEditText.text.toString(),
@@ -136,10 +136,10 @@ class HabitCreatorFragment : Fragment() {
                 showCreateSnackbar(view)
             } else {
                 val oldId = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    arguments?.getParcelable(HABIT_EXTRA_KEY, Habit::class.java)?.id ?: -1
+                    arguments?.getParcelable(HABIT_EXTRA_KEY, HabitModel::class.java)?.id ?: -1
 
                 } else {
-                    arguments?.getParcelable<Habit>(HABIT_EXTRA_KEY)?.id ?: -1
+                    arguments?.getParcelable<HabitModel>(HABIT_EXTRA_KEY)?.id ?: -1
                 }
 
                 resultId = oldId
@@ -223,7 +223,7 @@ class HabitCreatorFragment : Fragment() {
             .setAction(getString(R.string.cancel)) {
                 setDataFromIntent()
                 val editingHabit = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    arguments?.getParcelable(HABIT_EXTRA_KEY, Habit::class.java)
+                    arguments?.getParcelable(HABIT_EXTRA_KEY, HabitModel::class.java)
                 } else {
                     arguments?.getParcelable(HABIT_EXTRA_KEY)
                 }
@@ -235,7 +235,7 @@ class HabitCreatorFragment : Fragment() {
 
     private fun setDataFromIntent() {
         val editingHabit = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(HABIT_EXTRA_KEY, Habit::class.java)
+            arguments?.getParcelable(HABIT_EXTRA_KEY, HabitModel::class.java)
         } else {
             arguments?.getParcelable(HABIT_EXTRA_KEY)
         }
@@ -264,7 +264,7 @@ class HabitCreatorFragment : Fragment() {
         else binding.badHabitRadioButton.isChecked = true
     }
 
-    private fun replaceHabit(habit: Habit) {
+    private fun replaceHabit(habit: HabitModel) {
         habitsRepository.replaceHabit(habit)
     }
 
@@ -330,7 +330,7 @@ class HabitCreatorFragment : Fragment() {
         const val HABIT_EXTRA_KEY = "habit_extra_key"
 
         fun newBundle(
-            habit: Habit? = null,
+            habit: HabitModel? = null,
             id: Int = DEFAULT_ID
         ): Bundle  {
             return Bundle().apply {

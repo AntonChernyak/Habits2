@@ -4,11 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.antoncherniak.habits.databinding.ItemHabitBinding
-import com.antoncherniak.habits.domain.model.Habit
+import com.antoncherniak.habits.domain.model.HabitModel
 
 class HabitListAdapter(
     private val openHabitItemClick: (habitId: Int) -> Unit
-) : ListAdapter<Habit, HabitViewHolder>(HabitDiffItemCallback()) {
+) : ListAdapter<HabitModel, HabitViewHolder>(HabitDiffItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder =
         HabitViewHolder(
