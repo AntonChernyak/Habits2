@@ -1,4 +1,4 @@
-package com.antoncherniak.habits.model
+package com.antoncherniak.habits.domain.model
 
 import android.graphics.Color
 import android.os.Parcelable

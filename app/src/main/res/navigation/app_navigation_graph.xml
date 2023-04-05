@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/habitListViewPagerContainerFragment"
-        android:name="com.antoncherniak.habits.habitslist.HabitListViewPagerContainerFragment"
+        android:name="com.antoncherniak.habits.presentation.habitslist.HabitListViewPagerContainerFragment"
         android:label="fragment_habit_list_view_pager_container"
         tools:layout="@layout/fragment_habit_list_view_pager_container" >
         <action
@@ -16,12 +16,12 @@
     </fragment>
     <fragment
         android:id="@+id/habitCreatorFragment"
-        android:name="com.antoncherniak.habits.habitcreator.HabitCreatorFragment"
+        android:name="com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment"
         android:label="fragment_habit_creator"
         tools:layout="@layout/fragment_habit_creator" />
     <fragment
         android:id="@+id/applicationInfoFragment"
-        android:name="com.antoncherniak.habits.applicationinfo.ApplicationInfoFragment"
+        android:name="com.antoncherniak.habits.presentation.applicationinfo.ApplicationInfoFragment"
         android:label="fragment_application_info"
         tools:layout="@layout/fragment_application_info" />
 </navigation>

@@ -1,10 +1,10 @@
-package com.antoncherniak.habits.habitslist.adapter.recyclerview
+package com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.ItemHabitBinding
-import com.antoncherniak.habits.model.Habit
+import com.antoncherniak.habits.domain.model.Habit
 
 class HabitViewHolder(
     private val binding: ItemHabitBinding,

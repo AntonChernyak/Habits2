@@ -1,4 +1,4 @@
-package com.antoncherniak.habits.model
+package com.antoncherniak.habits.domain.model
 
 import androidx.annotation.StringRes
 import com.antoncherniak.habits.R

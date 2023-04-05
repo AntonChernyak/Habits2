@@ -1,9 +1,9 @@
-package com.antoncherniak.habits.repository
+package com.antoncherniak.habits.data.repository
 
 import android.graphics.Color
-import com.antoncherniak.habits.model.Habit
-import com.antoncherniak.habits.model.HabitType
-import com.antoncherniak.habits.model.PriorityType
+import com.antoncherniak.habits.domain.model.Habit
+import com.antoncherniak.habits.domain.model.HabitType
+import com.antoncherniak.habits.domain.model.PriorityType
 
 
 class MockRepository {

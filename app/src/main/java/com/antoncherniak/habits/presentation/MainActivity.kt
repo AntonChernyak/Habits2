@@ -1,4 +1,4 @@
-package com.antoncherniak.habits
+package com.antoncherniak.habits.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
 

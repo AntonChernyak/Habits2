@@ -1,7 +1,7 @@
 package com.antoncherniak.habits
 
 import android.app.Application
-import com.antoncherniak.habits.repository.MockRepository
+import com.antoncherniak.habits.data.repository.MockRepository
 
 class App: Application() {
 

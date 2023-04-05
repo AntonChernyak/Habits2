@@ -1,4 +1,4 @@
-package com.antoncherniak.habits.habitcreator
+package com.antoncherniak.habits.presentation.habitcreator
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -14,14 +14,14 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.App
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentHabitCreatorBinding
-import com.antoncherniak.habits.extensions.getBackgroundColor
-import com.antoncherniak.habits.extensions.hideKeyboard
-import com.antoncherniak.habits.habitslist.HabitListFragment
-import com.antoncherniak.habits.habitslist.HabitListFragment.Companion.REQUEST_ID_KEY
-import com.antoncherniak.habits.model.Habit
-import com.antoncherniak.habits.model.HabitType
-import com.antoncherniak.habits.model.PriorityType
-import com.antoncherniak.habits.repository.MockRepository
+import com.antoncherniak.habits.presentation.extensions.getBackgroundColor
+import com.antoncherniak.habits.presentation.extensions.hideKeyboard
+import com.antoncherniak.habits.presentation.habitslist.HabitListFragment
+import com.antoncherniak.habits.presentation.habitslist.HabitListFragment.Companion.REQUEST_ID_KEY
+import com.antoncherniak.habits.domain.model.Habit
+import com.antoncherniak.habits.domain.model.HabitType
+import com.antoncherniak.habits.domain.model.PriorityType
+import com.antoncherniak.habits.data.repository.MockRepository
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
 

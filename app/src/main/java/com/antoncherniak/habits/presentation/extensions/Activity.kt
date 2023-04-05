@@ -1,4 +1,4 @@
-package com.antoncherniak.habits.extensions
+package com.antoncherniak.habits.presentation.extensions
 
 import android.app.Activity
 import android.content.Context

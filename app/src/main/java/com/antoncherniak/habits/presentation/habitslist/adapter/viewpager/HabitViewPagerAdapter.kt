@@ -1,9 +1,9 @@
-package com.antoncherniak.habits.habitslist.adapter.viewpager
+package com.antoncherniak.habits.presentation.habitslist.adapter.viewpager
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.antoncherniak.habits.habitslist.HabitListFragment
-import com.antoncherniak.habits.model.HabitType
+import com.antoncherniak.habits.presentation.habitslist.HabitListFragment
+import com.antoncherniak.habits.domain.model.HabitType
 
 class HabitViewPagerAdapter(fragment: Fragment): FragmentStateAdapter(fragment) {
 

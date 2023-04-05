@@ -1,4 +1,4 @@
-package com.antoncherniak.habits.habitslist
+package com.antoncherniak.habits.presentation.habitslist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,9 +13,9 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.App
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentHabitListBinding
-import com.antoncherniak.habits.habitcreator.HabitCreatorFragment
-import com.antoncherniak.habits.habitslist.adapter.recyclerview.HabitListAdapter
-import com.antoncherniak.habits.repository.MockRepository
+import com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment
+import com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview.HabitListAdapter
+import com.antoncherniak.habits.data.repository.MockRepository
 
 class HabitListFragment : Fragment() {
 

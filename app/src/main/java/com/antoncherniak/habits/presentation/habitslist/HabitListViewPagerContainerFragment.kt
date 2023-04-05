@@ -1,4 +1,4 @@
-package com.antoncherniak.habits.habitslist
+package com.antoncherniak.habits.presentation.habitslist
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,8 +10,8 @@ import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentHabitListViewPagerContainerBinding
-import com.antoncherniak.habits.extensions.addToggleToNavigationDrawer
-import com.antoncherniak.habits.habitslist.adapter.viewpager.HabitViewPagerAdapter
+import com.antoncherniak.habits.presentation.extensions.addToggleToNavigationDrawer
+import com.antoncherniak.habits.presentation.habitslist.adapter.viewpager.HabitViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 

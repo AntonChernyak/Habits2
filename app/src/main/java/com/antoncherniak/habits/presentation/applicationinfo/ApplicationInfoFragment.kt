@@ -1,4 +1,4 @@
-package com.antoncherniak.habits.applicationinfo
+package com.antoncherniak.habits.presentation.applicationinfo
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.antoncherniak.habits.R
-import com.antoncherniak.habits.extensions.addToggleToNavigationDrawer
+import com.antoncherniak.habits.presentation.extensions.addToggleToNavigationDrawer
 
 class ApplicationInfoFragment : Fragment() {
 

@@ -1,7 +1,7 @@
-package com.antoncherniak.habits.habitslist.adapter.recyclerview
+package com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview
 
 import androidx.recyclerview.widget.DiffUtil
-import com.antoncherniak.habits.model.Habit
+import com.antoncherniak.habits.domain.model.Habit
 
 class HabitDiffItemCallback: DiffUtil.ItemCallback<Habit>() {
 

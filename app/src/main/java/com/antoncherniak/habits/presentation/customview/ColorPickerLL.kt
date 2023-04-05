@@ -1,4 +1,4 @@
-package com.antoncherniak.habits.customview
+package com.antoncherniak.habits.presentation.customview
 
 import android.content.Context
 import android.content.res.ColorStateList
