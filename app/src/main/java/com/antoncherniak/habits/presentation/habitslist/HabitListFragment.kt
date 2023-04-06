@@ -86,7 +86,6 @@ class HabitListFragment : Fragment() {
                     habitRecyclerView.isVisible = true
                     errorImageView.isVisible = false
                 }
-                Log.e("TAGGG", "submit = ${screenState.habits.size}")
                 val dataList = mutableListOf<HabitModel>().apply { addAll(screenState.habits)}
                 habitAdapter.submitList(dataList)
             }
@@ -106,7 +105,6 @@ class HabitListFragment : Fragment() {
                 Log.e(ERROR_TAG, screenState.errorMessage)
             }
             ListScreenState.Init -> {
-                Log.e("TAGG", "INIT")
                 val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
                 viewModel.getHabits(type,
                     query = binding.searchBottomSheet.searchEditText.text.toString(),

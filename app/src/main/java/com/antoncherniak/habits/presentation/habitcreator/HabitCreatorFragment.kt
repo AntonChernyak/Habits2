@@ -4,6 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -156,6 +157,7 @@ class HabitCreatorFragment : Fragment() {
     }
 
     private fun showSnackBar(view: View, habitId: Int = DEFAULT_ID) {
+        Log.e("TAGGG", "habitId = ${habitId}")
         val message = if (habitId == DEFAULT_ID) {
             getString(R.string.habit_added)
         } else getString(R.string.habit_edited)

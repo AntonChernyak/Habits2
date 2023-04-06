@@ -1,12 +1,12 @@
 package com.antoncherniak.habits.presentation.habitcreator
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.antoncherniak.habits.domain.interactor.HabitCreatorInteractor
 import com.antoncherniak.habits.domain.model.HabitModel
+import com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment.Companion.DEFAULT_ID
 import kotlinx.coroutines.launch
 
 class HabitCreatorViewModel(
@@ -17,13 +17,11 @@ class HabitCreatorViewModel(
     val resultHabitId: LiveData<Int> = _resultHabitId
 
     private fun habitCreator(habitOldId: Int, habit: HabitModel) {
-        if (habitOldId == HabitCreatorFragment.DEFAULT_ID) {
-            Log.e("TAGGG", "ADD")
+        if (habitOldId == DEFAULT_ID) {
             addHabit(habit)
-            _resultHabitId.value = habit.id
+            _resultHabitId.value = DEFAULT_ID
 
         } else {
-            Log.e("TAGGG", "UPDATE")
             _resultHabitId.value = habitOldId
             updateHabit(habit.copy(id = habitOldId))
         }
