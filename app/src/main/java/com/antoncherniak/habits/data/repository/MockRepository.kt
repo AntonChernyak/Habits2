@@ -170,7 +170,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             priority = PriorityType.MEDIUM,
             periodTimes = "4",
             periodDays = "1",
-            type = HabitType.BAD_HABIT,
+            type = HabitType.GOOD_HABIT,
             color = Color.MAGENTA
         ).apply { initialList.add(this) }
 
@@ -203,7 +203,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             priority = PriorityType.LOW,
             periodTimes = "4",
             periodDays = "1",
-            type = HabitType.BAD_HABIT,
+            type = HabitType.GOOD_HABIT,
             color = Color.MAGENTA
         ).apply { initialList.add(this) }
 
