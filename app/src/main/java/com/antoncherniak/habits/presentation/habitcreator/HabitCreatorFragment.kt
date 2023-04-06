@@ -130,7 +130,12 @@ class HabitCreatorFragment : Fragment() {
                 .show()
         } else {
             val habitOldId = arguments?.getInt(ID_KEY) ?: DEFAULT_ID
-            viewModel.createOrUpdateHabit(habitOldId, createHabit())
+            viewModel.createOrUpdateHabit(
+                habitOldId,
+                createHabit(),
+                R.string.habit_added,
+                R.string.habit_edited
+            )
         }
         requireActivity().hideKeyboard()
     }

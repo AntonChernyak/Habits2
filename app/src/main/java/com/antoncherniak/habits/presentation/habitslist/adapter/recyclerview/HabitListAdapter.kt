@@ -1,5 +1,6 @@
 package com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -30,6 +31,9 @@ class HabitListAdapter(
 
     fun getItemById(habitId: Int): HabitModel = currentList.first { it.id == habitId }
 
-    fun getItemPositionById(habitId: Int): Int = currentList.indexOfFirst { it.id == habitId }
+    fun getItemPositionById(habitId: Int): Int = currentList.indexOfFirst {
+    Log.e("TAGGG", "h = $habitId, id = ${it.id}, title = ${it.id}")
+        it.id == habitId
+    }
 
 }

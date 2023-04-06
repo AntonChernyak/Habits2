@@ -121,12 +121,14 @@ class HabitListFragment : Fragment() {
             viewLifecycleOwner
         ) { _, bundle ->
            val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
+            Log.e("TAGGGG", "res_in1 = ${bundle.getString(ID_RESULT_KEY)?.toInt() ?: 0}")
             viewModel.getHabits(type,
                 query = binding.searchBottomSheet.searchEditText.text.toString(),
                 sortType = binding.searchBottomSheet.sortSpinner.selectedItemPosition,
                 reversed = reversed)
             val resultId = bundle.getString(ID_RESULT_KEY)?.toInt() ?: 0
             val newPosition = habitAdapter.getItemPositionById(resultId)
+            Log.e("TAGGG", "resultId = ${resultId}, newPos = ${newPosition}")
             binding.habitRecyclerView.post {
                 binding.habitRecyclerView.layoutManager?.scrollToPosition(newPosition)
             }

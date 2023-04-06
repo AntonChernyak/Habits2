@@ -1,5 +1,6 @@
 package com.antoncherniak.habits.presentation.habitcreator
 
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,15 +15,23 @@ class HabitCreatorViewModel(
 ) : ViewModel() {
 
     private val _resultHabitId: MutableLiveData<Int> = MutableLiveData()
+    private val _snackbarMessage: MutableLiveData<Int> = MutableLiveData()
     val resultHabitId: LiveData<Int> = _resultHabitId
+    val snackbarMessage: LiveData<Int> = _snackbarMessage
 
-    private fun habitCreator(habitOldId: Int, habit: HabitModel) {
+    private fun habitCreator(
+        habitOldId: Int,
+        habit: HabitModel,
+        addMessage: Int,
+        updateMessage: Int
+    ) {
         if (habitOldId == DEFAULT_ID) {
             addHabit(habit)
             _resultHabitId.value = DEFAULT_ID
-
+            _snackbarMessage.value = addMessage
         } else {
             _resultHabitId.value = habitOldId
+            _snackbarMessage.value = updateMessage
             updateHabit(habit.copy(id = habitOldId))
         }
     }
@@ -45,9 +54,14 @@ class HabitCreatorViewModel(
         }
     }
 
-    fun createOrUpdateHabit(habitOldId: Int, habit: HabitModel) {
+    fun createOrUpdateHabit(
+        habitOldId: Int,
+        habit: HabitModel,
+        @StringRes addMessage: Int,
+        @StringRes updateMessage: Int
+    ) {
         viewModelScope.launch {
-            habitCreator(habitOldId, habit)
+            habitCreator(habitOldId, habit, addMessage, updateMessage)
         }
     }
 
