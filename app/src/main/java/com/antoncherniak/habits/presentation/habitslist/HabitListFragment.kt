@@ -50,6 +50,7 @@ class HabitListFragment : Fragment() {
         createHabitSortSpinner()
         setSortButtonsBehaviour()
         setSortItemSpinnerClickListener()
+        onRestoreInstanceState(savedInstanceState)
 
         binding.habitRecyclerView.adapter = habitAdapter
         viewModel.screenState.observe(viewLifecycleOwner, ::listFragmentUiRender)
@@ -62,20 +63,24 @@ class HabitListFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.apply {
-            putString("search", binding.searchBottomSheet.searchEditText.text.toString())
-            putBoolean("reversed", reversed)
-            putInt("sortedType", binding.searchBottomSheet.sortSpinner.selectedItemPosition)
+            putString(SEARCH_KEY, binding.searchBottomSheet.searchEditText.text.toString())
+            putBoolean(REVERSED_KEY, reversed)
+            putInt(SORT_TYPE_KEY, binding.searchBottomSheet.sortSpinner.selectedItemPosition)
         }
     }
 
-    private fun onRestoreInstanceState(outState: Bundle) {
-
+    private fun onRestoreInstanceState(outState: Bundle?) {
+        with(binding.searchBottomSheet) {
+            searchEditText.setText(outState?.getString(SEARCH_KEY, "") ?: "")
+            reversed = outState?.getBoolean(REVERSED_KEY) ?: false
+            sortSpinner.setSelection(outState?.getInt(SORT_TYPE_KEY, 0) ?: 0)
+        }
     }
 
     private fun listFragmentUiRender(screenState: ListScreenState) {
         when (screenState) {
             is ListScreenState.Data -> {
-                with(binding){
+                with(binding) {
                     shimmerContainer.isVisible = false
                     habitRecyclerView.isVisible = true
                     errorImageView.isVisible = false
@@ -83,14 +88,14 @@ class HabitListFragment : Fragment() {
                 habitAdapter.submitList(screenState.habits)
             }
             ListScreenState.Loading -> {
-                with(binding){
+                with(binding) {
                     shimmerContainer.isVisible = true
                     habitRecyclerView.isVisible = false
                     errorImageView.isVisible = false
                 }
             }
             is ListScreenState.Error -> {
-                with(binding){
+                with(binding) {
                     shimmerContainer.isVisible = false
                     habitRecyclerView.isVisible = false
                     errorImageView.isVisible = true
@@ -113,7 +118,6 @@ class HabitListFragment : Fragment() {
 
             val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
             viewModel.getHabits(type)
-
 
 
             val resultId = bundle.getString(ID_RESULT_KEY)?.toInt() ?: 0
@@ -159,41 +163,50 @@ class HabitListFragment : Fragment() {
         binding.searchBottomSheet.sortSpinner.adapter = spinnerAdapter
     }
 
-    private fun setSortItemSpinnerClickListener(){
-        binding.searchBottomSheet.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                getSortedHabits(p2)
-            }
+    private fun setSortItemSpinnerClickListener() {
+        binding.searchBottomSheet.sortSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                    getSortedHabits(p2)
+                }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
             }
-        }
 
     }
 
-    private fun setSortButtonsBehaviour(){
+    private fun setSortButtonsBehaviour() {
         val sortedSpinnerPosition = binding.searchBottomSheet.sortSpinner.selectedItemPosition
         with(binding) {
             searchBottomSheet.buttonUp.setOnClickListener {
-                searchBottomSheet.buttonUp.background = ContextCompat.getDrawable(requireActivity(),
-                    R.drawable.background_sort_button_selected)
-                searchBottomSheet.buttonDown.background = ContextCompat.getDrawable(requireActivity(),
-                    R.drawable.background_sort_button_not_selected)
+                searchBottomSheet.buttonUp.background = ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.background_sort_button_selected
+                )
+                searchBottomSheet.buttonDown.background = ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.background_sort_button_not_selected
+                )
                 reversed = false
                 getSortedHabits(sortedSpinnerPosition)
             }
             searchBottomSheet.buttonDown.setOnClickListener {
-                searchBottomSheet.buttonDown.background = ContextCompat.getDrawable(requireActivity(),
-                    R.drawable.background_sort_button_selected)
-                searchBottomSheet.buttonUp.background = ContextCompat.getDrawable(requireActivity(),
-                    R.drawable.background_sort_button_not_selected)
+                searchBottomSheet.buttonDown.background = ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.background_sort_button_selected
+                )
+                searchBottomSheet.buttonUp.background = ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.background_sort_button_not_selected
+                )
                 reversed = true
                 getSortedHabits(sortedSpinnerPosition)
             }
         }
     }
 
-    private fun getSortedHabits(sortType: Int){
+    private fun getSortedHabits(sortType: Int) {
         viewModel.searchAndSortHabits(
             query = binding.searchBottomSheet.searchEditText.text.toString(),
             sortType = sortType,
@@ -218,6 +231,9 @@ class HabitListFragment : Fragment() {
 
     companion object {
         private const val ID_RESULT_KEY = "id_res_key"
+        private const val SEARCH_KEY = "search_key"
+        private const val REVERSED_KEY = "reversed_key"
+        private const val SORT_TYPE_KEY = "sort_key"
         private const val HABIT_TYPE_EXTRA_KEY = "habit type key"
         private const val ERROR_TAG = "ERROR: "
         const val REQUEST_ID_KEY = "requestKey"
