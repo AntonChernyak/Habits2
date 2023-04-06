@@ -173,6 +173,9 @@ class HabitListFragment : Fragment() {
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     getSortedHabits()
+                    binding.habitRecyclerView.post {
+                        binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
+                    }
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -194,6 +197,9 @@ class HabitListFragment : Fragment() {
                 )
                 reversed = false
                 getSortedHabits()
+                binding.habitRecyclerView.post {
+                    binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
+                }
             }
             searchBottomSheet.buttonDown.setOnClickListener {
                 searchBottomSheet.buttonDown.background = ContextCompat.getDrawable(
@@ -206,6 +212,9 @@ class HabitListFragment : Fragment() {
                 )
                 reversed = true
                 getSortedHabits()
+                binding.habitRecyclerView.post {
+                    binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
+                }
             }
         }
     }
