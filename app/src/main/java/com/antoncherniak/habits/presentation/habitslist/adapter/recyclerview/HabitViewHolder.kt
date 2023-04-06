@@ -17,8 +17,6 @@ class HabitViewHolder(
             itemColorView.setBackgroundColor(model.color)
             itemPeriodTextView.text = createPeriodString(model)
             itemPriorityTextView.text = itemView.resources.getString(model.priority.priorityType)
-            itemTypeTextView.text = itemView.resources.getString(model.type.typeName)
-
             if (model.description.isNotEmpty()) {
                 itemDescriptionTextView.text = model.description
                 itemDescriptionTextView.visibility = View.VISIBLE

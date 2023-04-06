@@ -1,6 +1,7 @@
 package com.antoncherniak.habits.presentation.habitslist
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -49,10 +50,28 @@ class HabitListFragment : Fragment() {
     private fun listFragmentUiRender(screenState: ListScreenState) {
         when (screenState) {
             is ListScreenState.Data -> {
+                with(binding){
+                    shimmerContainer.isVisible = false
+                    habitRecyclerView.isVisible = true
+                    errorImageView.isVisible = false
+                }
                 habitAdapter.submitList(screenState.habits)
             }
-            ListScreenState.Loading -> {}
-            is ListScreenState.Error -> {}
+            ListScreenState.Loading -> {
+                with(binding){
+                    shimmerContainer.isVisible = true
+                    habitRecyclerView.isVisible = false
+                    errorImageView.isVisible = false
+                }
+            }
+            is ListScreenState.Error -> {
+                with(binding){
+                    shimmerContainer.isVisible = false
+                    habitRecyclerView.isVisible = false
+                    errorImageView.isVisible = true
+                }
+                Log.e(ERROR_TAG, screenState.errorMessage)
+            }
             ListScreenState.Init -> {
                 val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
                 viewModel.getHabits(type)
@@ -65,6 +84,13 @@ class HabitListFragment : Fragment() {
             REQUEST_ID_KEY,
             viewLifecycleOwner
         ) { _, bundle ->
+
+
+            val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
+            viewModel.getHabits(type)
+
+
+
             val resultId = bundle.getString(ID_RESULT_KEY)?.toInt() ?: 0
             val newPosition = habitAdapter.getItemPositionById(resultId)
             binding.habitRecyclerView.post {
@@ -116,6 +142,7 @@ class HabitListFragment : Fragment() {
     companion object {
         private const val ID_RESULT_KEY = "id_res_key"
         private const val HABIT_TYPE_EXTRA_KEY = "habit type key"
+        private const val ERROR_TAG = "ERROR: "
         const val REQUEST_ID_KEY = "requestKey"
 
         fun newInstance(habitType: String): HabitListFragment =
@@ -134,5 +161,4 @@ class HabitListFragment : Fragment() {
             }
         }
     }
-
 }

@@ -27,6 +27,7 @@
 
     <!-- HabitsList screen -->
     <color name="habit_creator_divider_color">#E0E0E0</color>
+    <color name="shimmer_color">#9F9F9F</color>
 
     <!-- HabitCreator screen -->
     <color name="error_color">@color/red_material_600</color>>

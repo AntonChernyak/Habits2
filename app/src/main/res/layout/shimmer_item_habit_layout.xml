@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/spacing_small_8"
@@ -10,10 +9,10 @@
     app:cardUseCompatPadding="true">
 
     <FrameLayout
-        android:id="@+id/itemColorView"
+        android:id="@+id/shimmerItemColorView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_material_200"
+        android:background="@color/shimmer_color"
         android:padding="@dimen/spacing_tiny_4">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,47 +22,46 @@
             android:padding="@dimen/spacing_small_8">
 
             <TextView
-                android:id="@+id/itemTitleTextView"
+                android:id="@+id/shimmerItemTitleTextView"
                 style="@style/TextAppearance.MaterialComponents.Headline6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacing_small_8"
-                android:ellipsize="end"
-                android:maxLines="3"
-                app:layout_constraintEnd_toStartOf="@+id/itemPriorityTextView"
+                android:background="@drawable/background_shimmer_rect"
+                app:layout_constraintEnd_toStartOf="@+id/shimmerItemPriorityTextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="Название привычки" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/itemPriorityTextView"
+                android:id="@+id/shimmerItemPriorityTextView"
                 style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="wrap_content"
+                android:background="@drawable/background_shimmer_rect"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="В" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/itemDescriptionTextView"
+                android:id="@+id/shimmerItemDescriptionTextView"
                 style="@style/TextAppearance.MaterialComponents.Body2"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginTop="@dimen/spacing_small_8"
+                android:background="@drawable/background_shimmer_rect"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/itemTitleTextView"
-                tools:text="Описание привычки" />
+                app:layout_constraintTop_toBottomOf="@id/shimmerItemTitleTextView" />
 
             <TextView
-                android:id="@+id/itemPeriodTextView"
+                android:id="@+id/shimmerItemPeriodTextView"
                 style="@style/TextAppearance.MaterialComponents.Caption"
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_small_8"
+                android:background="@drawable/background_shimmer_rect"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/itemDescriptionTextView"
-                tools:text="Периодичность" />
+                app:layout_constraintTop_toBottomOf="@id/shimmerItemDescriptionTextView" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 </androidx.cardview.widget.CardView>

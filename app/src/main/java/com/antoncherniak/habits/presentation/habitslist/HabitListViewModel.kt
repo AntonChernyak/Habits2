@@ -20,6 +20,7 @@ class HabitListViewModel(
     private fun getInitHabits(habitType: String): ListScreenState {
         _screenState.value = ListScreenState.Loading
         val result = try {
+            habitsList.clear()
             habitsList.addAll(habitListInteractor.getHabits())
             ListScreenState.Data(habitsList.filter { it.type.name == habitType })
         } catch (e: Exception) {

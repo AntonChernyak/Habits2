@@ -7,7 +7,9 @@ class HabitListInteractor(
     private val habitListRepository: HabitListRepositoryInterface
 ): HabitListRepositoryInterface {
 
-    override fun getHabits(): List<HabitModel> = habitListRepository.getHabits()
+    override fun getHabits(): List<HabitModel>  {
+        return habitListRepository.getHabits()
+    }
 
     override fun removeHabit(habitId: Int) = habitListRepository.removeHabit(habitId)
 
