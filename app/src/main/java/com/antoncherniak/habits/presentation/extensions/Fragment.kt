@@ -7,6 +7,6 @@ import com.antoncherniak.habits.domain.interactor.HabitListInteractor
 import com.antoncherniak.habits.presentation.factory.ViewModelFactory
 
 fun Fragment.viewModelFactory() = ViewModelFactory(
-    HabitListInteractor(MockRepository()),
-    HabitCreatorInteractor(MockRepository())
+    HabitListInteractor(MockRepository),
+    HabitCreatorInteractor(MockRepository)
 )

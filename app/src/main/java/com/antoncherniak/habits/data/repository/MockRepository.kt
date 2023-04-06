@@ -8,16 +8,9 @@ import com.antoncherniak.habits.domain.repository.HabitCreatorRepositoryInterfac
 import com.antoncherniak.habits.domain.repository.HabitListRepositoryInterface
 
 
-class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInterface {
-    private var habits: MutableList<HabitModel> = mutableListOf()
-
-    init {
-        habits = createHabitsRepository()
-    }
+object MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInterface {
 
     override fun getHabits(): List<HabitModel> = habits
-        .sortedByDescending { it.priority }
-        .toMutableList()
 
     override fun addHabit(habit: HabitModel) {
         habits.add(habit)
@@ -33,8 +26,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
         if (index != -1) habits.removeAt(index)
     }
 
-    private fun createHabitsRepository(): MutableList<HabitModel> {
-        val initialList = mutableListOf<HabitModel>()
+    private val habits: MutableList<HabitModel> = mutableListOf(
         HabitModel(
             id = 1,
             title = "Погладить кота1",
@@ -42,8 +34,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodTimes = "3",
             periodDays = "1",
             color = Color.RED
-        ).apply { initialList.add(this) }
-
+        ),
         HabitModel(
             id = 2,
             title = "Покормить кота2",
@@ -52,7 +43,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodTimes = "4",
             periodDays = "1",
             color = Color.MAGENTA
-        ).apply { initialList.add(this) }
+        ),
 
         HabitModel(
             id = 3,
@@ -60,7 +51,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             priority = PriorityType.HIGH,
             periodTimes = "3",
             periodDays = "1"
-        ).apply { initialList.add(this) }
+        ),
 
         HabitModel(
             id = 4,
@@ -70,7 +61,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodTimes = "4",
             periodDays = "1",
             color = Color.parseColor("#283593")
-        ).apply { initialList.add(this) }
+        ),
 
         HabitModel(
             id = 5,
@@ -79,7 +70,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodTimes = "3",
             periodDays = "1",
             color = Color.RED
-        ).apply { initialList.add(this) }
+        ),
 
         HabitModel(
             id = 6,
@@ -89,7 +80,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodTimes = "4",
             periodDays = "1",
             color = Color.MAGENTA
-        ).apply { initialList.add(this) }
+        ),
 
         HabitModel(
             id = 7,
@@ -98,7 +89,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodTimes = "3",
             periodDays = "1",
             color = Color.RED
-        ).apply { initialList.add(this) }
+        ),
 
         HabitModel(
             id = 8,
@@ -108,8 +99,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodTimes = "4",
             periodDays = "1",
             color = Color.MAGENTA
-        ).apply { initialList.add(this) }
-
+        ),
         HabitModel(
             id = 9,
             title = "Погладить кота9",
@@ -117,7 +107,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodTimes = "3",
             periodDays = "1",
             color = Color.RED
-        ).apply { initialList.add(this) }
+        ),
 
         HabitModel(
             id = 10,
@@ -130,8 +120,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodTimes = "4",
             periodDays = "1",
             color = Color.MAGENTA
-        ).apply { initialList.add(this) }
-
+        ),
         HabitModel(
             id = 11,
             title = "Погладить кота11",
@@ -139,8 +128,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodTimes = "3",
             periodDays = "1",
             color = Color.RED
-        ).apply { initialList.add(this) }
-
+        ),
         HabitModel(
             id = 12,
             title = "Покормить кота12",
@@ -150,8 +138,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodDays = "1",
             type = HabitType.BAD_HABIT,
             color = Color.MAGENTA
-        ).apply { initialList.add(this) }
-
+        ),
         HabitModel(
             id = 13,
             title = "Покормить собаку13",
@@ -161,8 +148,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodDays = "1",
             type = HabitType.BAD_HABIT,
             color = Color.MAGENTA
-        ).apply { initialList.add(this) }
-
+        ),
         HabitModel(
             id = 14,
             title = "Покормить собаку14",
@@ -172,8 +158,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodDays = "1",
             type = HabitType.GOOD_HABIT,
             color = Color.MAGENTA
-        ).apply { initialList.add(this) }
-
+        ),
         HabitModel(
             id = 13,
             title = "Покормить собаку15",
@@ -183,8 +168,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodDays = "1",
             type = HabitType.BAD_HABIT,
             color = Color.MAGENTA
-        ).apply { initialList.add(this) }
-
+        ),
         HabitModel(
             id = 13,
             title = "Покормить собаку16",
@@ -194,8 +178,7 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodDays = "1",
             type = HabitType.BAD_HABIT,
             color = Color.MAGENTA
-        ).apply { initialList.add(this) }
-
+        ),
         HabitModel(
             id = 13,
             title = "Покормить собаку17",
@@ -205,8 +188,6 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             periodDays = "1",
             type = HabitType.GOOD_HABIT,
             color = Color.MAGENTA
-        ).apply { initialList.add(this) }
-
-        return initialList
-    }
+        )
+    )
 }

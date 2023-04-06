@@ -1,5 +1,6 @@
 package com.antoncherniak.habits.presentation.habitcreator
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,10 +18,12 @@ class HabitCreatorViewModel(
 
     private fun habitCreator(habitOldId: Int, habit: HabitModel) {
         if (habitOldId == HabitCreatorFragment.DEFAULT_ID) {
+            Log.e("TAGGG", "ADD")
             addHabit(habit)
             _resultHabitId.value = habit.id
 
         } else {
+            Log.e("TAGGG", "UPDATE")
             _resultHabitId.value = habitOldId
             updateHabit(habit.copy(id = habitOldId))
         }
