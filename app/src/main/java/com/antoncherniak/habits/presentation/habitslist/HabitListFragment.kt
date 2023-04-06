@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -24,6 +25,9 @@ import com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview.Hab
 import com.antoncherniak.habits.domain.model.HabitType
 import com.antoncherniak.habits.presentation.extensions.viewModelFactory
 
+/**
+ * Фрагмент для сортировки,
+ */
 class HabitListFragment : Fragment() {
 
     private val binding: FragmentHabitListBinding by viewBinding()
@@ -49,15 +53,22 @@ class HabitListFragment : Fragment() {
         swipeToDelete()
         setScrollToEditedHabitPositionSettings()
         createHabitSortSpinner()
-        setSortButtonsBehaviour()
         setSortItemSpinnerClickListener()
         onRestoreInstanceState(savedInstanceState)
 
-        binding.habitRecyclerView.adapter = habitAdapter
         viewModel.screenState.observe(viewLifecycleOwner, ::listFragmentUiRender)
 
-        binding.searchBottomSheet.searchEditText.doAfterTextChanged {
-            viewModel.searchAndSortHabits(it.toString())
+        with(binding) {
+            habitRecyclerView.adapter = habitAdapter
+            searchBottomSheet.searchEditText.doAfterTextChanged {
+                getHabits()
+            }
+            searchBottomSheet.buttonUp.setOnClickListener {
+                setSortButtonColor(searchBottomSheet.buttonUp, searchBottomSheet.buttonDown, false)
+            }
+            searchBottomSheet.buttonDown.setOnClickListener {
+                setSortButtonColor(searchBottomSheet.buttonDown, searchBottomSheet.buttonUp, true)
+            }
         }
     }
 
@@ -86,7 +97,7 @@ class HabitListFragment : Fragment() {
                     habitRecyclerView.isVisible = true
                     errorImageView.isVisible = false
                 }
-                val dataList = mutableListOf<HabitModel>().apply { addAll(screenState.habits)}
+                val dataList = mutableListOf<HabitModel>().apply { addAll(screenState.habits) }
                 habitAdapter.submitList(dataList)
             }
             ListScreenState.Loading -> {
@@ -104,14 +115,7 @@ class HabitListFragment : Fragment() {
                 }
                 Log.e(ERROR_TAG, screenState.errorMessage)
             }
-            ListScreenState.Init -> {
-                val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
-                viewModel.getHabits(type,
-                    query = binding.searchBottomSheet.searchEditText.text.toString(),
-                    sortType = binding.searchBottomSheet.sortSpinner.selectedItemPosition,
-                    reversed = reversed
-                )
-            }
+            ListScreenState.Init -> {}
         }
     }
 
@@ -120,12 +124,7 @@ class HabitListFragment : Fragment() {
             REQUEST_ID_KEY,
             viewLifecycleOwner
         ) { _, bundle ->
-           val type = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
-            Log.e("TAGGGG", "res_in1 = ${bundle.getString(ID_RESULT_KEY)?.toInt() ?: 0}")
-            viewModel.getHabits(type,
-                query = binding.searchBottomSheet.searchEditText.text.toString(),
-                sortType = binding.searchBottomSheet.sortSpinner.selectedItemPosition,
-                reversed = reversed)
+            getHabits()
             val resultId = bundle.getString(ID_RESULT_KEY)?.toInt() ?: 0
             val newPosition = habitAdapter.getItemPositionById(resultId)
             Log.e("TAGGG", "resultId = ${resultId}, newPos = ${newPosition}")
@@ -174,58 +173,38 @@ class HabitListFragment : Fragment() {
         binding.searchBottomSheet.sortSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    getSortedHabits()
+                    getHabits()
                     binding.habitRecyclerView.post {
                         binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
                     }
                 }
 
-                override fun onNothingSelected(p0: AdapterView<*>?) {
-                }
+                override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
-
     }
 
-    private fun setSortButtonsBehaviour() {
-        with(binding) {
-            searchBottomSheet.buttonUp.setOnClickListener {
-                searchBottomSheet.buttonUp.background = ContextCompat.getDrawable(
-                    requireActivity(),
-                    R.drawable.background_sort_button_selected
-                )
-                searchBottomSheet.buttonDown.background = ContextCompat.getDrawable(
-                    requireActivity(),
-                    R.drawable.background_sort_button_not_selected
-                )
-                reversed = false
-                getSortedHabits()
-                binding.habitRecyclerView.post {
-                    binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
-                }
-            }
-            searchBottomSheet.buttonDown.setOnClickListener {
-                searchBottomSheet.buttonDown.background = ContextCompat.getDrawable(
-                    requireActivity(),
-                    R.drawable.background_sort_button_selected
-                )
-                searchBottomSheet.buttonUp.background = ContextCompat.getDrawable(
-                    requireActivity(),
-                    R.drawable.background_sort_button_not_selected
-                )
-                reversed = true
-                getSortedHabits()
-                binding.habitRecyclerView.post {
-                    binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
-                }
-            }
+    private fun setSortButtonColor(redButton: ImageView, grayButton: ImageView, reverse: Boolean) {
+        redButton.background = ContextCompat.getDrawable(
+            requireActivity(),
+            R.drawable.background_sort_button_selected
+        )
+        grayButton.background = ContextCompat.getDrawable(
+            requireActivity(),
+            R.drawable.background_sort_button_not_selected
+        )
+        reversed = reverse
+        getHabits()
+        binding.habitRecyclerView.post {
+            binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
         }
     }
 
-    private fun getSortedHabits() {
-        viewModel.searchAndSortHabits(
+    private fun getHabits() {
+        viewModel.getHabits(
             query = binding.searchBottomSheet.searchEditText.text.toString(),
             sortType = binding.searchBottomSheet.sortSpinner.selectedItemPosition,
-            reversed = reversed
+            reversed = reversed,
+            habitType = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
         )
     }
 
@@ -240,10 +219,12 @@ class HabitListFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.removeHabit(
-                    habit = habitAdapter.getItemByPosition(viewHolder.adapterPosition),
+                    habitId = habitAdapter.getItemByPosition(viewHolder.adapterPosition).id,
                     query = binding.searchBottomSheet.searchEditText.text.toString(),
                     sortType = binding.searchBottomSheet.sortSpinner.selectedItemPosition,
-                    reversed = reversed
+                    reversed = reversed,
+                    habitType = arguments?.getString(HABIT_TYPE_EXTRA_KEY)
+                        ?: HabitType.GOOD_HABIT.name
                 )
             }
         }).attachToRecyclerView(binding.habitRecyclerView)

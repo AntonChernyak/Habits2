@@ -34,6 +34,8 @@
         app:layout_anchorGravity="top|end"
         app:tint="@color/white" />
 
+    <!-- fragment и через  name верстку-->
+
     <include
         android:id="@+id/search_bottom_sheet"
         layout="@layout/search_and_filter_bottom_sheet"/>

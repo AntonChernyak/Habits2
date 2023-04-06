@@ -17,7 +17,7 @@ class HabitCreatorViewModel(
     private val _resultHabitId: MutableLiveData<Int> = MutableLiveData()
     private val _snackbarMessage: MutableLiveData<Int> = MutableLiveData()
     val resultHabitId: LiveData<Int> = _resultHabitId
-    val snackbarMessage: LiveData<Int> = _snackbarMessage
+        // val snackbarMessage: LiveData<Int> = _snackbarMessage
 
     private fun habitCreator(
         habitOldId: Int,

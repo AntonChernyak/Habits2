@@ -56,6 +56,10 @@ class HabitCreatorFragment : Fragment() {
         }
     }
 
+    /**
+     * хранить привычку в VM, textChangeListener. и в ней менять состояния
+     */
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         with(binding) {
@@ -192,7 +196,9 @@ class HabitCreatorFragment : Fragment() {
         }
     }
 
-
+    /**
+     *  достать привычку через id, (VM)
+     */
     private fun setDataFromIntent() {
         val editingHabit = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(HABIT_EXTRA_KEY, HabitModel::class.java)

@@ -160,7 +160,7 @@ object MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInte
             color = Color.MAGENTA
         ),
         HabitModel(
-            id = 13,
+            id = 15,
             title = "Покормить собаку15",
             description = "",
             priority = PriorityType.HIGH,
@@ -170,7 +170,7 @@ object MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInte
             color = Color.MAGENTA
         ),
         HabitModel(
-            id = 13,
+            id = 16,
             title = "Покормить собаку16",
             description = "Лучше не кормить кота",
             priority = PriorityType.MEDIUM,
@@ -180,7 +180,7 @@ object MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInte
             color = Color.MAGENTA
         ),
         HabitModel(
-            id = 13,
+            id = 17,
             title = "Покормить собаку17",
             description = "Лучше кормить собаку!",
             priority = PriorityType.LOW,
