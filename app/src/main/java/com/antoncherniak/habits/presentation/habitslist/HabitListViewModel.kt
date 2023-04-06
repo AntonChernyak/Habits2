@@ -22,6 +22,7 @@ class HabitListViewModel(
         val result = try {
             habitsList.clear()
             habitsList.addAll(habitListInteractor.getHabits())
+            searchAndSortHabits("")
             ListScreenState.Data(habitsList.filter { it.type.name == habitType })
         } catch (e: Exception) {
             ListScreenState.Error(e.message ?: "unknown error")
@@ -29,11 +30,19 @@ class HabitListViewModel(
         return result
     }
 
-    private fun setSearchQuery(searchQuery: String): ListScreenState {
+    private fun setSearchQuery(
+        searchQuery: String,
+        sortType: Int,
+        reversed: Boolean
+    ): ListScreenState {
         _screenState.value = ListScreenState.Loading
         val result = try {
-            val searchHabits = habitsList.filter { it.title.contains(searchQuery.trim()) }
-            ListScreenState.Data(searchHabits)
+            val searchHabits =
+                habitsList
+                    .filter { it.title.contains(searchQuery.trim()) }
+                    .sortedBy { if (sortType == SortType.SORT_BY_NAME.spinnerPosition) it.title else it.priority.spinnerPos.toString() }
+
+            ListScreenState.Data(if (reversed) searchHabits.reversed() else searchHabits)
         } catch (e: Exception) {
             ListScreenState.Error(e.message ?: "unknown error")
         }
@@ -58,9 +67,13 @@ class HabitListViewModel(
         }
     }
 
-    fun searchHabit(query: String) {
+    fun searchAndSortHabits(
+        query: String,
+        sortType: Int = SortType.SORT_BY_PRIORITY.spinnerPosition,
+        reversed: Boolean = false
+    ) {
         viewModelScope.launch {
-            _screenState.value = setSearchQuery(query)
+            _screenState.value = setSearchQuery(query, sortType, reversed)
         }
     }
 

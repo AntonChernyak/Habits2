@@ -131,21 +131,6 @@ class HabitCreatorFragment : Fragment() {
         } else {
             val habitOldId = arguments?.getInt(ID_KEY) ?: DEFAULT_ID
             viewModel.createOrUpdateHabit(habitOldId, createHabit())
-/*
-            val resultId: Int
-
-            if (habitOldId == DEFAULT_ID) {
-                viewModel.addHabit(habit)
-                resultId = habit.id
-                showCreateSnackbar(view, habitOldId)
-            } else {
-                resultId = habitOldId
-                updateHabit(habit.copy(id = habitOldId))
-                showEditSnackBar(view)
-            }
-*/
-
-
         }
         requireActivity().hideKeyboard()
     }

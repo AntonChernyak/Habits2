@@ -6,7 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -28,6 +32,7 @@ class HabitListFragment : Fragment() {
         }
     }
     private val viewModel: HabitListViewModel by viewModels { viewModelFactory() }
+    private var reversed = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +47,29 @@ class HabitListFragment : Fragment() {
         createAddButtonVisibilityBehavior()
         swipeToDelete()
         setScrollToEditedHabitPositionSettings()
+        createHabitSortSpinner()
+        setSortButtonsBehaviour()
+        setSortItemSpinnerClickListener()
 
         binding.habitRecyclerView.adapter = habitAdapter
         viewModel.screenState.observe(viewLifecycleOwner, ::listFragmentUiRender)
+
+        binding.searchBottomSheet.searchEditText.doAfterTextChanged {
+            viewModel.searchAndSortHabits(it.toString())
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.apply {
+            putString("search", binding.searchBottomSheet.searchEditText.text.toString())
+            putBoolean("reversed", reversed)
+            putInt("sortedType", binding.searchBottomSheet.sortSpinner.selectedItemPosition)
+        }
+    }
+
+    private fun onRestoreInstanceState(outState: Bundle) {
+
     }
 
     private fun listFragmentUiRender(screenState: ListScreenState) {
@@ -121,6 +146,58 @@ class HabitListFragment : Fragment() {
                 habit = habitAdapter.getItemById(habitId),
                 id = habitId
             )
+        )
+    }
+
+    private fun createHabitSortSpinner() {
+        val spinnerAdapter = ArrayAdapter.createFromResource(
+            requireActivity(),
+            R.array.sortingSpinnerDataArray,
+            android.R.layout.simple_spinner_item
+        )
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.searchBottomSheet.sortSpinner.adapter = spinnerAdapter
+    }
+
+    private fun setSortItemSpinnerClickListener(){
+        binding.searchBottomSheet.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                getSortedHabits(p2)
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+        }
+
+    }
+
+    private fun setSortButtonsBehaviour(){
+        val sortedSpinnerPosition = binding.searchBottomSheet.sortSpinner.selectedItemPosition
+        with(binding) {
+            searchBottomSheet.buttonUp.setOnClickListener {
+                searchBottomSheet.buttonUp.background = ContextCompat.getDrawable(requireActivity(),
+                    R.drawable.background_sort_button_selected)
+                searchBottomSheet.buttonDown.background = ContextCompat.getDrawable(requireActivity(),
+                    R.drawable.background_sort_button_not_selected)
+                reversed = false
+                getSortedHabits(sortedSpinnerPosition)
+            }
+            searchBottomSheet.buttonDown.setOnClickListener {
+                searchBottomSheet.buttonDown.background = ContextCompat.getDrawable(requireActivity(),
+                    R.drawable.background_sort_button_selected)
+                searchBottomSheet.buttonUp.background = ContextCompat.getDrawable(requireActivity(),
+                    R.drawable.background_sort_button_not_selected)
+                reversed = true
+                getSortedHabits(sortedSpinnerPosition)
+            }
+        }
+    }
+
+    private fun getSortedHabits(sortType: Int){
+        viewModel.searchAndSortHabits(
+            query = binding.searchBottomSheet.searchEditText.text.toString(),
+            sortType = sortType,
+            reversed = reversed
         )
     }
 

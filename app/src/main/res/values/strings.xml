@@ -46,5 +46,9 @@
     <string name="navigation_open">Боковая панель открыта</string>
     <string name="navigation_close">Боковая панель закрыта</string>
     <string name="error">Error</string>
+    <string name="search_and_sorting">Поиск и сортировка</string>
+    <string name="search">Поиск…</string>
+    <string name="reversed_sort_on">reversed_sort_on</string>
+    <string name="reversed_sort_off">reversed_sort_off</string>
 
 </resources>

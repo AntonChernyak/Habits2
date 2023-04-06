@@ -152,6 +152,61 @@ class MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInter
             color = Color.MAGENTA
         ).apply { initialList.add(this) }
 
+        HabitModel(
+            id = 13,
+            title = "Покормить собаку13",
+            description = "Собака",
+            priority = PriorityType.MEDIUM,
+            periodTimes = "4",
+            periodDays = "1",
+            type = HabitType.BAD_HABIT,
+            color = Color.MAGENTA
+        ).apply { initialList.add(this) }
+
+        HabitModel(
+            id = 14,
+            title = "Покормить собаку14",
+            description = "страшен кот в гневе!",
+            priority = PriorityType.MEDIUM,
+            periodTimes = "4",
+            periodDays = "1",
+            type = HabitType.BAD_HABIT,
+            color = Color.MAGENTA
+        ).apply { initialList.add(this) }
+
+        HabitModel(
+            id = 13,
+            title = "Покормить собаку15",
+            description = "",
+            priority = PriorityType.HIGH,
+            periodTimes = "4",
+            periodDays = "1",
+            type = HabitType.BAD_HABIT,
+            color = Color.MAGENTA
+        ).apply { initialList.add(this) }
+
+        HabitModel(
+            id = 13,
+            title = "Покормить собаку16",
+            description = "Лучше не кормить кота",
+            priority = PriorityType.MEDIUM,
+            periodTimes = "4",
+            periodDays = "1",
+            type = HabitType.BAD_HABIT,
+            color = Color.MAGENTA
+        ).apply { initialList.add(this) }
+
+        HabitModel(
+            id = 13,
+            title = "Покормить собаку17",
+            description = "Лучше кормить собаку!",
+            priority = PriorityType.LOW,
+            periodTimes = "4",
+            periodDays = "1",
+            type = HabitType.BAD_HABIT,
+            color = Color.MAGENTA
+        ).apply { initialList.add(this) }
+
         return initialList
     }
 }

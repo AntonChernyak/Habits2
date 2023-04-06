@@ -5,4 +5,9 @@
         <item>@string/medium_priority</item>
         <item>@string/low_priority</item>
     </string-array>
+
+    <string-array name="sortingSpinnerDataArray">
+        <item> <string name="priority_sort">По приоритету</string> </item>
+        <item> <string name="name_sort">По названию</string> </item>
+    </string-array>
 </resources>
