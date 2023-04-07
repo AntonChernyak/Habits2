@@ -25,8 +25,25 @@ import com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview.Hab
 import com.antoncherniak.habits.domain.model.HabitType
 import com.antoncherniak.habits.presentation.extensions.viewModelFactory
 
+// TODO
 /**
- * Фрагмент для сортировки,
+ * Фрагмент для сортировки и поиска отдельно
+ *
+ * После этого проверить = после поворота экрана на крейт фрагменте падает ли приложение,
+ * потому что не может сохранить состояние первого фрагмента. Если да,то плохо - попробовать вынести в переменные
+ * и уже их onSave onRestore
+ *
+ * Помимо:
+ *  - В Крейт не передавать привычку, а id, и её запрашивать
+ *  - В крейте хранить привычку в VM, чтобы рестор делать из VM, а не через bundle
+ *  - Сообщение в снекбаре при создании / редактировании привычки
+ *  - докрутка до созданной / измененной привычки
+ *
+ *  Дополнительно можно:
+ *  - Иконка удаления при свайпе https://medium.com/@kitek/recyclerview-swipe-to-delete-easier-than-you-thought-cff67ff5e5f6
+ *  - safeArgs
+ *  - вынести зависимости
+ *  - обработка ошибок - показать пользователю и дать возможность обновить данные
  */
 class HabitListFragment : Fragment() {
 
@@ -55,21 +72,9 @@ class HabitListFragment : Fragment() {
         createHabitSortSpinner()
         setSortItemSpinnerClickListener()
         onRestoreInstanceState(savedInstanceState)
-
+        setSortedButtonBehaviour()
+        binding.habitRecyclerView.adapter = habitAdapter
         viewModel.screenState.observe(viewLifecycleOwner, ::listFragmentUiRender)
-
-        with(binding) {
-            habitRecyclerView.adapter = habitAdapter
-            searchBottomSheet.searchEditText.doAfterTextChanged {
-                getHabits()
-            }
-            searchBottomSheet.buttonUp.setOnClickListener {
-                setSortButtonColor(searchBottomSheet.buttonUp, searchBottomSheet.buttonDown, false)
-            }
-            searchBottomSheet.buttonDown.setOnClickListener {
-                setSortButtonColor(searchBottomSheet.buttonDown, searchBottomSheet.buttonUp, true)
-            }
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -85,7 +90,12 @@ class HabitListFragment : Fragment() {
         with(binding.searchBottomSheet) {
             searchEditText.setText(outState?.getString(SEARCH_KEY, "") ?: "")
             reversed = outState?.getBoolean(REVERSED_KEY) ?: false
-            sortSpinner.setSelection(outState?.getInt(SORT_TYPE_KEY, 0) ?: 0)
+            sortSpinner.setSelection(
+                outState?.getInt(
+                    SORT_TYPE_KEY,
+                    SortType.SORT_BY_PRIORITY.spinnerPosition
+                ) ?: SortType.SORT_BY_PRIORITY.spinnerPosition
+            )
         }
     }
 
@@ -181,6 +191,30 @@ class HabitListFragment : Fragment() {
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
             }
+    }
+
+    private fun setSortedButtonBehaviour(){
+        with(binding.searchBottomSheet) {
+            searchEditText.doAfterTextChanged {
+                getHabits()
+            }
+            buttonUp.setOnClickListener {
+                setSortButtonColor(buttonUp, buttonDown, false)
+            }
+            buttonDown.setOnClickListener {
+                setSortButtonColor(buttonDown, buttonUp, true)
+            }
+
+            if (reversed) {
+                buttonDown.background = ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.background_sort_button_selected
+                )
+            } else buttonUp.background = ContextCompat.getDrawable(
+                requireActivity(),
+                R.drawable.background_sort_button_selected
+            )
+        }
     }
 
     private fun setSortButtonColor(redButton: ImageView, grayButton: ImageView, reverse: Boolean) {

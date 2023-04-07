@@ -66,7 +66,7 @@ class HabitCreatorFragment : Fragment() {
             outState.apply {
                 putString(TITLE_KEY, titleEditText.text.toString())
                 putString(DESCRIPTION_KEY, descriptionEditText.text.toString())
-                putString(PRIORITY_KEY, prioritySpinner.selectedItem.toString())
+                putString(PRIORITY_KEY, prioritySpinner.selectedItemPosition.toString())
                 putString(PERIOD_COUNT_KEY, periodTimesEditText.text.toString())
                 putString(PERIOD_DAYS_KEY, periodDaysEditText.text.toString())
                 putString(TYPE_KEY, getHabitType().name)
