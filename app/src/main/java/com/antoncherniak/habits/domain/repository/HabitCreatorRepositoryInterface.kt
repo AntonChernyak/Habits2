@@ -6,4 +6,6 @@ interface HabitCreatorRepositoryInterface : BaseRepository{
     fun addHabit(habit: HabitModel)
 
     fun updateHabit(habit: HabitModel)
+
+    fun getHabitById(habitId: Int): HabitModel
 }

@@ -24,6 +24,7 @@ import com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment
 import com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview.HabitListAdapter
 import com.antoncherniak.habits.domain.model.HabitType
 import com.antoncherniak.habits.presentation.extensions.viewModelFactory
+import com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment.Companion.DEFAULT_HABIT_ID
 
 // TODO
 /**
@@ -41,7 +42,6 @@ import com.antoncherniak.habits.presentation.extensions.viewModelFactory
  *
  *  Дополнительно можно:
  *  - Иконка удаления при свайпе https://medium.com/@kitek/recyclerview-swipe-to-delete-easier-than-you-thought-cff67ff5e5f6
- *  - safeArgs
  *  - вынести зависимости
  *  - обработка ошибок - показать пользователю и дать возможность обновить данные
  */
@@ -54,7 +54,6 @@ class HabitListFragment : Fragment() {
         }
     }
     private val viewModel: HabitListViewModel by viewModels { viewModelFactory() }
-    private var reversed = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,7 +71,7 @@ class HabitListFragment : Fragment() {
         createHabitSortSpinner()
         setSortItemSpinnerClickListener()
         onRestoreInstanceState(savedInstanceState)
-        setSortedButtonBehaviour()
+        setBottomNavigationViewsSettings()
         binding.habitRecyclerView.adapter = habitAdapter
         viewModel.screenState.observe(viewLifecycleOwner, ::listFragmentUiRender)
     }
@@ -145,8 +144,10 @@ class HabitListFragment : Fragment() {
     }
 
     private fun addHabitButtonOnClick() {
+        val directions = HabitListViewPagerContainerFragmentDirections
+            .actionHabitListViewPagerContainerFragmentToHabitCreatorFragment(DEFAULT_HABIT_ID)
         binding.addNewHabitButton.setOnClickListener {
-            findNavController().navigate(R.id.action_habitListViewPagerContainerFragment_to_habitCreatorFragment)
+            findNavController().navigate(directions)
         }
     }
 
@@ -160,77 +161,9 @@ class HabitListFragment : Fragment() {
     }
 
     private fun openHabitForEditing(habitId: Int) {
-        findNavController().navigate(
-            R.id.action_habitListViewPagerContainerFragment_to_habitCreatorFragment,
-            HabitCreatorFragment.newBundle(
-                habit = habitAdapter.getItemById(habitId),
-                id = habitId
-            )
-        )
-    }
-
-    private fun createHabitSortSpinner() {
-        val spinnerAdapter = ArrayAdapter.createFromResource(
-            requireActivity(),
-            R.array.sortingSpinnerDataArray,
-            android.R.layout.simple_spinner_item
-        )
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.searchBottomSheet.sortSpinner.adapter = spinnerAdapter
-    }
-
-    private fun setSortItemSpinnerClickListener() {
-        binding.searchBottomSheet.sortSpinner.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    getHabits()
-                    binding.habitRecyclerView.post {
-                        binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
-                    }
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
-            }
-    }
-
-    private fun setSortedButtonBehaviour(){
-        with(binding.searchBottomSheet) {
-            searchEditText.doAfterTextChanged {
-                getHabits()
-            }
-            buttonUp.setOnClickListener {
-                setSortButtonColor(buttonUp, buttonDown, false)
-            }
-            buttonDown.setOnClickListener {
-                setSortButtonColor(buttonDown, buttonUp, true)
-            }
-
-            if (reversed) {
-                buttonDown.background = ContextCompat.getDrawable(
-                    requireActivity(),
-                    R.drawable.background_sort_button_selected
-                )
-            } else buttonUp.background = ContextCompat.getDrawable(
-                requireActivity(),
-                R.drawable.background_sort_button_selected
-            )
-        }
-    }
-
-    private fun setSortButtonColor(redButton: ImageView, grayButton: ImageView, reverse: Boolean) {
-        redButton.background = ContextCompat.getDrawable(
-            requireActivity(),
-            R.drawable.background_sort_button_selected
-        )
-        grayButton.background = ContextCompat.getDrawable(
-            requireActivity(),
-            R.drawable.background_sort_button_not_selected
-        )
-        reversed = reverse
-        getHabits()
-        binding.habitRecyclerView.post {
-            binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
-        }
+        val directions = HabitListViewPagerContainerFragmentDirections
+            .actionHabitListViewPagerContainerFragmentToHabitCreatorFragment(habitId)
+        findNavController().navigate(directions)
     }
 
     private fun getHabits() {

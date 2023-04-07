@@ -34,11 +34,11 @@
         app:layout_anchorGravity="top|end"
         app:tint="@color/white" />
 
-    <!-- fragment и через  name верстку-->
-
-    <include
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/search_bottom_sheet"
-        layout="@layout/search_and_filter_bottom_sheet"/>
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:name="com.antoncherniak.habits.presentation.habitslist.SearchAndSortFragment"/>
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmerContainer"

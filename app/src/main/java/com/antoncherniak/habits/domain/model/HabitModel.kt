@@ -1,10 +1,7 @@
 package com.antoncherniak.habits.domain.model
 
 import android.graphics.Color
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class HabitModel(
     val id: Int = 0,
     val title: String = "",
@@ -14,4 +11,4 @@ data class HabitModel(
     val periodTimes: String = "",
     val periodDays: String = "",
     val color: Int = Color.WHITE
-):Parcelable
+)

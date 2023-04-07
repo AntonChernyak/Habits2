@@ -21,6 +21,10 @@ object MockRepository : HabitListRepositoryInterface, HabitCreatorRepositoryInte
         habits[index] = habit
     }
 
+    override fun getHabitById(habitId: Int): HabitModel {
+        return getHabits().first { it.id == habitId }
+    }
+
     override fun removeHabit(habitId: Int) {
         val index = habits.indexOfFirst { it.id == habitId }
         if (index != -1) habits.removeAt(index)

@@ -9,16 +9,22 @@
         android:id="@+id/habitListViewPagerContainerFragment"
         android:name="com.antoncherniak.habits.presentation.habitslist.HabitListViewPagerContainerFragment"
         android:label="fragment_habit_list_view_pager_container"
-        tools:layout="@layout/fragment_habit_list_view_pager_container" >
+        tools:layout="@layout/fragment_habit_list_view_pager_container">
         <action
             android:id="@+id/action_habitListViewPagerContainerFragment_to_habitCreatorFragment"
             app:destination="@id/habitCreatorFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/habitCreatorFragment"
         android:name="com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment"
         android:label="fragment_habit_creator"
-        tools:layout="@layout/fragment_habit_creator" />
+        tools:layout="@layout/fragment_habit_creator">
+        <argument
+            android:name="habitId"
+            app:argType="integer"/>
+    </fragment>
+
     <fragment
         android:id="@+id/applicationInfoFragment"
         android:name="com.antoncherniak.habits.presentation.applicationinfo.ApplicationInfoFragment"

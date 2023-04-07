@@ -2,7 +2,6 @@ package com.antoncherniak.habits.presentation.habitcreator
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentHabitCreatorBinding
@@ -31,6 +31,7 @@ class HabitCreatorFragment : Fragment() {
 
     private val binding: FragmentHabitCreatorBinding by viewBinding()
     private val viewModel: HabitCreatorViewModel by viewModels { viewModelFactory() }
+    private val navArgs: HabitCreatorFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,15 +42,18 @@ class HabitCreatorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onRestoreInstanceState(savedInstanceState)
+        //onRestoreInstanceState(viewModel.getCurrentHabit())
         createHabitPrioritySpinner()
         binding.saveHabitButton.setOnClickListener { saveHabitButtonClick(it) }
-        setDataFromIntent()
+        if (navArgs.habitId != DEFAULT_HABIT_ID) setDataFromViewModel()
         setColorPicker()
         setRgbString()
         setHsvString()
 
         viewModel.resultHabitId.observe(viewLifecycleOwner) { resultId ->
+            /**
+             * Может тоже отдельным полем
+             */
             showSnackBar(binding.badHabitRadioButton, resultId)
             val data = HabitListFragment.resultIdBundle(resultId.toString())
             requireActivity().supportFragmentManager.setFragmentResult(REQUEST_ID_KEY, data)
@@ -60,39 +64,17 @@ class HabitCreatorFragment : Fragment() {
      * хранить привычку в VM, textChangeListener. и в ней менять состояния
      */
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
+/*    private fun onRestoreInstanceState(habit: HabitModel) {
         with(binding) {
-            outState.apply {
-                putString(TITLE_KEY, titleEditText.text.toString())
-                putString(DESCRIPTION_KEY, descriptionEditText.text.toString())
-                putString(PRIORITY_KEY, prioritySpinner.selectedItemPosition.toString())
-                putString(PERIOD_COUNT_KEY, periodTimesEditText.text.toString())
-                putString(PERIOD_DAYS_KEY, periodDaysEditText.text.toString())
-                putString(TYPE_KEY, getHabitType().name)
-                putInt(COLOR_KEY, selectedColorView.getBackgroundColor())
-            }
+            titleEditText.setText(habit.title)
+            descriptionEditText.setText(habit.description)
+            periodDaysEditText.setText(habit.periodDays)
+            periodTimesEditText.setText(habit.periodTimes)
+            prioritySpinner.setSelection(habit.priority.spinnerPos)
+            setHabitType(habit.type)
+            selectedColorView.backgroundTintList = ColorStateList.valueOf(habit.color)
         }
-    }
-
-    private fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        savedInstanceState?.apply {
-            with(binding) {
-                titleEditText.setText(getString(TITLE_KEY))
-                descriptionEditText.setText(getString(DESCRIPTION_KEY))
-                periodDaysEditText.setText(this@apply.getString(PERIOD_DAYS_KEY))
-                periodTimesEditText.setText(this@apply.getString(PERIOD_COUNT_KEY))
-                this@apply.getString(PRIORITY_KEY)?.toInt()
-                    ?.minus(1)?.let { prioritySpinner.setSelection(it) }
-                when (this@apply.getString(TYPE_KEY)) {
-                    HabitType.GOOD_HABIT.name -> setHabitType(HabitType.GOOD_HABIT)
-                    HabitType.BAD_HABIT.name -> setHabitType(HabitType.BAD_HABIT)
-                }
-                selectedColorView.backgroundTintList =
-                    ColorStateList.valueOf(savedInstanceState.getInt(COLOR_KEY, Color.WHITE))
-            }
-        }
-    }
+    }*/
 
     private fun createHabitPrioritySpinner() {
         val spinnerAdapter = ArrayAdapter.createFromResource(
@@ -133,7 +115,8 @@ class HabitCreatorFragment : Fragment() {
                 .make(view, getString(R.string.fill_in_required_fields), Snackbar.LENGTH_LONG)
                 .show()
         } else {
-            val habitOldId = arguments?.getInt(ID_KEY) ?: DEFAULT_ID
+            //  val habitOldId = arguments?.getInt(ID_KEY) ?: DEFAULT_ID
+            val habitOldId = navArgs.habitId?.toInt() ?: DEFAULT_HABIT_ID
             viewModel.createOrUpdateHabit(
                 habitOldId,
                 createHabit(),
@@ -164,8 +147,8 @@ class HabitCreatorFragment : Fragment() {
         )
     }
 
-    private fun showSnackBar(view: View, habitId: Int = DEFAULT_ID) {
-        val message = if (habitId == DEFAULT_ID) {
+    private fun showSnackBar(view: View, habitId: Int = DEFAULT_HABIT_ID) {
+        val message = if (habitId == DEFAULT_HABIT_ID) {
             getString(R.string.habit_added)
         } else getString(R.string.habit_edited)
 
@@ -183,45 +166,35 @@ class HabitCreatorFragment : Fragment() {
     }
 
     private fun setActionToSnackbar(habitId: Int) {
-        if (habitId == DEFAULT_ID) {
+        if (habitId == DEFAULT_HABIT_ID) {
             viewModel.removeHabit(habitId)
         } else {
-            setDataFromIntent()
-            val editingHabit = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arguments?.getParcelable(HABIT_EXTRA_KEY, HabitModel::class.java)
-            } else {
-                arguments?.getParcelable(HABIT_EXTRA_KEY)
-            }
-            editingHabit?.let { habit -> updateHabit(habit) }
+            setDataFromViewModel()
+            updateHabit(viewModel.getCurrentHabit())
         }
     }
 
     /**
      *  достать привычку через id, (VM)
      */
-    private fun setDataFromIntent() {
-        val editingHabit = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            arguments?.getParcelable(HABIT_EXTRA_KEY, HabitModel::class.java)
-        } else {
-            arguments?.getParcelable(HABIT_EXTRA_KEY)
-        }
-        if (editingHabit != null) {
-            with(binding) {
-                creatorToolbar.title = getString(R.string.edited_habit)
-                titleEditText.setText(editingHabit.title)
-                descriptionEditText.setText(editingHabit.description)
-                periodDaysEditText.setText(editingHabit.periodDays)
-                periodTimesEditText.setText(editingHabit.periodTimes)
-                prioritySpinner.setSelection(editingHabit.priority.spinnerPos)
-                setHabitType(editingHabit.type)
-                selectedColorView.backgroundTintList =
-                    ColorStateList.valueOf(editingHabit.color)
-                selectedColorView.foreground =
-                    ContextCompat.getDrawable(
-                        requireActivity(),
-                        R.drawable.selected_color_foreground
-                    )
-            }
+    private fun setDataFromViewModel() {
+        viewModel.getHabitById(navArgs.habitId)
+        val habit: HabitModel = viewModel.getCurrentHabit()
+        with(binding) {
+            creatorToolbar.title = getString(R.string.edited_habit)
+            titleEditText.setText(habit.title)
+            descriptionEditText.setText(habit.description)
+            periodDaysEditText.setText(habit.periodDays)
+            periodTimesEditText.setText(habit.periodTimes)
+            prioritySpinner.setSelection(habit.priority.spinnerPos)
+            setHabitType(habit.type)
+            selectedColorView.backgroundTintList =
+                ColorStateList.valueOf(habit.color)
+            selectedColorView.foreground =
+                ContextCompat.getDrawable(
+                    requireActivity(),
+                    R.drawable.selected_color_foreground
+                )
         }
     }
 
@@ -280,27 +253,6 @@ class HabitCreatorFragment : Fragment() {
     }
 
     companion object {
-        const val DEFAULT_ID = -1
-        const val TITLE_KEY = "title_key"
-        const val DESCRIPTION_KEY = "description_key"
-        const val PERIOD_COUNT_KEY = "period_count_key"
-        const val PERIOD_DAYS_KEY = "period_days_key"
-        const val TYPE_KEY = "type_key"
-        const val PRIORITY_KEY = "priority_key"
-        const val ID_KEY = "id_key"
-        const val COLOR_KEY = "color_key"
-
-        const val HABIT_EXTRA_KEY = "habit_extra_key"
-
-        fun newBundle(
-            habit: HabitModel? = null,
-            id: Int = DEFAULT_ID
-        ): Bundle {
-            return Bundle().apply {
-                putInt(ID_KEY, id)
-                putParcelable(HABIT_EXTRA_KEY, habit)
-            }
-        }
+        const val DEFAULT_HABIT_ID = -1
     }
-
 }
