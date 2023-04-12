@@ -38,6 +38,11 @@
         android:id="@+id/search_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:behavior_draggable="true"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
+        app:behavior_skipCollapsed="false"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:name="com.antoncherniak.habits.presentation.habitslist.SearchAndSortFragment"/>
 
     <com.facebook.shimmer.ShimmerFrameLayout

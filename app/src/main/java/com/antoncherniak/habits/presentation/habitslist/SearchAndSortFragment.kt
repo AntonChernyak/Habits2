@@ -10,18 +10,17 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.R
-import com.antoncherniak.habits.data.repository.MockRepository.getHabits
 import com.antoncherniak.habits.databinding.FragmentSearchAndSortBinding
 import com.antoncherniak.habits.presentation.extensions.viewModelFactory
 
 class SearchAndSortFragment : Fragment() {
 
-    private val viewModel: HabitListViewModel by viewModels { viewModelFactory() }
+    private val viewModel: HabitListViewModel by activityViewModels { viewModelFactory() }
     private val binding: FragmentSearchAndSortBinding by viewBinding()
-    private var reversed = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +31,9 @@ class SearchAndSortFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        createHabitSortSpinner()
+        setBottomNavigationViewsSettings()
+        setSortItemSpinnerClickListener()
     }
 
     private fun createHabitSortSpinner() {
@@ -48,10 +50,10 @@ class SearchAndSortFragment : Fragment() {
         binding.sortSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    getHabits()
-                    binding.habitRecyclerView.post {
+                   // getHabits()
+         /*           binding.habitRecyclerView.post {
                         binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
-                    }
+                    }*/
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -62,7 +64,8 @@ class SearchAndSortFragment : Fragment() {
         with(binding) {
             setInitSortButtonColor(buttonDown, buttonUp)
             searchEditText.doAfterTextChanged {
-                getHabits()
+                viewModel.searchQuery = it.toString()
+                viewModel.getHabits()
             }
             buttonUp.setOnClickListener {
                 setSortButtonColor(buttonUp, buttonDown, false)
@@ -82,15 +85,15 @@ class SearchAndSortFragment : Fragment() {
             requireActivity(),
             R.drawable.background_sort_button_not_selected
         )
-        reversed = reverse
-        getHabits()
-        binding.habitRecyclerView.post {
+        viewModel.reversed = reverse
+        //viewModel.getHabits()
+/*        binding.habitRecyclerView.post {
             binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
-        }
+        }*/
     }
 
     private fun setInitSortButtonColor(buttonDown: ImageView, buttonUp: ImageView) {
-        if (reversed) {
+        if (viewModel.reversed) {
             buttonDown.background = ContextCompat.getDrawable(
                 requireActivity(),
                 R.drawable.background_sort_button_selected

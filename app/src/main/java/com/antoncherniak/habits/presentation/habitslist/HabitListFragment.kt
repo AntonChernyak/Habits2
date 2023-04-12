@@ -6,13 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +17,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentHabitListBinding
 import com.antoncherniak.habits.domain.model.HabitModel
-import com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment
 import com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview.HabitListAdapter
 import com.antoncherniak.habits.domain.model.HabitType
 import com.antoncherniak.habits.presentation.extensions.viewModelFactory
@@ -53,7 +49,7 @@ class HabitListFragment : Fragment() {
             openHabitForEditing(habitId)
         }
     }
-    private val viewModel: HabitListViewModel by viewModels { viewModelFactory() }
+    private val viewModel: HabitListViewModel by activityViewModels { viewModelFactory() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,34 +64,18 @@ class HabitListFragment : Fragment() {
         createAddButtonVisibilityBehavior()
         swipeToDelete()
         setScrollToEditedHabitPositionSettings()
-        createHabitSortSpinner()
-        setSortItemSpinnerClickListener()
-        onRestoreInstanceState(savedInstanceState)
-        setBottomNavigationViewsSettings()
         binding.habitRecyclerView.adapter = habitAdapter
-        viewModel.screenState.observe(viewLifecycleOwner, ::listFragmentUiRender)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.apply {
-            putString(SEARCH_KEY, binding.searchBottomSheet.searchEditText.text.toString())
-            putBoolean(REVERSED_KEY, reversed)
-            putInt(SORT_TYPE_KEY, binding.searchBottomSheet.sortSpinner.selectedItemPosition)
+        viewModel.screenState.observe(viewLifecycleOwner){
+            Log.e("TABBB", "state= ${it}")
+            listFragmentUiRender(it)
         }
     }
 
-    private fun onRestoreInstanceState(outState: Bundle?) {
-        with(binding.searchBottomSheet) {
-            searchEditText.setText(outState?.getString(SEARCH_KEY, "") ?: "")
-            reversed = outState?.getBoolean(REVERSED_KEY) ?: false
-            sortSpinner.setSelection(
-                outState?.getInt(
-                    SORT_TYPE_KEY,
-                    SortType.SORT_BY_PRIORITY.spinnerPosition
-                ) ?: SortType.SORT_BY_PRIORITY.spinnerPosition
-            )
-        }
+    override fun onResume() {
+        super.onResume()
+        Log.e("ONCREATE", "arg t = ${arguments?.getString(HABIT_TYPE_EXTRA_KEY)?: HabitType.GOOD_HABIT.name}")
+        viewModel.habitType = arguments?.getString(HABIT_TYPE_EXTRA_KEY)?: HabitType.GOOD_HABIT.name
+        viewModel.getHabits()
     }
 
     private fun listFragmentUiRender(screenState: ListScreenState) {
@@ -107,7 +87,12 @@ class HabitListFragment : Fragment() {
                     errorImageView.isVisible = false
                 }
                 val dataList = mutableListOf<HabitModel>().apply { addAll(screenState.habits) }
+                Log.e("TAGGG", "size= ${dataList.size}")
                 habitAdapter.submitList(dataList)
+
+                binding.habitRecyclerView.post {
+                    binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
+                }
             }
             ListScreenState.Loading -> {
                 with(binding) {
@@ -167,12 +152,7 @@ class HabitListFragment : Fragment() {
     }
 
     private fun getHabits() {
-        viewModel.getHabits(
-            query = binding.searchBottomSheet.searchEditText.text.toString(),
-            sortType = binding.searchBottomSheet.sortSpinner.selectedItemPosition,
-            reversed = reversed,
-            habitType = arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
-        )
+        viewModel.getHabits()
     }
 
     private fun swipeToDelete() {
@@ -186,12 +166,7 @@ class HabitListFragment : Fragment() {
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.removeHabit(
-                    habitId = habitAdapter.getItemByPosition(viewHolder.adapterPosition).id,
-                    query = binding.searchBottomSheet.searchEditText.text.toString(),
-                    sortType = binding.searchBottomSheet.sortSpinner.selectedItemPosition,
-                    reversed = reversed,
-                    habitType = arguments?.getString(HABIT_TYPE_EXTRA_KEY)
-                        ?: HabitType.GOOD_HABIT.name
+                    habitId = habitAdapter.getItemByPosition(viewHolder.adapterPosition).id
                 )
             }
         }).attachToRecyclerView(binding.habitRecyclerView)
