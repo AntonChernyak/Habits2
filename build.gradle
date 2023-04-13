@@ -1,11 +1,43 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+
+    ext.versions = [
+            'core_ktx'                   : '1.10.0',
+            'appcompat'                  : '1.6.1',
+            'material'                   : '1.8.0',
+            'navigation'                 : '2.5.3',
+            'viewbindingpropertydelegate': '1.5.8',
+            'lifecycle'                  : '2.6.1',
+            'fragment'                   : '1.6.0-alpha09',
+            'shimmer'                    : '0.5.0',
+            'swipe_to_refresh'           : '1.1.0'
+    ]
+
+    ext.deps = [
+            'androidx'   : [
+                    'core'            : "androidx.core:core-ktx:1.${versions.core_ktx}",
+                    'appcompat'       : "androidx.appcompat:appcompat:${versions.appcompat}",
+                    'navigation'      : [
+                            'fragment' : "androidx.navigation:navigation-fragment-ktx:${versions.navigation}",
+                            'ui'       : "androidx.navigation:navigation-ui-ktx:${versions.navigation}",
+                            'safe_args': "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
+                    ],
+                    'lifecycle'       : [
+                            'viewmodel': "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
+                    ],
+                    'fragment'        : "androidx.fragment:fragment:${versions.fragment}",
+                    'swipe_to_refresh': "androidx.swiperefreshlayout:swiperefreshlayout:${versions.swipe_to_refresh}"
+            ],
+            'material'   : "com.google.android.material:material:${versions.material}",
+            'viewbinding': "com.github.kirich1409:viewbindingpropertydelegate:${versions.viewbindingpropertydelegate}",
+            'shimmer'    : "com.facebook.shimmer:shimmer:${versions.shimmer}"
+    ]
+
     repositories {
         google()
     }
     dependencies {
-        def nav_version = "2.5.3"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
+        classpath deps.androidx.navigation.safe_args
     }
 }
 
