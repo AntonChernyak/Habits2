@@ -25,10 +25,6 @@ import com.google.android.material.snackbar.Snackbar
 // TODO
 /**
  * Помимо:
- *  - В Крейт не передавать привычку, а id, и её запрашивать
- *  - В крейте хранить привычку в VM, чтобы рестор делать из VM, а не через bundle
- *  - Сообщение в снекбаре при создании / редактировании привычки
- *  - докрутка до созданной / измененной привычки
  *  - Room
  *  - корутины
  *  - использовать операторы, чтобы отсеять поиск
@@ -60,20 +56,21 @@ class HabitListFragment : Fragment() {
         addHabitButtonOnClick()
         createAddButtonVisibilityBehavior()
         swipeToDelete()
-        setScrollToEditedHabitPositionSettings()
         binding.habitRecyclerView.adapter = habitAdapter
         viewModel.screenState.observe(viewLifecycleOwner, ::listFragmentUiRender)
-        viewModel.searchSettings.distinctUntilChanged().observe(viewLifecycleOwner) {
-            viewModel.getHabits()
-        }
+        viewModel.searchSettings
+            .distinctUntilChanged()
+            .observe(viewLifecycleOwner) {
+                viewModel.getHabits()
+            }
     }
 
     override fun onResume() {
         super.onResume()
+        setScrollToEditedHabitPositionSettings()
         viewModel.setHabitType(
             arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
         )
-        viewModel.getHabits()
     }
 
     private fun listFragmentUiRender(screenState: ListScreenState) {
@@ -86,7 +83,6 @@ class HabitListFragment : Fragment() {
                 }
                 val dataList = mutableListOf<HabitModel>().apply { addAll(screenState.habits) }
                 habitAdapter.submitList(dataList)
-
                 binding.habitRecyclerView.post {
                     binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
                 }
@@ -122,8 +118,8 @@ class HabitListFragment : Fragment() {
             viewLifecycleOwner
         ) { _, bundle ->
             val resultId = bundle.getString(ID_RESULT_KEY)?.toInt() ?: 0
-            val newPosition = habitAdapter.getItemPositionById(resultId)
             binding.habitRecyclerView.post {
+                val newPosition = habitAdapter.getItemPositionById(resultId)
                 binding.habitRecyclerView.layoutManager?.scrollToPosition(newPosition)
             }
         }

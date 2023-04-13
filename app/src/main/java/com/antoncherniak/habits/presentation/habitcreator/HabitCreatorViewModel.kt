@@ -1,55 +1,49 @@
 package com.antoncherniak.habits.presentation.habitcreator
 
-import android.util.Log
-import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.antoncherniak.habits.domain.interactor.HabitCreatorInteractor
 import com.antoncherniak.habits.domain.model.HabitModel
-import com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment.Companion.DEFAULT_HABIT_ID
+import com.antoncherniak.habits.domain.model.HabitType
+import com.antoncherniak.habits.domain.model.PriorityType
 import kotlinx.coroutines.launch
 
 class HabitCreatorViewModel(
     private val habitCreatorInteractor: HabitCreatorInteractor
 ) : ViewModel() {
 
-    private val _resultHabitId: MutableLiveData<Int> = MutableLiveData()
-    private val _snackbarMessage: MutableLiveData<Int> = MutableLiveData()
-    val resultHabitId: LiveData<Int> = _resultHabitId
-    // val snackbarMessage: LiveData<Int> = _snackbarMessage
     private var currentHabitModel = HabitModel()
+    private var initHabit = HabitModel()
+    var isNewHabit = true
 
-    init {
-        Log.e("TAAGGG", "INTI CREATOR VM")
 
+    private val _resultHabitId: MutableLiveData<Int> = MutableLiveData()
+    val resultHabitId: LiveData<Int> = _resultHabitId
+
+    fun getHabitById(habitId: Int) {
+        viewModelScope.launch {
+            currentHabitModel = habitCreatorInteractor.getHabitById(habitId)
+            initHabit = currentHabitModel
+        }
     }
 
     private fun habitCreator(
-        habitOldId: Int,
-        habit: HabitModel,
-        addMessage: Int,
-        updateMessage: Int
+        habitOldId: Int
     ) {
-        if (habitOldId == DEFAULT_HABIT_ID) {
-            addHabit(habit)
-            _resultHabitId.value = DEFAULT_HABIT_ID
-            _snackbarMessage.value = addMessage
+        if (isNewHabit) {
+            _resultHabitId.value = currentHabitModel.id
+            addHabit(currentHabitModel)
         } else {
             _resultHabitId.value = habitOldId
-            _snackbarMessage.value = updateMessage
-            updateHabit(habit.copy(id = habitOldId))
+            updateHabit(currentHabitModel.copy(id = habitOldId))
         }
     }
 
     private fun addHabit(habitModel: HabitModel) {
-        habitCreatorInteractor.addHabit(habitModel)
-    }
-
-    fun removeHabit(habitId: Int) {
         viewModelScope.launch {
-            habitCreatorInteractor.removeHabit(habitId)
+            habitCreatorInteractor.addHabit(habitModel)
         }
     }
 
@@ -59,23 +53,69 @@ class HabitCreatorViewModel(
         }
     }
 
-    fun createOrUpdateHabit(
-        habitOldId: Int,
-        habit: HabitModel,
-        @StringRes addMessage: Int,
-        @StringRes updateMessage: Int
-    ) {
+    fun removeHabit(habitId: Int) {
         viewModelScope.launch {
-            habitCreator(habitOldId, habit, addMessage, updateMessage)
+            habitCreatorInteractor.removeHabit(habitId)
         }
     }
 
-    fun getHabitById(habitId: Int) {
+    fun createOrUpdateHabit(habitOldId: Int) {
         viewModelScope.launch {
-            currentHabitModel = habitCreatorInteractor.getHabitById(habitId)
+            habitCreator(habitOldId)
         }
     }
 
     fun getCurrentHabit(): HabitModel = currentHabitModel
 
+    fun setHabitId(id: Int) {
+        currentHabitModel = currentHabitModel.copy(
+            id = id
+        )
+    }
+
+    fun setHabitTitle(title: String) {
+        currentHabitModel = currentHabitModel.copy(
+            title = title
+        )
+    }
+
+    fun setHabitDescription(description: String) {
+        currentHabitModel = currentHabitModel.copy(
+            description = description
+        )
+    }
+
+    fun setHabitPriority(priorityType: PriorityType) {
+        currentHabitModel = currentHabitModel.copy(
+            priority = priorityType
+        )
+    }
+
+    fun setHabitType(habitType: HabitType) {
+        currentHabitModel = currentHabitModel.copy(
+            type = habitType
+        )
+    }
+
+    fun setPeriodDays(periodDays: String) {
+        currentHabitModel = currentHabitModel.copy(
+            periodDays = periodDays
+        )
+    }
+
+    fun setPeriodTimes(periodTimes: String) {
+        currentHabitModel = currentHabitModel.copy(
+            periodTimes = periodTimes
+        )
+    }
+
+    fun setHabitColor(color: Int) {
+        currentHabitModel = currentHabitModel.copy(
+            color = color
+        )
+    }
+
+    fun getInitHabit(): HabitModel {
+        return initHabit
+    }
 }

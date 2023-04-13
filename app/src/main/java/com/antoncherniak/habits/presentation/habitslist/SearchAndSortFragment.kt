@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentSearchAndSortBinding
+import com.antoncherniak.habits.presentation.extensions.OnSpinnerItemSelectedListener
 import com.antoncherniak.habits.presentation.extensions.viewModelFactory
 
 class SearchAndSortFragment : Fragment() {
@@ -53,20 +54,18 @@ class SearchAndSortFragment : Fragment() {
     }
 
     private fun setSortItemSpinnerClickListener() {
-        binding.sortSpinner.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                    val spinnerPosition = binding.sortSpinner.selectedItemPosition
-                    viewModel.setSortedType(
-                        when(spinnerPosition){
-                            SortType.SORT_BY_PRIORITY.spinnerPosition -> SortType.SORT_BY_PRIORITY
-                            SortType.SORT_BY_NAME.spinnerPosition -> SortType.SORT_BY_NAME
-                            else -> SortType.SORT_BY_PRIORITY
-                        })
-                }
-
-                override fun onNothingSelected(p0: AdapterView<*>?) {}
+        binding.sortSpinner.onItemSelectedListener = object : OnSpinnerItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                val spinnerPosition = binding.sortSpinner.selectedItemPosition
+                viewModel.setSortedType(
+                    when (spinnerPosition) {
+                        SortType.SORT_BY_PRIORITY.spinnerPosition -> SortType.SORT_BY_PRIORITY
+                        SortType.SORT_BY_NAME.spinnerPosition -> SortType.SORT_BY_NAME
+                        else -> SortType.SORT_BY_PRIORITY
+                    }
+                )
             }
+        }
     }
 
     private fun setBottomNavigationViewsSettings() {

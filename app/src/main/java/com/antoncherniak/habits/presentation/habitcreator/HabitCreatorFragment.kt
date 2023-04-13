@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -20,9 +22,9 @@ import com.antoncherniak.habits.presentation.extensions.getBackgroundColor
 import com.antoncherniak.habits.presentation.extensions.hideKeyboard
 import com.antoncherniak.habits.presentation.habitslist.HabitListFragment
 import com.antoncherniak.habits.presentation.habitslist.HabitListFragment.Companion.REQUEST_ID_KEY
-import com.antoncherniak.habits.domain.model.HabitModel
 import com.antoncherniak.habits.domain.model.HabitType
 import com.antoncherniak.habits.domain.model.PriorityType
+import com.antoncherniak.habits.presentation.extensions.OnSpinnerItemSelectedListener
 import com.antoncherniak.habits.presentation.extensions.viewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlin.math.roundToInt
@@ -42,39 +44,29 @@ class HabitCreatorFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //onRestoreInstanceState(viewModel.getCurrentHabit())
         createHabitPrioritySpinner()
         binding.saveHabitButton.setOnClickListener { saveHabitButtonClick(it) }
-        if (navArgs.habitId != DEFAULT_HABIT_ID) setDataFromViewModel()
+        if (navArgs.habitId != DEFAULT_HABIT_ID && savedInstanceState == null) {
+            viewModel.getHabitById(navArgs.habitId)
+            viewModel.isNewHabit = false
+        } else if (savedInstanceState == null) {
+            viewModel.setHabitId((13..10000).random())
+            viewModel.isNewHabit = true
+        }
+        setDataFromViewModel()
         setColorPicker()
         setRgbString()
         setHsvString()
+        setViewsChangedListeners()
 
         viewModel.resultHabitId.observe(viewLifecycleOwner) { resultId ->
-            /**
-             * Может тоже отдельным полем
-             */
             showSnackBar(binding.badHabitRadioButton, resultId)
-            val data = HabitListFragment.resultIdBundle(resultId.toString())
-            requireActivity().supportFragmentManager.setFragmentResult(REQUEST_ID_KEY, data)
+            requireActivity().supportFragmentManager.setFragmentResult(
+                REQUEST_ID_KEY,
+                HabitListFragment.resultIdBundle(resultId.toString())
+            )
         }
     }
-
-    /**
-     * хранить привычку в VM, textChangeListener. и в ней менять состояния
-     */
-
-/*    private fun onRestoreInstanceState(habit: HabitModel) {
-        with(binding) {
-            titleEditText.setText(habit.title)
-            descriptionEditText.setText(habit.description)
-            periodDaysEditText.setText(habit.periodDays)
-            periodTimesEditText.setText(habit.periodTimes)
-            prioritySpinner.setSelection(habit.priority.spinnerPos)
-            setHabitType(habit.type)
-            selectedColorView.backgroundTintList = ColorStateList.valueOf(habit.color)
-        }
-    }*/
 
     private fun createHabitPrioritySpinner() {
         val spinnerAdapter = ArrayAdapter.createFromResource(
@@ -86,23 +78,46 @@ class HabitCreatorFragment : Fragment() {
         binding.prioritySpinner.adapter = spinnerAdapter
     }
 
-    private fun createHabit(): HabitModel {
-        return with(binding) {
-            HabitModel(
-                id = (13..10000).random(),
-                title = titleEditText.text.toString(),
-                description = descriptionEditText.text.toString(),
-                priority = getTypeBySpinnerPosition(prioritySpinner.selectedItem.toString()),
-                type = getHabitType(),
-                periodTimes = periodTimesEditText.text.toString(),
-                periodDays = periodDaysEditText.text.toString(),
-                color = selectedColorView.getBackgroundColor()
-            )
+    private fun setViewsChangedListeners() {
+        binding.titleEditText.doAfterTextChanged {
+            viewModel.setHabitTitle(it.toString())
+        }
+
+        binding.descriptionEditText.doAfterTextChanged {
+            viewModel.setHabitDescription(it.toString().trim())
+        }
+
+        binding.prioritySpinner.onItemSelectedListener = object : OnSpinnerItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                viewModel.setHabitPriority(
+                    getTypeBySpinnerPosition(binding.prioritySpinner.selectedItem.toString())
+                )
+            }
+        }
+
+        binding.habitTypesRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            if (binding.badHabitRadioButton.id == checkedId) viewModel.setHabitType(HabitType.BAD_HABIT)
+            if (binding.goodHabitRadioButton.id == checkedId) viewModel.setHabitType(HabitType.GOOD_HABIT)
+        }
+
+        binding.periodDaysEditText.doAfterTextChanged {
+            if (it.toString().startsWith("0")) binding.periodDaysEditText.setText("")
+            else viewModel.setPeriodDays(it.toString())
+        }
+
+        binding.periodTimesEditText.doAfterTextChanged {
+            if (it.toString().startsWith("0")) binding.periodTimesEditText.setText("")
+            else viewModel.setPeriodTimes(it.toString())
         }
     }
 
-    private fun getTypeBySpinnerPosition(pos: String): PriorityType {
-        return when (pos) {
+    private fun getTypeBySpinnerPosition(priority: String): PriorityType {
+        return when (priority) {
             resources.getString(R.string.high_priority) -> PriorityType.HIGH
             resources.getString(R.string.medium_priority) -> PriorityType.MEDIUM
             else -> PriorityType.LOW
@@ -115,14 +130,8 @@ class HabitCreatorFragment : Fragment() {
                 .make(view, getString(R.string.fill_in_required_fields), Snackbar.LENGTH_LONG)
                 .show()
         } else {
-            //  val habitOldId = arguments?.getInt(ID_KEY) ?: DEFAULT_ID
-            val habitOldId = navArgs.habitId?.toInt() ?: DEFAULT_HABIT_ID
-            viewModel.createOrUpdateHabit(
-                habitOldId,
-                createHabit(),
-                R.string.habit_added,
-                R.string.habit_edited
-            )
+            val habitOldId = navArgs.habitId
+            viewModel.createOrUpdateHabit(habitOldId)
         }
         requireActivity().hideKeyboard()
     }
@@ -148,7 +157,7 @@ class HabitCreatorFragment : Fragment() {
     }
 
     private fun showSnackBar(view: View, habitId: Int = DEFAULT_HABIT_ID) {
-        val message = if (habitId == DEFAULT_HABIT_ID) {
+        val message = if (viewModel.isNewHabit) {
             getString(R.string.habit_added)
         } else getString(R.string.habit_edited)
 
@@ -166,51 +175,38 @@ class HabitCreatorFragment : Fragment() {
     }
 
     private fun setActionToSnackbar(habitId: Int) {
-        if (habitId == DEFAULT_HABIT_ID) {
+        if (viewModel.isNewHabit) {
             viewModel.removeHabit(habitId)
         } else {
             setDataFromViewModel()
-            updateHabit(viewModel.getCurrentHabit())
+            viewModel.updateHabit(viewModel.getInitHabit())
         }
     }
 
-    /**
-     *  достать привычку через id, (VM)
-     */
     private fun setDataFromViewModel() {
-        viewModel.getHabitById(navArgs.habitId)
-        val habit: HabitModel = viewModel.getCurrentHabit()
-        with(binding) {
-            creatorToolbar.title = getString(R.string.edited_habit)
-            titleEditText.setText(habit.title)
-            descriptionEditText.setText(habit.description)
-            periodDaysEditText.setText(habit.periodDays)
-            periodTimesEditText.setText(habit.periodTimes)
-            prioritySpinner.setSelection(habit.priority.spinnerPos)
-            setHabitType(habit.type)
-            selectedColorView.backgroundTintList =
-                ColorStateList.valueOf(habit.color)
-            selectedColorView.foreground =
-                ContextCompat.getDrawable(
-                    requireActivity(),
-                    R.drawable.selected_color_foreground
-                )
+        viewModel.getCurrentHabit().let { habit ->
+            with(binding) {
+                creatorToolbar.title = getString(R.string.edited_habit)
+                titleEditText.setText(habit.title)
+                descriptionEditText.setText(habit.description)
+                periodDaysEditText.setText(habit.periodDays)
+                periodTimesEditText.setText(habit.periodTimes)
+                prioritySpinner.setSelection(habit.priority.spinnerPos)
+                setHabitType(habit.type)
+                selectedColorView.backgroundTintList =
+                    ColorStateList.valueOf(habit.color)
+                selectedColorView.foreground =
+                    ContextCompat.getDrawable(
+                        requireActivity(),
+                        R.drawable.selected_color_foreground
+                    )
+            }
         }
     }
 
     private fun setHabitType(type: HabitType) {
         if (type == HabitType.GOOD_HABIT) binding.goodHabitRadioButton.isChecked = true
         else binding.badHabitRadioButton.isChecked = true
-    }
-
-    private fun updateHabit(habit: HabitModel) {
-        viewModel.updateHabit(habit)
-    }
-
-    private fun getHabitType(): HabitType {
-        val checkId = binding.habitTypesRadioGroup.checkedRadioButtonId
-        return if (checkId == binding.goodHabitRadioButton.id) HabitType.GOOD_HABIT
-        else HabitType.BAD_HABIT
     }
 
     private fun setColorPicker() {
@@ -222,6 +218,7 @@ class HabitCreatorFragment : Fragment() {
             myColorPicker.listener = { color ->
                 selectedColorView.backgroundTintList = color
                 colorScrollView.visibility = View.GONE
+                viewModel.setHabitColor(selectedColorView.getBackgroundColor())
                 setRgbString()
                 setHsvString()
             }
