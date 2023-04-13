@@ -31,7 +31,6 @@ import com.google.android.material.snackbar.Snackbar
  *
  *  Дополнительно можно:
  *  - Иконка удаления при свайпе https://medium.com/@kitek/recyclerview-swipe-to-delete-easier-than-you-thought-cff67ff5e5f6
- *  - обработка ошибок - дать возможность обновить данные
  */
 class HabitListFragment : Fragment() {
 
@@ -62,6 +61,11 @@ class HabitListFragment : Fragment() {
             .observe(viewLifecycleOwner) {
                 viewModel.getHabits()
             }
+
+        binding.listSwipeToRefresh.setOnRefreshListener {
+            viewModel.getHabits()
+            binding.listSwipeToRefresh.isRefreshing = false
+        }
     }
 
     override fun onResume() {

@@ -1,78 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/listSwipeToRefresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".presentation.habitslist.HabitListFragment">
+    android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/habitRecyclerView"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:paddingHorizontal="@dimen/spacing_small_8"
-        android:layout_marginBottom="@dimen/bottom_sheet_peek_height"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:itemCount="10"
-        tools:listitem="@layout/item_habit" />
+        tools:context=".presentation.habitslist.HabitListFragment">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addNewHabitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_marginEnd="@dimen/spacing_small_8"
-        android:layout_marginBottom="@dimen/spacing_small_8"
-        android:backgroundTint="@color/primary_light_color"
-        android:clickable="true"
-        android:focusable="true"
-        android:contentDescription="@string/add_new_habit_button"
-        android:src="@drawable/fab_add_habit_24"
-        app:layout_anchor="@+id/search_bottom_sheet"
-        app:layout_anchorGravity="top|end"
-        app:tint="@color/white" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/search_bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:behavior_draggable="true"
-        app:behavior_hideable="false"
-        app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
-        app:behavior_skipCollapsed="false"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
-        android:name="com.antoncherniak.habits.presentation.habitslist.SearchAndSortFragment"/>
-
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerContainer"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:paddingBottom="@dimen/bottom_sheet_peek_height"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/habitRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginBottom="@dimen/bottom_sheet_peek_height"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/spacing_small_8"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_habit" />
 
-            <include layout="@layout/shimmer_item_habit_layout" />
-            <include layout="@layout/shimmer_item_habit_layout" />
-            <include layout="@layout/shimmer_item_habit_layout" />
-            <include layout="@layout/shimmer_item_habit_layout" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addNewHabitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_marginEnd="@dimen/spacing_small_8"
+            android:layout_marginBottom="@dimen/spacing_small_8"
+            android:backgroundTint="@color/primary_light_color"
+            android:clickable="true"
+            android:contentDescription="@string/add_new_habit_button"
+            android:focusable="true"
+            android:src="@drawable/fab_add_habit_24"
+            app:layout_anchor="@+id/search_bottom_sheet"
+            app:layout_anchorGravity="top|end"
+            app:tint="@color/white" />
 
-        </LinearLayout>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/search_bottom_sheet"
+            android:name="com.antoncherniak.habits.presentation.habitslist.SearchAndSortFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:behavior_draggable="true"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
+            app:behavior_skipCollapsed="false"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" />
 
-    </com.facebook.shimmer.ShimmerFrameLayout>
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/bottom_sheet_peek_height"
+            android:visibility="gone">
 
-    <ImageView
-        android:id="@+id/errorImageView"
-        android:layout_width="@dimen/error_label_image_view_size"
-        android:layout_height="256dp"
-        android:layout_gravity="center"
-        android:contentDescription="@string/error"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_error_256"
-        android:visibility="gone" />
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/shimmer_item_habit_layout" />
+
+                <include layout="@layout/shimmer_item_habit_layout" />
+
+                <include layout="@layout/shimmer_item_habit_layout" />
+
+                <include layout="@layout/shimmer_item_habit_layout" />
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <ImageView
+            android:id="@+id/errorImageView"
+            android:layout_width="@dimen/error_label_image_view_size"
+            android:layout_height="256dp"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="@dimen/spacing_huge_32"
+            android:contentDescription="@string/error"
+            android:scaleType="centerCrop"
+            android:src="@drawable/error_img"
+            android:visibility="gone" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
