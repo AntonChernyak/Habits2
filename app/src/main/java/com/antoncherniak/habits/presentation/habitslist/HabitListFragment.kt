@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -21,25 +20,23 @@ import com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview.Hab
 import com.antoncherniak.habits.domain.model.HabitType
 import com.antoncherniak.habits.presentation.extensions.viewModelFactory
 import com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment.Companion.DEFAULT_HABIT_ID
+import com.google.android.material.snackbar.Snackbar
 
 // TODO
 /**
- * Фрагмент для сортировки и поиска отдельно
- *
- * После этого проверить = после поворота экрана на крейт фрагменте падает ли приложение,
- * потому что не может сохранить состояние первого фрагмента. Если да,то плохо - попробовать вынести в переменные
- * и уже их onSave onRestore
- *
  * Помимо:
  *  - В Крейт не передавать привычку, а id, и её запрашивать
  *  - В крейте хранить привычку в VM, чтобы рестор делать из VM, а не через bundle
  *  - Сообщение в снекбаре при создании / редактировании привычки
  *  - докрутка до созданной / измененной привычки
+ *  - Room
+ *  - корутины
+ *  - использовать операторы, чтобы отсеять поиск
  *
  *  Дополнительно можно:
  *  - Иконка удаления при свайпе https://medium.com/@kitek/recyclerview-swipe-to-delete-easier-than-you-thought-cff67ff5e5f6
  *  - вынести зависимости
- *  - обработка ошибок - показать пользователю и дать возможность обновить данные
+ *  - обработка ошибок - дать возможность обновить данные
  */
 class HabitListFragment : Fragment() {
 
@@ -65,16 +62,17 @@ class HabitListFragment : Fragment() {
         swipeToDelete()
         setScrollToEditedHabitPositionSettings()
         binding.habitRecyclerView.adapter = habitAdapter
-        viewModel.screenState.observe(viewLifecycleOwner){
-            Log.e("TABBB", "state= ${it}")
-            listFragmentUiRender(it)
+        viewModel.screenState.observe(viewLifecycleOwner, ::listFragmentUiRender)
+        viewModel.searchSettings.distinctUntilChanged().observe(viewLifecycleOwner) {
+            viewModel.getHabits()
         }
     }
 
     override fun onResume() {
         super.onResume()
-        Log.e("ONCREATE", "arg t = ${arguments?.getString(HABIT_TYPE_EXTRA_KEY)?: HabitType.GOOD_HABIT.name}")
-        viewModel.habitType = arguments?.getString(HABIT_TYPE_EXTRA_KEY)?: HabitType.GOOD_HABIT.name
+        viewModel.setHabitType(
+            arguments?.getString(HABIT_TYPE_EXTRA_KEY) ?: HabitType.GOOD_HABIT.name
+        )
         viewModel.getHabits()
     }
 
@@ -87,7 +85,6 @@ class HabitListFragment : Fragment() {
                     errorImageView.isVisible = false
                 }
                 val dataList = mutableListOf<HabitModel>().apply { addAll(screenState.habits) }
-                Log.e("TAGGG", "size= ${dataList.size}")
                 habitAdapter.submitList(dataList)
 
                 binding.habitRecyclerView.post {
@@ -107,6 +104,12 @@ class HabitListFragment : Fragment() {
                     habitRecyclerView.isVisible = false
                     errorImageView.isVisible = true
                 }
+                Snackbar.make(
+                    binding.errorImageView,
+                    getString(R.string.error_message),
+                    Snackbar.LENGTH_LONG
+                )
+                    .show()
                 Log.e(ERROR_TAG, screenState.errorMessage)
             }
             ListScreenState.Init -> {}
@@ -118,10 +121,8 @@ class HabitListFragment : Fragment() {
             REQUEST_ID_KEY,
             viewLifecycleOwner
         ) { _, bundle ->
-            getHabits()
             val resultId = bundle.getString(ID_RESULT_KEY)?.toInt() ?: 0
             val newPosition = habitAdapter.getItemPositionById(resultId)
-            Log.e("TAGGG", "resultId = ${resultId}, newPos = ${newPosition}")
             binding.habitRecyclerView.post {
                 binding.habitRecyclerView.layoutManager?.scrollToPosition(newPosition)
             }
@@ -151,10 +152,6 @@ class HabitListFragment : Fragment() {
         findNavController().navigate(directions)
     }
 
-    private fun getHabits() {
-        viewModel.getHabits()
-    }
-
     private fun swipeToDelete() {
         ItemTouchHelper(object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
@@ -174,9 +171,6 @@ class HabitListFragment : Fragment() {
 
     companion object {
         private const val ID_RESULT_KEY = "id_res_key"
-        private const val SEARCH_KEY = "search_key"
-        private const val REVERSED_KEY = "reversed_key"
-        private const val SORT_TYPE_KEY = "sort_key"
         private const val HABIT_TYPE_EXTRA_KEY = "habit type key"
         private const val ERROR_TAG = "ERROR: "
         const val REQUEST_ID_KEY = "requestKey"

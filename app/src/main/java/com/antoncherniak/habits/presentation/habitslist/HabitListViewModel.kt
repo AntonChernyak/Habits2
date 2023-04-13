@@ -1,6 +1,5 @@
 package com.antoncherniak.habits.presentation.habitslist
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.antoncherniak.habits.domain.interactor.HabitListInteractor
 import com.antoncherniak.habits.domain.model.HabitType
@@ -12,40 +11,28 @@ class HabitListViewModel(
 
     private val _screenState: MutableLiveData<ListScreenState> =
         MutableLiveData(ListScreenState.Init)
+    private val _searchSettings = MutableLiveData(SearchSettings())
     val screenState: LiveData<ListScreenState> = _screenState
-    var searchQuery: String = ""
-    var reversed: Boolean = false
-    var sortType: Int = SortType.SORT_BY_PRIORITY.spinnerPosition
-    var habitType: String = HabitType.GOOD_HABIT.name
-
-init {
-    Log.e("RAd", "INT")
-}
+    val searchSettings: LiveData<SearchSettings> = _searchSettings
 
     private fun setSearchQueryAndSort(
-
     ): ListScreenState {
         _screenState.value = ListScreenState.Loading
-        Log.e("TAGGG", "type = ${habitType} q = ${searchQuery}, rev =${reversed}, st = ${sortType}")
         val result = try {
-            val searchHabits = habitListInteractor.getHabits().filter { it.type.name == habitType }
+            val searchHabits = habitListInteractor.getHabits()
                 .filter {
-                    it.title.contains(searchQuery.trim())
+                    it.type == _searchSettings.value?.habitType &&
+                            it.title.contains(_searchSettings.value?.searchQuery?.trim() ?: "")
                 }
                 .sortedBy {
-                    when (sortType) {
-                        SortType.SORT_BY_NAME.spinnerPosition -> it.title
-                        SortType.SORT_BY_PRIORITY.spinnerPosition -> it.priority.spinnerPos.toString()
+                    when (_searchSettings.value?.sortType) {
+                        SortType.SORT_BY_NAME -> it.title
+                        SortType.SORT_BY_PRIORITY -> it.priority.spinnerPos.toString()
                         else -> it.priority.spinnerPos.toString()
                     }
-                }.onEach {
-                    Log.e("TAGGG", "1 = ${it.title}")
-
                 }
-            _screenState.value = ListScreenState.Data(if (reversed) searchHabits else searchHabits.reversed())
-            ListScreenState.Data(if (reversed) searchHabits else searchHabits.reversed())
+            ListScreenState.Data(if (_searchSettings.value?.reversed == true) searchHabits else searchHabits.reversed())
         } catch (e: Exception) {
-            Log.e("EXCEPTION", "E =  ${e.message}")
             ListScreenState.Error(e.message ?: "unknown error")
         }
         return result
@@ -53,7 +40,6 @@ init {
 
     private fun removeHabitById(
         habitId: Int,
-        query: String = ""
     ): ListScreenState {
         _screenState.value = ListScreenState.Loading
         val result = try {
@@ -65,19 +51,46 @@ init {
         return result
     }
 
-    fun getHabits(    ) {
-        Log.e("TAGGg", "GET")
+    fun getHabits() {
         viewModelScope.launch {
             _screenState.value = setSearchQueryAndSort()
         }
     }
 
-    fun removeHabit(
-        habitId: Int,
-        query: String = ""
-    ) {
+    fun removeHabit(habitId: Int) {
         viewModelScope.launch {
-            _screenState.value = removeHabitById(habitId, query)
+            _screenState.value = removeHabitById(habitId)
         }
+    }
+
+    fun setSearchString(query: String) {
+        _searchSettings.value = _searchSettings.value?.copy(
+            searchQuery = query
+        )
+    }
+
+    fun getSearchString(): String = _searchSettings.value?.searchQuery ?: ""
+
+
+    fun setReversed(reversed: Boolean) {
+        _searchSettings.value = _searchSettings.value?.copy(
+            reversed = reversed
+        )
+    }
+
+    fun getReversed(): Boolean = _searchSettings.value?.reversed ?: false
+
+    fun setSortedType(sortType: SortType) {
+        _searchSettings.value = _searchSettings.value?.copy(
+            sortType = sortType
+        )
+    }
+
+    fun getSortedSpinnerPosition(): Int = _searchSettings.value?.sortType?.spinnerPosition ?: 0
+
+    fun setHabitType(habitTypeName: String) {
+        _searchSettings.value = _searchSettings.value?.copy(
+            habitType = HabitType.valueOf(habitTypeName)
+        )
     }
 }

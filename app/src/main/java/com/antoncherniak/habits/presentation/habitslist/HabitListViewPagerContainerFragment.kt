@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentHabitListViewPagerContainerBinding
@@ -36,7 +35,6 @@ class HabitListViewPagerContainerFragment : Fragment() {
 
         binding.habitsViewPager.apply {
             adapter = HabitViewPagerAdapter(this@HabitListViewPagerContainerFragment)
-            orientation = ViewPager2.ORIENTATION_HORIZONTAL
             val child = getChildAt(0)
             if (child is RecyclerView) {
                 child.overScrollMode = RecyclerView.OVER_SCROLL_NEVER

@@ -11,7 +11,6 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.antoncherniak.habits.R
 import com.antoncherniak.habits.databinding.FragmentSearchAndSortBinding
@@ -31,9 +30,16 @@ class SearchAndSortFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setSortItemSpinnerClickListener()
         createHabitSortSpinner()
         setBottomNavigationViewsSettings()
-        setSortItemSpinnerClickListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.searchEditText.setText(viewModel.getSearchString())
+        binding.sortSpinner.setSelection(viewModel.getSortedSpinnerPosition())
+        setInitSortButtonColor(binding.buttonDown, binding.buttonUp)
     }
 
     private fun createHabitSortSpinner() {
@@ -50,10 +56,13 @@ class SearchAndSortFragment : Fragment() {
         binding.sortSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                   // getHabits()
-         /*           binding.habitRecyclerView.post {
-                        binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
-                    }*/
+                    val spinnerPosition = binding.sortSpinner.selectedItemPosition
+                    viewModel.setSortedType(
+                        when(spinnerPosition){
+                            SortType.SORT_BY_PRIORITY.spinnerPosition -> SortType.SORT_BY_PRIORITY
+                            SortType.SORT_BY_NAME.spinnerPosition -> SortType.SORT_BY_NAME
+                            else -> SortType.SORT_BY_PRIORITY
+                        })
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -62,21 +71,21 @@ class SearchAndSortFragment : Fragment() {
 
     private fun setBottomNavigationViewsSettings() {
         with(binding) {
-            setInitSortButtonColor(buttonDown, buttonUp)
             searchEditText.doAfterTextChanged {
-                viewModel.searchQuery = it.toString()
-                viewModel.getHabits()
+                viewModel.setSearchString(it.toString())
             }
             buttonUp.setOnClickListener {
-                setSortButtonColor(buttonUp, buttonDown, false)
+                setSortButtonColor(buttonUp, buttonDown)
+                viewModel.setReversed(false)
             }
             buttonDown.setOnClickListener {
-                setSortButtonColor(buttonDown, buttonUp, true)
+                setSortButtonColor(buttonDown, buttonUp)
+                viewModel.setReversed(true)
             }
         }
     }
 
-    private fun setSortButtonColor(redButton: ImageView, grayButton: ImageView, reverse: Boolean) {
+    private fun setSortButtonColor(redButton: ImageView, grayButton: ImageView) {
         redButton.background = ContextCompat.getDrawable(
             requireActivity(),
             R.drawable.background_sort_button_selected
@@ -85,22 +94,13 @@ class SearchAndSortFragment : Fragment() {
             requireActivity(),
             R.drawable.background_sort_button_not_selected
         )
-        viewModel.reversed = reverse
-        //viewModel.getHabits()
-/*        binding.habitRecyclerView.post {
-            binding.habitRecyclerView.layoutManager?.scrollToPosition(0)
-        }*/
     }
 
     private fun setInitSortButtonColor(buttonDown: ImageView, buttonUp: ImageView) {
-        if (viewModel.reversed) {
-            buttonDown.background = ContextCompat.getDrawable(
-                requireActivity(),
-                R.drawable.background_sort_button_selected
-            )
-        } else buttonUp.background = ContextCompat.getDrawable(
-            requireActivity(),
-            R.drawable.background_sort_button_selected
-        )
+        if (viewModel.getReversed()) {
+            setSortButtonColor(redButton = buttonDown, grayButton = buttonUp)
+        } else {
+            setSortButtonColor(redButton = buttonUp, grayButton = buttonDown)
+        }
     }
 }

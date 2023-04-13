@@ -50,5 +50,6 @@
     <string name="search">Поиск…</string>
     <string name="reversed_sort_on">reversed_sort_on</string>
     <string name="reversed_sort_off">reversed_sort_off</string>
+    <string name="error_message">Ошибка. Потяните вниз, чтобы обновить.</string>
 
 </resources>
