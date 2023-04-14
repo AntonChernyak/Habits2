@@ -20,18 +20,10 @@ import com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview.Hab
 import com.antoncherniak.habits.domain.model.HabitType
 import com.antoncherniak.habits.presentation.extensions.viewModelFactory
 import com.antoncherniak.habits.presentation.habitcreator.HabitCreatorFragment.Companion.DEFAULT_HABIT_ID
+import com.antoncherniak.habits.presentation.habitslist.adapter.recyclerview.SwipeToDeleteCallback
 import com.google.android.material.snackbar.Snackbar
 
-// TODO
-/**
- * Помимо:
- *  - Room
- *  - корутины
- *  - использовать операторы, чтобы отсеять поиск
- *
- *  Дополнительно можно:
- *  - Иконка удаления при свайпе https://medium.com/@kitek/recyclerview-swipe-to-delete-easier-than-you-thought-cff67ff5e5f6
- */
+
 class HabitListFragment : Fragment() {
 
     private val binding: FragmentHabitListBinding by viewBinding()
@@ -152,14 +144,7 @@ class HabitListFragment : Fragment() {
     }
 
     private fun swipeToDelete() {
-        ItemTouchHelper(object :
-            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean = false
-
+        ItemTouchHelper(object : SwipeToDeleteCallback(requireActivity()) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewModel.removeHabit(
                     habitId = habitAdapter.getItemByPosition(viewHolder.adapterPosition).id
