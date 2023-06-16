@@ -2,7 +2,6 @@ package com.example.habits.presentation.list
 
 import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,13 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.habits.App
 import com.example.habits.R
-import com.example.habits.presentation.adapter.HabitAdapter
-import com.example.habits.databinding.FragmentHabitsListBinding
+import com.example.habits.data.database.model_vo.HabitItem
 import com.example.habits.data.database.model_vo.HabitType
+import com.example.habits.databinding.FragmentHabitsListBinding
+import com.example.habits.domain.model_dto.HabitDoneDto
+import com.example.habits.presentation.adapter.HabitAdapter
 import com.example.habits.presentation.extension.addToggleToNavigationDrawer
 import com.example.habits.presentation.extension.afterTextChanged
-import com.example.habits.domain.model_dto.HabitDoneDto
-import com.example.habits.data.database.model_vo.HabitItem
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.*
 import kotlinx.serialization.ExperimentalSerializationApi
